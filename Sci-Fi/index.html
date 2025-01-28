@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <title>
       
-        hello | Numerical Algorithms and Sci-Fi
+        科幻 | Numerical Algorithms and Sci-Fi
       
     </title>
     <meta name="description" content="Delving into the world of numerical methods, computational techniques, and personal passions—science fiction, travel, and the mysteries of the universe—driven by boundless curiosity and a love for lifelong learning." />
@@ -58,8 +58,7 @@
           href='/css/layout.css' />
     
     
-  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
-  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/category.css" />
 
   <meta name="generator" content="Hexo 7.3.0"></head>
   <body>
@@ -152,78 +151,23 @@
     </div>
     <div class="body">
       
-  <article class="post-content">
-    <div class="post-inner">
-      <div class="post-content__head">
-        <div class="post-title">hello</div>
-        <div class="post-info">
-          
-  
-
-
-          <span class="post-date">2025-01-16</span>
-        </div>
+  <div class="wall wall-category">
+    <div class="wall-main">
+      <div class="wall-category-title">
+        <div class="title-icon"
+             style="background-image: url(/images/icon/icon-cosm.svg)"></div>
+        科幻
       </div>
-      
-      <div class="post-content__body">
-        
-          <div class="post-gallery">
-            
-          </div>
-        
-        
+      <div class="wall-category-description">孤身坠入地球, 等不到群星的来信.</div>
+      <div class="wall-category-tags">
+        <div id="tags-outer"><canvas width="500" height="500" id="tagCanvas"><canvas></div>
       </div>
     </div>
-    
-      <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script>
-      <script>
-        if (window.mermaid) {
-          mermaid.initialize({"startOnload":true});
-        }
-      </script>
-    
-  </article>
-  <div class="post__foot">
-    
-    <div class="post-nav">
-  
-    <div class="post-nav-item-left"></div>
-  
-  <div class="vhr"></div>
-  
-    <a class="post-nav-item-right" href="/2025/01/14/hello-world/">
-      <div class="text-align">
-        <span class="text-small">下一篇</span>
-        <svg t="1670570876164"
-             class="icon"
-             viewBox="0 0 1024 1024"
-             transform="scale(-1,-1)"
-             width="16"
-             height="16">
-          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596" />
-        </svg>
-      </div>
-      Hello World
-    </a>
-  
-</div>
-
-    
-      <div class="related-post">
-  <div class="related__head">
-  
-
-</div>
-  <div class="realated__body">
-    
-      DEBUG: 请安装插件 <a target="_blank" rel="noopener" href="https://github.com/tea3/hexo-related-popular-posts">hexo-related-popular-posts</a> 或关闭 related_post 配置!
-    
   </div>
-</div>
-
+  <div class="post-list">
     
+      DEBUG: 该子页分类下没有文章！在指定文章头部中添加 category: Sci-Fi 字段，即可将该文章添加至此页。
     
-      <div id="gitalk-container"></div>
     
   </div>
 
@@ -329,15 +273,35 @@
     
     <script src="/js/copy-code.js"></script>
     
-  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-<script type="text/javascript">
-  const param = JSON.parse('{"enable":true,"owner":"Adventurer-J","admin":"Adventurer-J","repo":"adventurer-j.github.io","clientID":"Ov23liseoVGnjyqzlA1B","clientSecret":"e189eade0d30eacc658e5f51bd91b3b8937c4adb","distractionFreeMode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN"}')
-  let title = location.pathname.substr(0, 50); 
-  param.id = title
-  const gitalk = new Gitalk(param)
-  gitalk.render('gitalk-container')
-</script>
-
+  
+    <script type="text/javascript"
+            charset="utf-8"
+            src="/js/tagcanvas.min.js"></script>
+    <script type = "text/javascript">
+        window.onload = function() {
+            try {
+                TagCanvas.Start('tagCanvas', '', {
+                    outlineThickness: 1,
+                    maxSpeed: 0.03,
+                    // freezeActive: true,
+                    // freezeDecel: true,
+                    textColour: null,
+                    textColour: null,
+                    outlineColour: "#aaa",
+                    weight: true,
+                    padding: 4,
+                    // clickToFront: 200,
+                    fadIn: 200,
+                    // pinchZoom: true,
+                    wheelZoom: false,
+                    initial: [0.1, -0.03]
+                });
+            } catch (e) {
+                // something went wrong, hide the canvas container
+                document.getElementById('tags-outer').style.display = 'none';
+            }
+        };
+    </script>
   
 
   </body>
