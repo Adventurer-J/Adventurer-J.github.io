@@ -285,6 +285,16 @@
     nodes.forEach(node => { node.classList.add("cm-reveal"); observer.observe(node); });
   }
 
+  function initializeBackToTop() {
+    if (document.querySelector(".cm-back-top")) return;
+    const button = document.createElement("button");
+    button.className = "cm-back-top"; button.type = "button"; button.setAttribute("aria-label", "返回顶部"); button.textContent = "↑";
+    button.addEventListener("click", () => scrollTo({top:0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}));
+    document.body.appendChild(button);
+    const update = () => button.classList.toggle("is-visible", scrollY > 620);
+    addEventListener("scroll", update, {passive:true}); update();
+  }
+
   function initializeReadingProgress() {
     if (!document.querySelector(".post-content")) return;
     const bar = document.createElement("div"); bar.className = "cm-reading-progress"; document.body.appendChild(bar);
@@ -303,6 +313,7 @@
     initializeParticles();
     initializeMotion();
     initializeReadingProgress();
+    initializeBackToTop();
   }
 
   if (document.readyState === "loading") {
