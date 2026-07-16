@@ -225,7 +225,7 @@
     document.querySelectorAll(".post-list").forEach((list) => {
       if (!/DEBUG:|没有文章/.test(list.textContent)) return;
       list.classList.add("cm-empty-state");
-      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>文章与记录将显示在这里。</p><a href="/research/">打开研究地图 →</a>';
+      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>暂无内容。</p><a href="/research/">打开研究地图 →</a>';
     });
   }
 
