@@ -1,33 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const getCopyButton = () => {
-    const button = document.createElement("div")
-    button.innerHTML = `复制代码`
-    button.className = 'copy-button'
-    return button
-  }
-
-  const codeBlocks = document.querySelectorAll('figure.highlight')
-
-  codeBlocks.forEach((codeBlock) => {
-    const copyButton = getCopyButton();
-    copyButton.onclick = () => {
-      try {
-        const code = codeBlock.querySelector('code').innerText
-        navigator.clipboard.writeText(code);
-        copyButton.innerText = '已复制!'
-      } catch {
-        copyButton.innerText = '发生错误'
-      } finally {
-        setTimeout(() => {
-          copyButton.innerText = '复制代码'
-        }, 1000)
-      }
-    }
-    codeBlock.appendChild(copyButton)
-  })
-})
-
-/* Additive site navigation and research-page behavior. */
+/* Site runtime: code copy, nested navigation, theme, and research filters. */
 (function () {
   "use strict";
 
@@ -54,12 +25,36 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
-  function buildNestedNavigation() {
+  function initializeCodeCopy() {
+    document.querySelectorAll("figure.highlight").forEach((codeBlock) => {
+      if (codeBlock.querySelector(".copy-button")) return;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "copy-button";
+      button.textContent = "复制代码";
+      button.addEventListener("click", async () => {
+        try {
+          const code = codeBlock.querySelector("code");
+          if (!code) throw new Error("No code element");
+          await navigator.clipboard.writeText(code.innerText);
+          button.textContent = "已复制";
+        } catch (error) {
+          button.textContent = "复制失败";
+        } finally {
+          window.setTimeout(() => { button.textContent = "复制代码"; }, 1200);
+        }
+      });
+      codeBlock.appendChild(button);
+    });
+  }
+
+  function initializeNestedNavigation() {
     const menu = document.querySelector(".nav-menu");
     if (!menu || menu.dataset.cmEnhanced === "true") return;
     menu.dataset.cmEnhanced = "true";
 
-    Array.from(menu.querySelectorAll(":scope > .nav-menu-item")).forEach((anchor) => {
+    Array.from(menu.children).forEach((anchor) => {
+      if (!anchor.classList || !anchor.classList.contains("nav-menu-item")) return;
       const label = anchor.textContent.trim();
       const items = navMap[label];
       if (!items) return;
@@ -67,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const group = document.createElement("div");
       group.className = "cm-nav-group";
       group.dataset.open = "false";
-      anchor.parentNode.insertBefore(group, anchor);
+      menu.insertBefore(group, anchor);
       group.appendChild(anchor);
 
       const toggle = document.createElement("button");
@@ -83,7 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const link = document.createElement("a");
         link.className = "cm-submenu-link";
         link.href = href;
-        link.innerHTML = `<span class="cm-submenu-title">${title}</span><span class="cm-submenu-note">${note}</span>`;
+        const titleElement = document.createElement("span");
+        titleElement.className = "cm-submenu-title";
+        titleElement.textContent = title;
+        const noteElement = document.createElement("span");
+        noteElement.className = "cm-submenu-note";
+        noteElement.textContent = note;
+        link.append(titleElement, noteElement);
         submenu.appendChild(link);
       });
 
@@ -101,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         group.dataset.open = String(next);
         toggle.setAttribute("aria-expanded", String(next));
       });
-
       group.append(toggle, submenu);
     });
 
@@ -130,10 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function buildThemeToggle() {
+  function initializeTheme() {
     const navRight = document.querySelector(".nav-right");
     if (!navRight || document.querySelector(".cm-theme-toggle")) return;
-
     const saved = localStorage.getItem("cm-theme");
     const preferredDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
     const initial = saved || (preferredDark ? "dark" : "light");
@@ -166,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttons = Array.from(controls.querySelectorAll("[data-cm-filter]"));
     const cards = Array.from(document.querySelectorAll("[data-cm-track]"));
     const empty = document.querySelector(".cm-empty");
-
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
         const filter = button.dataset.cmFilter;
@@ -184,8 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function initialize() {
-    buildNestedNavigation();
-    buildThemeToggle();
+    initializeCodeCopy();
+    initializeNestedNavigation();
+    initializeTheme();
     initializeResearchFilters();
   }
 
