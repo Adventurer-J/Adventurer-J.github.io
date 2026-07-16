@@ -2696,3 +2696,11 @@ body::before{background-image:linear-gradient(rgba(8,123,121,.035) 1px,transpare
 @keyframes cm-redcoast-wave{to{background:#ffc75c;transform:scaleY(1.65)}}
 @media(max-width:900px){.cm-redcoast-signal{display:none}}
 @media(prefers-reduced-motion:reduce){.cm-redcoast-signal i{animation:none}}
+
+/* Particle field V2: aurora depth, luminous trails, and restrained sci-fi contrast */
+.cm-threebody-field::after{background:conic-gradient(from 210deg at 72% 36%,transparent 0 18%,rgba(84,231,215,.08) 25%,transparent 34% 64%,rgba(131,94,255,.07) 73%,transparent 82%);content:"";filter:blur(42px);inset:-18%;opacity:.9;pointer-events:none;position:absolute;transform:translate3d(0,0,0);z-index:0}
+.cm-threebody-field .cm-particle-canvas{filter:saturate(1.18) contrast(1.04)}
+[data-cm-theme="dark"] .cm-threebody-field{background-color:#071518}
+[data-cm-theme="dark"] .cm-threebody-field::after{opacity:1.25}
+.cm-home-console{border-color:color-mix(in srgb,var(--cm-v3-border) 70%,rgba(137,246,231,.26))!important}
+@media(max-width:620px){.cm-threebody-field::after{filter:blur(28px);opacity:.65}}
