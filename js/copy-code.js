@@ -181,11 +181,118 @@
     });
   }
 
+  const categoryMap = {
+    "Numerical-method": [["逼近与表示", "插值、投影与基函数", "/research/#approximation"], ["离散化", "有限差分、有限元与谱方法", "/research/#discretization"], ["自适应计算", "网格、阶次与后验估计", "/research/#adaptivity"], ["验证", "误差、收敛率与基准", "/research/#verification"]],
+    "Differential equation": [["方程结构", "椭圆、抛物与双曲问题", "/research/#equations"], ["时间演化", "时间积分与稳定性", "/research/#time"], ["反问题与随机模型", "正则化与不确定性量化", "/research/#inverse"], ["建模工作流", "从问题到可信结果", "/research/#workflow"]],
+    "Algorithm": [["线性与非线性求解", "迭代法、预条件与特征值", "/research/#solvers"], ["优化", "约束、无约束与变分结构", "/research/#optimization"], ["高性能计算", "并行、加速与性能剖析", "/research/#hpc"], ["验证与基准", "精度、鲁棒性与效率", "/research/#verification"]],
+    "Software-system": [["科研工作流", "环境、实验与归档", "/research/#workflow"], ["高性能计算", "并行计算与硬件加速", "/research/#hpc"], ["可复现性", "从配置到结果追溯", "/research/#reproducibility"], ["研究地图", "浏览完整计算数学路线", "/research/"]],
+    "Sci-Fi": [["文明与时间", "在长时间尺度上理解选择", "/Sci-Fi/"], ["科技与未知", "以想象力检验技术边界", "/Sci-Fi/"], ["宇宙尺度", "从更大的坐标系观察人类", "/Sci-Fi/"]],
+    "Miles and Memories": [["行路记录", "城市、山野与途中见闻", "/Miles%20and%20Memories/"], ["观察与摄影", "保存值得回看的瞬间", "/Miles%20and%20Memories/"], ["阅读与随笔", "研究之外的思考切片", "/Miles%20and%20Memories/"]]
+  };
+
+  function initializeCategoryPage() {
+    const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
+    const items = categoryMap[key];
+    const wall = document.querySelector(".wall-category");
+    if (!items || !wall || wall.querySelector(".cm-category-grid")) return;
+    wall.classList.add("cm-category-shell");
+    const main = wall.querySelector(".wall-main") || wall;
+    const kicker = document.createElement("p");
+    kicker.className = "cm-category-kicker";
+    kicker.textContent = "RESEARCH INDEX / 研究索引";
+    main.prepend(kicker);
+    const grid = document.createElement("div");
+    grid.className = "cm-category-grid";
+    items.forEach(([title, note, href], index) => {
+      const card = document.createElement("a");
+      card.className = "cm-category-card cm-reveal";
+      card.href = href;
+      card.innerHTML = `<span>${String(index + 1).padStart(2, "0")}</span><strong></strong><small></small><i aria-hidden="true">↗</i>`;
+      card.querySelector("strong").textContent = title;
+      card.querySelector("small").textContent = note;
+      grid.appendChild(card);
+    });
+    main.appendChild(grid);
+    const canvas = document.querySelector("#tagCanvas, .wall-category-tags");
+    if (canvas) canvas.hidden = true;
+    document.querySelectorAll(".post-list").forEach((list) => {
+      if (!/DEBUG:|没有文章/.test(list.textContent)) return;
+      list.classList.add("cm-empty-state");
+      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>这里将逐步收录文章、实验记录与可复现材料。现在可先从研究地图浏览通用计算数学主题。</p><a href="/research/">打开研究地图 →</a>';
+    });
+  }
+
+  function initializeParticles() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const targets = document.querySelectorAll(".cm-home-hero, .cm-hero, .wall-category, .post-content__head");
+    targets.forEach((target) => {
+      if (target.querySelector(":scope > .cm-particle-canvas")) return;
+      const canvas = document.createElement("canvas");
+      canvas.className = "cm-particle-canvas";
+      canvas.setAttribute("aria-hidden", "true");
+      target.prepend(canvas);
+      const ctx = canvas.getContext("2d");
+      let points = [], width = 0, height = 0, frame;
+      function resize() {
+        const dpr = Math.min(devicePixelRatio || 1, 1.5);
+        width = target.clientWidth; height = target.clientHeight;
+        canvas.width = width * dpr; canvas.height = height * dpr;
+        canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const count = width < 700 ? 20 : Math.min(58, Math.round(width / 22));
+        points = Array.from({length: count}, () => ({x: Math.random()*width, y: Math.random()*height, vx:(Math.random()-.5)*.22, vy:(Math.random()-.5)*.22, r:Math.random()*1.3+.45}));
+      }
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        const dark = document.documentElement.dataset.cmTheme === "dark";
+        ctx.fillStyle = dark ? "rgba(89,222,207,.7)" : "rgba(8,111,112,.52)";
+        points.forEach((p, i) => {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0 || p.x > width) p.vx *= -1;
+          if (p.y < 0 || p.y > height) p.vy *= -1;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+          for (let j=i+1; j<points.length; j++) {
+            const q=points[j], dx=p.x-q.x, dy=p.y-q.y, d=Math.hypot(dx,dy);
+            if (d < 112) { ctx.strokeStyle = dark ? `rgba(89,222,207,${.13*(1-d/112)})` : `rgba(8,111,112,${.1*(1-d/112)})`; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke(); }
+          }
+        });
+        frame = requestAnimationFrame(draw);
+      }
+      resize(); draw();
+      new ResizeObserver(resize).observe(target);
+      document.addEventListener("visibilitychange", () => { cancelAnimationFrame(frame); if (!document.hidden) draw(); });
+    });
+  }
+
+  function initializeMotion() {
+    const selectors = ".cm-home-research-card, .cm-card, .cm-category-card, .post-item, .cm-home-section-card";
+    document.querySelectorAll(selectors).forEach((card) => card.addEventListener("pointermove", (event) => {
+      const box = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${event.clientX - box.left}px`);
+      card.style.setProperty("--my", `${event.clientY - box.top}px`);
+    }));
+    const nodes = document.querySelectorAll(".cm-reveal, .cm-home-section, .cm-home-workflow, .post-item");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) { nodes.forEach(n => n.classList.add("is-visible")); return; }
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("is-visible"); observer.unobserve(entry.target); } }), {threshold: .08});
+    nodes.forEach(node => { node.classList.add("cm-reveal"); observer.observe(node); });
+  }
+
+  function initializeReadingProgress() {
+    if (!document.querySelector(".post-content")) return;
+    const bar = document.createElement("div"); bar.className = "cm-reading-progress"; document.body.appendChild(bar);
+    const update = () => { const max = document.documentElement.scrollHeight - innerHeight; bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`; };
+    addEventListener("scroll", update, {passive:true}); update();
+  }
+
   function initialize() {
     initializeCodeCopy();
     initializeNestedNavigation();
     initializeTheme();
     initializeResearchFilters();
+    initializeCategoryPage();
+    initializeParticles();
+    initializeMotion();
+    initializeReadingProgress();
   }
 
   if (document.readyState === "loading") {
