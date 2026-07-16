@@ -2675,3 +2675,32 @@ body::before{background-image:linear-gradient(rgba(8,123,121,.035) 1px,transpare
 @media(min-width:1024px) and (max-width:1320px){.nav{padding:0 20px}.nav-menu-item{font-size:.78rem;padding-left:6px;padding-right:6px}.cm-nav-caret{width:20px}#search-btn .search-shortcut-key{display:none}}
 @media(max-width:620px){.cm-back-top{bottom:16px;height:40px;right:16px;width:40px}}
 @media(prefers-reduced-motion:reduce){.cm-back-top{transition:none}}
+
+/* Interactive Three-Body particle field */
+.cm-threebody-field{cursor:crosshair}
+.cm-threebody-label{align-items:center;bottom:24px;color:var(--cm-muted);display:flex;font:600 .58rem/1 ui-monospace,monospace;gap:8px;letter-spacing:.12em;opacity:.72;pointer-events:none;position:absolute;right:28px;z-index:2}
+.cm-threebody-label>span{animation:cm-threebody-pulse 2.4s ease-in-out infinite;background:#ffc75c;border-radius:50%;box-shadow:0 0 14px rgba(255,199,92,.7);height:6px;width:6px}
+.cm-threebody-label b{border-left:1px solid var(--cm-line);color:var(--cm-v3-accent);font-weight:500;margin-left:3px;padding-left:10px}
+.cm-threebody-field .cm-particle-canvas{mix-blend-mode:multiply}
+[data-cm-theme="dark"] .cm-threebody-field .cm-particle-canvas{mix-blend-mode:screen}
+@keyframes cm-threebody-pulse{50%{box-shadow:0 0 26px rgba(255,199,92,.95);transform:scale(1.35)}}
+@media(max-width:620px){.cm-threebody-label{bottom:14px;right:16px}.cm-threebody-label b{display:none}}
+@media(prefers-reduced-motion:reduce){.cm-threebody-label{display:none}.cm-threebody-label>span{animation:none}}
+
+/* Three-Body novel references: eras and Red Coast listening signal */
+.cm-redcoast-signal{align-items:center;background:rgba(7,23,25,.72);border:1px solid rgba(255,199,92,.2);border-radius:999px;color:#87a6a2;display:flex;font:600 .56rem/1 ui-monospace,monospace;gap:3px;letter-spacing:.12em;padding:8px 11px;pointer-events:none;position:absolute;right:28px;top:104px;z-index:2}
+.cm-redcoast-signal span{color:#ffc75c;margin-right:7px}
+.cm-redcoast-signal i{animation:cm-redcoast-wave 1.2s ease-in-out infinite alternate;background:#5a8f89;display:block;height:5px;width:2px}
+.cm-redcoast-signal i:nth-of-type(2){animation-delay:.15s;height:9px}.cm-redcoast-signal i:nth-of-type(3){animation-delay:.3s;height:14px}.cm-redcoast-signal i:nth-of-type(4){animation-delay:.45s;height:8px}.cm-redcoast-signal i:nth-of-type(5){animation-delay:.6s;height:4px}
+.cm-redcoast-signal strong{border-left:1px solid #405d5a;color:#ff7452;font-weight:700;margin-left:8px;padding-left:10px}
+@keyframes cm-redcoast-wave{to{background:#ffc75c;transform:scaleY(1.65)}}
+@media(max-width:900px){.cm-redcoast-signal{display:none}}
+@media(prefers-reduced-motion:reduce){.cm-redcoast-signal i{animation:none}}
+
+/* Particle field V2: aurora depth, luminous trails, and restrained sci-fi contrast */
+.cm-threebody-field::after{background:conic-gradient(from 210deg at 72% 36%,transparent 0 18%,rgba(84,231,215,.08) 25%,transparent 34% 64%,rgba(131,94,255,.07) 73%,transparent 82%);content:"";filter:blur(42px);inset:-18%;opacity:.9;pointer-events:none;position:absolute;transform:translate3d(0,0,0);z-index:0}
+.cm-threebody-field .cm-particle-canvas{filter:saturate(1.18) contrast(1.04)}
+[data-cm-theme="dark"] .cm-threebody-field{background-color:#071518}
+[data-cm-theme="dark"] .cm-threebody-field::after{opacity:1.25}
+.cm-home-console{border-color:color-mix(in srgb,var(--cm-v3-border) 70%,rgba(137,246,231,.26))!important}
+@media(max-width:620px){.cm-threebody-field::after{filter:blur(28px);opacity:.65}}

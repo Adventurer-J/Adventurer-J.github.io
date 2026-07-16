@@ -225,7 +225,7 @@
     document.querySelectorAll(".post-list").forEach((list) => {
       if (!/DEBUG:|没有文章/.test(list.textContent)) return;
       list.classList.add("cm-empty-state");
-      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>文章与记录将显示在这里。</p><a href="/research/">打开研究地图 →</a>';
+      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>暂无内容。</p><a href="/research/">打开研究地图 →</a>';
     });
   }
 
@@ -239,36 +239,105 @@
       canvas.setAttribute("aria-hidden", "true");
       target.prepend(canvas);
       const ctx = canvas.getContext("2d");
-      let points = [], width = 0, height = 0, frame;
+      const isThreeBody = target.matches(".cm-home-hero, .cm-hero");
+      let points = [], width = 0, height = 0, frame = 0, time = 0;
+      const pointer = {x: 0, y: 0, active: false};
+      let stateLabel = null;
+
+      if (isThreeBody) {
+        target.classList.add("cm-threebody-field");
+        const label = document.createElement("div");
+        label.className = "cm-threebody-label";
+        label.innerHTML = "<span></span> THREE-BODY / 三体 <b>乱纪元</b>";
+        stateLabel = label.querySelector("b");
+        target.appendChild(label);
+        if (target.matches(".cm-home-hero")) {
+          const signal = document.createElement("div");
+          signal.className = "cm-redcoast-signal";
+          signal.innerHTML = '<span>红岸监听</span><i></i><i></i><i></i><i></i><i></i><strong>不要回答</strong>';
+          target.appendChild(signal);
+        }
+      }
+
       function resize() {
         const dpr = Math.min(devicePixelRatio || 1, 1.5);
         width = target.clientWidth; height = target.clientHeight;
         canvas.width = width * dpr; canvas.height = height * dpr;
         canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const count = width < 700 ? 20 : Math.min(58, Math.round(width / 22));
-        points = Array.from({length: count}, () => ({x: Math.random()*width, y: Math.random()*height, vx:(Math.random()-.5)*.22, vy:(Math.random()-.5)*.22, r:Math.random()*1.3+.45}));
+        const count = width < 700 ? 24 : Math.min(64, Math.round(width / 20));
+        points = Array.from({length: count}, () => { const x=Math.random()*width,y=Math.random()*height; return {x,y,px:x,py:y,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*1.25+.35,z:Math.random()*.75+.25,phase:Math.random()*Math.PI*2}; });
       }
+
+      function bodies(t) {
+        const cx = width * .73, cy = height * .39, rx = Math.min(width * .18, 230), ry = Math.min(height * .24, 150);
+        return [
+          {x:cx + Math.cos(t*.47)*rx, y:cy + Math.sin(t*.61)*ry, r:5.2, color:"255,199,92"},
+          {x:cx + Math.cos(t*.39+2.1)*rx*.72, y:cy + Math.sin(t*.53+2.1)*ry*.85, r:3.8, color:"255,116,82"},
+          {x:cx + Math.cos(t*.59+4.2)*rx*.48, y:cy + Math.sin(t*.43+4.2)*ry*.62, r:3.2, color:"116,226,216"}
+        ];
+      }
+
       function draw() {
         ctx.clearRect(0, 0, width, height);
+        time += .008;
         const dark = document.documentElement.dataset.cmTheme === "dark";
-        ctx.fillStyle = dark ? "rgba(89,222,207,.7)" : "rgba(8,111,112,.52)";
+        const suns = isThreeBody ? bodies(time) : [];
+        if (isThreeBody && stateLabel) {
+          const distances = [Math.hypot(suns[0].x-suns[1].x,suns[0].y-suns[1].y), Math.hypot(suns[1].x-suns[2].x,suns[1].y-suns[2].y), Math.hypot(suns[2].x-suns[0].x,suns[2].y-suns[0].y)];
+          stateLabel.textContent = Math.max(...distances) < Math.min(width,height)*.19 ? "三日凌空" : Math.sin(time*.7) > .15 ? "恒纪元" : "乱纪元";
+        }
+        if (isThreeBody) {
+          suns.forEach((sun, index) => {
+            ctx.strokeStyle = `rgba(${sun.color},.1)`;
+            ctx.beginPath();
+            ctx.ellipse(width*.73, height*.39, Math.min(width*.18,230)*(1-index*.2), Math.min(height*.24,150)*(1-index*.12), index*.55, 0, Math.PI*2);
+            ctx.stroke();
+            const glow = ctx.createRadialGradient(sun.x,sun.y,0,sun.x,sun.y,sun.r*6);
+            glow.addColorStop(0,`rgba(${sun.color},.95)`); glow.addColorStop(.2,`rgba(${sun.color},.5)`); glow.addColorStop(1,`rgba(${sun.color},0)`);
+            ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(sun.x,sun.y,sun.r*6,0,Math.PI*2); ctx.fill();
+          });
+        }
+        ctx.globalCompositeOperation = dark ? "screen" : "source-over";
         points.forEach((p, i) => {
-          p.x += p.vx; p.y += p.vy;
-          if (p.x < 0 || p.x > width) p.vx *= -1;
-          if (p.y < 0 || p.y > height) p.vy *= -1;
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
-          for (let j=i+1; j<points.length; j++) {
-            const q=points[j], dx=p.x-q.x, dy=p.y-q.y, d=Math.hypot(dx,dy);
-            if (d < 112) { ctx.strokeStyle = dark ? `rgba(89,222,207,${.13*(1-d/112)})` : `rgba(8,111,112,${.1*(1-d/112)})`; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke(); }
+          p.px=p.x; p.py=p.y;
+          if (pointer.active) {
+            const dx=p.x-pointer.x, dy=p.y-pointer.y, d=Math.max(18,Math.hypot(dx,dy));
+            if (d<190) { const force=(1-d/190)*.04*p.z; p.vx+=dx/d*force-dy/d*force*.72; p.vy+=dy/d*force+dx/d*force*.72; }
+          }
+          suns.forEach(sun => {
+            const dx=sun.x-p.x, dy=sun.y-p.y, d=Math.max(35,Math.hypot(dx,dy));
+            if(d<240){ const force=(1-d/240)*.0028; p.vx+=dx/d*force; p.vy+=dy/d*force; }
+          });
+          p.vx*=.992; p.vy*=.992; p.x+=p.vx*p.z; p.y+=p.vy*p.z;
+          if(p.x<0){p.x=0;p.vx=Math.abs(p.vx)} if(p.x>width){p.x=width;p.vx=-Math.abs(p.vx)}
+          if(p.y<0){p.y=0;p.vy=Math.abs(p.vy)} if(p.y>height){p.y=height;p.vy=-Math.abs(p.vy)}
+          const pulse=.58+Math.sin(time*2+p.phase)*.2;
+          ctx.strokeStyle=dark?`rgba(112,235,224,${pulse*p.z*.38})`:`rgba(8,111,112,${pulse*p.z*.28})`;
+          ctx.lineWidth=Math.max(.35,p.z*.9); ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x-(p.vx*9*p.z),p.y-(p.vy*9*p.z)); ctx.stroke();
+          ctx.fillStyle=dark?`rgba(137,246,231,${.42+p.z*.42})`:`rgba(8,111,112,${.3+p.z*.34})`;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r*p.z,0,Math.PI*2); ctx.fill();
+          for(let j=i+1;j<points.length;j++){
+            const q=points[j], d=Math.hypot(p.x-q.x,p.y-q.y);
+            if(d<78 && p.z>.55 && q.z>.55){ctx.strokeStyle=dark?`rgba(89,222,207,${.09*(1-d/78)})`:`rgba(8,111,112,${.065*(1-d/78)})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+          }
+          if(pointer.active){
+            const d=Math.hypot(p.x-pointer.x,p.y-pointer.y);
+            if(d<145){ctx.strokeStyle=`rgba(255,199,92,${.22*(1-d/145)})`;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(pointer.x,pointer.y);ctx.stroke();}
           }
         });
-        frame = requestAnimationFrame(draw);
+        ctx.globalCompositeOperation = "source-over";
+        if(pointer.active){const glow=ctx.createRadialGradient(pointer.x,pointer.y,0,pointer.x,pointer.y,105);glow.addColorStop(0,"rgba(255,199,92,.12)");glow.addColorStop(1,"rgba(255,199,92,0)");ctx.fillStyle=glow;ctx.beginPath();ctx.arc(pointer.x,pointer.y,90,0,Math.PI*2);ctx.fill();}
+        frame=requestAnimationFrame(draw);
       }
+
+      function locate(event) { const box=target.getBoundingClientRect(); pointer.x=event.clientX-box.left; pointer.y=event.clientY-box.top; pointer.active=true; }
+      target.addEventListener("pointermove", locate, {passive:true});
+      target.addEventListener("pointerleave", () => { pointer.active=false; }, {passive:true});
       resize(); draw();
       if ("ResizeObserver" in window) new ResizeObserver(resize).observe(target);
       else addEventListener("resize", resize, {passive:true});
-      document.addEventListener("visibilitychange", () => { cancelAnimationFrame(frame); if (!document.hidden) draw(); });
+      document.addEventListener("visibilitychange", () => { cancelAnimationFrame(frame); if(!document.hidden) draw(); });
     });
   }
 
