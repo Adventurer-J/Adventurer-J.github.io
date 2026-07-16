@@ -2667,3 +2667,11 @@ body::before{background-image:linear-gradient(rgba(8,123,121,.035) 1px,transpare
 .search-result-item:hover{background:var(--cm-teal-soft)}
 @media(max-width:1023px){.nav-right{width:100%}.search-outer{margin-left:auto!important;margin-right:42px!important}.nav-menu{backdrop-filter:blur(20px);background:color-mix(in srgb,var(--cm-surface) 94%,transparent)!important}.cm-theme-toggle{position:absolute;right:12px}#search-btn .search-shortcut-key,#search-btn>span:nth-child(2){display:none}}
 @media(max-width:760px){#search-main{border-radius:0!important;height:100%!important;margin:0!important;max-width:none;padding:18px!important;width:100%!important}}
+
+/* Interface V4.2: long-page control and intermediate-width navigation */
+.cm-back-top{align-items:center;backdrop-filter:blur(12px);background:var(--cm-v3-surface);border:1px solid var(--cm-v3-border);border-radius:50%;bottom:24px;box-shadow:0 12px 34px rgba(16,40,41,.16);color:var(--cm-v3-accent);cursor:pointer;display:flex;font-size:1.2rem;height:44px;justify-content:center;opacity:0;pointer-events:none;position:fixed;right:24px;transform:translateY(12px);transition:.25s ease;width:44px;z-index:80}
+.cm-back-top.is-visible{opacity:1;pointer-events:auto;transform:none}
+.cm-back-top:hover{background:var(--cm-teal-soft);transform:translateY(-3px)}
+@media(min-width:1024px) and (max-width:1320px){.nav{padding:0 20px}.nav-menu-item{font-size:.78rem;padding-left:6px;padding-right:6px}.cm-nav-caret{width:20px}#search-btn .search-shortcut-key{display:none}}
+@media(max-width:620px){.cm-back-top{bottom:16px;height:40px;right:16px;width:40px}}
+@media(prefers-reduced-motion:reduce){.cm-back-top{transition:none}}
