@@ -159,6 +159,13 @@
     navRight.appendChild(button);
   }
 
+  function initializeSearchInterface() {
+    const trigger = document.querySelector("#search-btn");
+    const input = document.querySelector("#search-input");
+    if (trigger) { trigger.classList.add("cm-search-trigger"); trigger.setAttribute("aria-label", "搜索文章"); }
+    if (input) { input.placeholder = "搜索标题、标签或正文…"; input.setAttribute("autocomplete", "off"); }
+  }
+
   function initializeResearchFilters() {
     const controls = document.querySelector("[data-cm-controls]");
     if (!controls) return;
@@ -259,7 +266,8 @@
         frame = requestAnimationFrame(draw);
       }
       resize(); draw();
-      new ResizeObserver(resize).observe(target);
+      if ("ResizeObserver" in window) new ResizeObserver(resize).observe(target);
+      else addEventListener("resize", resize, {passive:true});
       document.addEventListener("visibilitychange", () => { cancelAnimationFrame(frame); if (!document.hidden) draw(); });
     });
   }
@@ -286,6 +294,7 @@
 
   function initialize() {
     document.documentElement.classList.add(`cm-page-${document.querySelector(".cm-home") ? "home" : document.querySelector(".cm-hub") ? "research" : document.querySelector(".post-content") ? "article" : document.querySelector(".wall-category") ? "category" : "default"}`);
+    initializeSearchInterface();
     initializeCodeCopy();
     initializeNestedNavigation();
     initializeTheme();
