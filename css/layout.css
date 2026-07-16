@@ -2686,3 +2686,13 @@ body::before{background-image:linear-gradient(rgba(8,123,121,.035) 1px,transpare
 @keyframes cm-threebody-pulse{50%{box-shadow:0 0 26px rgba(255,199,92,.95);transform:scale(1.35)}}
 @media(max-width:620px){.cm-threebody-label{bottom:14px;right:16px}.cm-threebody-label b{display:none}}
 @media(prefers-reduced-motion:reduce){.cm-threebody-label{display:none}.cm-threebody-label>span{animation:none}}
+
+/* Three-Body novel references: eras and Red Coast listening signal */
+.cm-redcoast-signal{align-items:center;background:rgba(7,23,25,.72);border:1px solid rgba(255,199,92,.2);border-radius:999px;color:#87a6a2;display:flex;font:600 .56rem/1 ui-monospace,monospace;gap:3px;letter-spacing:.12em;padding:8px 11px;pointer-events:none;position:absolute;right:28px;top:104px;z-index:2}
+.cm-redcoast-signal span{color:#ffc75c;margin-right:7px}
+.cm-redcoast-signal i{animation:cm-redcoast-wave 1.2s ease-in-out infinite alternate;background:#5a8f89;display:block;height:5px;width:2px}
+.cm-redcoast-signal i:nth-of-type(2){animation-delay:.15s;height:9px}.cm-redcoast-signal i:nth-of-type(3){animation-delay:.3s;height:14px}.cm-redcoast-signal i:nth-of-type(4){animation-delay:.45s;height:8px}.cm-redcoast-signal i:nth-of-type(5){animation-delay:.6s;height:4px}
+.cm-redcoast-signal strong{border-left:1px solid #405d5a;color:#ff7452;font-weight:700;margin-left:8px;padding-left:10px}
+@keyframes cm-redcoast-wave{to{background:#ffc75c;transform:scaleY(1.65)}}
+@media(max-width:900px){.cm-redcoast-signal{display:none}}
+@media(prefers-reduced-motion:reduce){.cm-redcoast-signal i{animation:none}}
