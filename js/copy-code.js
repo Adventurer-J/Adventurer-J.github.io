@@ -159,6 +159,13 @@
     navRight.appendChild(button);
   }
 
+  function initializeSearchInterface() {
+    const trigger = document.querySelector("#search-btn");
+    const input = document.querySelector("#search-input");
+    if (trigger) { trigger.classList.add("cm-search-trigger"); trigger.setAttribute("aria-label", "搜索文章"); }
+    if (input) { input.placeholder = "搜索标题、标签或正文…"; input.setAttribute("autocomplete", "off"); }
+  }
+
   function initializeResearchFilters() {
     const controls = document.querySelector("[data-cm-controls]");
     if (!controls) return;
@@ -199,7 +206,7 @@
     const main = wall.querySelector(".wall-main") || wall;
     const kicker = document.createElement("p");
     kicker.className = "cm-category-kicker";
-    kicker.textContent = "RESEARCH INDEX / 研究索引";
+    kicker.textContent = ["Sci-Fi", "Miles and Memories"].includes(key) ? "COLLECTION / 内容索引" : "INDEX / 主题索引";
     main.prepend(kicker);
     const grid = document.createElement("div");
     grid.className = "cm-category-grid";
@@ -218,7 +225,7 @@
     document.querySelectorAll(".post-list").forEach((list) => {
       if (!/DEBUG:|没有文章/.test(list.textContent)) return;
       list.classList.add("cm-empty-state");
-      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>这里将逐步收录文章、实验记录与可复现材料。现在可先从研究地图浏览通用计算数学主题。</p><a href="/research/">打开研究地图 →</a>';
+      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>文章与记录将显示在这里。</p><a href="/research/">打开研究地图 →</a>';
     });
   }
 
@@ -259,7 +266,8 @@
         frame = requestAnimationFrame(draw);
       }
       resize(); draw();
-      new ResizeObserver(resize).observe(target);
+      if ("ResizeObserver" in window) new ResizeObserver(resize).observe(target);
+      else addEventListener("resize", resize, {passive:true});
       document.addEventListener("visibilitychange", () => { cancelAnimationFrame(frame); if (!document.hidden) draw(); });
     });
   }
@@ -277,6 +285,16 @@
     nodes.forEach(node => { node.classList.add("cm-reveal"); observer.observe(node); });
   }
 
+  function initializeBackToTop() {
+    if (document.querySelector(".cm-back-top")) return;
+    const button = document.createElement("button");
+    button.className = "cm-back-top"; button.type = "button"; button.setAttribute("aria-label", "返回顶部"); button.textContent = "↑";
+    button.addEventListener("click", () => scrollTo({top:0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}));
+    document.body.appendChild(button);
+    const update = () => button.classList.toggle("is-visible", scrollY > 620);
+    addEventListener("scroll", update, {passive:true}); update();
+  }
+
   function initializeReadingProgress() {
     if (!document.querySelector(".post-content")) return;
     const bar = document.createElement("div"); bar.className = "cm-reading-progress"; document.body.appendChild(bar);
@@ -285,6 +303,8 @@
   }
 
   function initialize() {
+    document.documentElement.classList.add(`cm-page-${document.querySelector(".cm-home") ? "home" : document.querySelector(".cm-hub") ? "research" : document.querySelector(".post-content") ? "article" : document.querySelector(".wall-category") ? "category" : "default"}`);
+    initializeSearchInterface();
     initializeCodeCopy();
     initializeNestedNavigation();
     initializeTheme();
@@ -293,6 +313,7 @@
     initializeParticles();
     initializeMotion();
     initializeReadingProgress();
+    initializeBackToTop();
   }
 
   if (document.readyState === "loading") {
