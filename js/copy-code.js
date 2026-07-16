@@ -242,13 +242,21 @@
       const isThreeBody = target.matches(".cm-home-hero, .cm-hero");
       let points = [], width = 0, height = 0, frame = 0, time = 0;
       const pointer = {x: 0, y: 0, active: false};
+      let stateLabel = null;
 
       if (isThreeBody) {
         target.classList.add("cm-threebody-field");
         const label = document.createElement("div");
         label.className = "cm-threebody-label";
-        label.innerHTML = "<span></span> THREE-BODY FIELD <b>chaotic orbit</b>";
+        label.innerHTML = "<span></span> THREE-BODY / 三体 <b>乱纪元</b>";
+        stateLabel = label.querySelector("b");
         target.appendChild(label);
+        if (target.matches(".cm-home-hero")) {
+          const signal = document.createElement("div");
+          signal.className = "cm-redcoast-signal";
+          signal.innerHTML = '<span>红岸监听</span><i></i><i></i><i></i><i></i><i></i><strong>不要回答</strong>';
+          target.appendChild(signal);
+        }
       }
 
       function resize() {
@@ -275,6 +283,10 @@
         time += .008;
         const dark = document.documentElement.dataset.cmTheme === "dark";
         const suns = isThreeBody ? bodies(time) : [];
+        if (isThreeBody && stateLabel) {
+          const distances = [Math.hypot(suns[0].x-suns[1].x,suns[0].y-suns[1].y), Math.hypot(suns[1].x-suns[2].x,suns[1].y-suns[2].y), Math.hypot(suns[2].x-suns[0].x,suns[2].y-suns[0].y)];
+          stateLabel.textContent = Math.max(...distances) < Math.min(width,height)*.19 ? "三日凌空" : Math.sin(time*.7) > .15 ? "恒纪元" : "乱纪元";
+        }
         if (isThreeBody) {
           suns.forEach((sun, index) => {
             ctx.strokeStyle = `rgba(${sun.color},.1)`;
