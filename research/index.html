@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>计算数学研究地图 | Numerical Algorithms and Sci-Fi</title>
+  <meta name="description" content="面向计算数学研究者的通用方法、方程、求解器、验证与可复现工作流导航。">
+  <meta name="keywords" content="计算数学, 数值分析, 偏微分方程, 科学计算, 可复现研究">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="stylesheet" href="/css/layout.css">
+  <script>
+    try {
+      const savedTheme = localStorage.getItem("cm-theme");
+      if (savedTheme) document.documentElement.dataset.cmTheme = savedTheme;
+    } catch (error) {}
+  </script>
+</head>
+<body>
+  <div id="search-mask" style="display:none">
+    <div class="search-main" id="search-main">
+      <div class="search__head">
+        <div class="search-form">
+          <span aria-hidden="true">⌕</span>
+          <input id="search-input" aria-label="搜索文章" placeholder="搜索文章">
+          <button id="search-clear" type="button" aria-label="清空搜索">×</button>
+        </div>
+      </div>
+      <div class="search__body" id="search-result"></div>
+      <div class="search__foot"></div>
+    </div>
+  </div>
+
+  <div class="head head--sticky">
+    <div class="nav">
+      <a href="/" class="nav-logo" aria-label="返回首页">
+        <img alt="站点标志" height="48" width="48" src="/images/logo.svg">
+      </a>
+      <input id="navBtn" type="checkbox">
+      <div class="nav-right">
+        <div class="search-outer">
+          <button class="search" id="search-btn" type="button">
+            <span aria-hidden="true">⌕</span>
+            <span>搜索</span>
+            <span class="search-shortcut-key">Ctrl K</span>
+          </button>
+        </div>
+        <div class="nav-menu">
+          <a class="nav-menu-item" href="/Numerical-method">数值方法</a>
+          <a class="nav-menu-item" href="/Differential%20equation">微分方程</a>
+          <a class="nav-menu-item" href="/Algorithm">算法</a>
+          <a class="nav-menu-item" href="/Software-system">操作系统</a>
+          <a class="nav-menu-item" href="/Sci-Fi">科幻</a>
+          <a class="nav-menu-item" href="/Miles%20and%20Memories">在路上</a>
+        </div>
+      </div>
+      <label class="nav-btn" for="navBtn" aria-label="展开导航"></label>
+    </div>
+  </div>
+
+  <main class="body cm-hub">
+    <nav class="cm-breadcrumb" aria-label="面包屑">
+      <a href="/">首页</a> / 计算数学研究地图
+    </nav>
+
+    <section class="cm-hero">
+      <div class="cm-kicker">Computational Mathematics Research Map</div>
+      <h1>从数学模型到可信计算</h1>
+      <p>这不是某一研究方向的目录，而是一张通用研究地图：识别方程结构，选择离散方法，设计求解器，并用误差、基准和可复现实验闭合整个论证链。</p>
+      <div class="cm-equation" aria-label="研究流程">model → discretize → solve → verify → reproduce</div>
+    </section>
+
+    <section class="cm-quote-grid" aria-label="计算与科幻引文">
+      <figure class="cm-quote">
+        <blockquote>“The purpose of computing is insight, not numbers.”</blockquote>
+        <figcaption><cite class="cm-quote-source">Richard W. Hamming</cite> · <em>Numerical Methods for Scientists and Engineers</em>, 1962</figcaption>
+      </figure>
+      <figure class="cm-quote">
+        <blockquote>“Any sufficiently advanced technology is indistinguishable from magic.”</blockquote>
+        <figcaption><cite class="cm-quote-source">Arthur C. Clarke</cite> · <em>Profiles of the Future</em></figcaption>
+      </figure>
+      <figure class="cm-quote">
+        <blockquote>“给岁月以文明，而不是给文明以岁月。”</blockquote>
+        <figcaption><cite class="cm-quote-source">刘慈欣</cite> · 《三体Ⅱ：黑暗森林》</figcaption>
+      </figure>
+    </section>
+
+    <div class="cm-controls" data-cm-controls aria-label="研究方向筛选">
+      <button class="cm-filter" type="button" data-cm-filter="all" aria-pressed="true">全部</button>
+      <button class="cm-filter" type="button" data-cm-filter="theory" aria-pressed="false">理论与逼近</button>
+      <button class="cm-filter" type="button" data-cm-filter="pde" aria-pressed="false">方程与离散</button>
+      <button class="cm-filter" type="button" data-cm-filter="solver" aria-pressed="false">算法与求解器</button>
+      <button class="cm-filter" type="button" data-cm-filter="workflow" aria-pressed="false">计算与复现</button>
+    </div>
+
+    <section class="cm-grid" aria-label="计算数学分类">
+      <article class="cm-card" id="approximation" data-cm-track="theory">
+        <span class="cm-card-index">01 / FOUNDATIONS</span>
+        <h2>数学基础与逼近</h2>
+        <p>从函数空间、稳定性与逼近性质出发，明确离散问题能够逼近什么、以何种范数逼近，以及误差常数依赖什么。</p>
+        <div class="cm-card-tags"><span class="cm-chip">函数分析</span><span class="cm-chip">逼近论</span><span class="cm-chip">数值线性代数</span></div>
+      </article>
+
+      <article class="cm-card" id="equations" data-cm-track="pde theory">
+        <span class="cm-card-index">02 / MODELS</span>
+        <h2>方程结构与模型</h2>
+        <p>先识别椭圆、抛物、双曲、守恒、积分或随机结构，再讨论正则性、边界条件和守恒律，而不是先选软件包。</p>
+        <div class="cm-card-tags"><span class="cm-chip">PDE</span><span class="cm-chip">ODE/DAE</span><span class="cm-chip">随机模型</span></div>
+      </article>
+
+      <article class="cm-card" id="discretization" data-cm-track="pde theory">
+        <span class="cm-card-index">03 / DISCRETIZATION</span>
+        <h2>离散化方法</h2>
+        <p>围绕一致性、稳定性、守恒性、几何适配和高阶精度，比较差分、有限体积、有限元、谱方法及无网格方法。</p>
+        <div class="cm-card-tags"><span class="cm-chip">FDM/FVM</span><span class="cm-chip">FEM/DG</span><span class="cm-chip">Spectral</span></div>
+      </article>
+
+      <article class="cm-card" id="solvers" data-cm-track="solver theory">
+        <span class="cm-card-index">04 / SOLVERS</span>
+        <h2>代数与非线性求解器</h2>
+        <p>把离散系统的谱性质、稀疏结构和非线性机制转化为预条件、Krylov、Newton、多重网格与分裂策略。</p>
+        <div class="cm-card-tags"><span class="cm-chip">Krylov</span><span class="cm-chip">Newton</span><span class="cm-chip">Multigrid</span></div>
+      </article>
+
+      <article class="cm-card" id="time" data-cm-track="solver pde">
+        <span class="cm-card-index">05 / EVOLUTION</span>
+        <h2>时间积分与多尺度</h2>
+        <p>关注刚性、稳定域、守恒或耗散结构，以及空间与时间误差的耦合；必要时采用隐式、IMEX、指数或多率方法。</p>
+        <div class="cm-card-tags"><span class="cm-chip">Stability</span><span class="cm-chip">IMEX</span><span class="cm-chip">Multiscale</span></div>
+      </article>
+
+      <article class="cm-card" id="adaptivity" data-cm-track="pde solver">
+        <span class="cm-card-index">06 / ADAPTIVITY</span>
+        <h2>自适应与误差控制</h2>
+        <p>让后验估计驱动网格、阶次、时间步或采样分布，并同时监控可靠性、有效性与计算成本。</p>
+        <div class="cm-card-tags"><span class="cm-chip">a posteriori</span><span class="cm-chip">h/p adaptivity</span><span class="cm-chip">moving mesh</span></div>
+      </article>
+
+      <article class="cm-card" id="optimization" data-cm-track="solver theory">
+        <span class="cm-card-index">07 / OPTIMIZATION</span>
+        <h2>优化、控制与反问题</h2>
+        <p>区分适定性、可辨识性与数值可解性，用正则化、伴随法、约束优化和贝叶斯观点处理信息不足。</p>
+        <div class="cm-card-tags"><span class="cm-chip">regularization</span><span class="cm-chip">adjoint</span><span class="cm-chip">control</span></div>
+      </article>
+
+      <article class="cm-card" id="inverse" data-cm-track="theory solver">
+        <span class="cm-card-index">08 / UNCERTAINTY</span>
+        <h2>不确定性与数据融合</h2>
+        <p>把观测误差、参数分布和模型误差显式纳入计算，区分预测精度、置信度与外推风险。</p>
+        <div class="cm-card-tags"><span class="cm-chip">UQ</span><span class="cm-chip">Bayesian</span><span class="cm-chip">surrogate</span></div>
+      </article>
+
+      <article class="cm-card" id="hpc" data-cm-track="workflow solver">
+        <span class="cm-card-index">09 / COMPUTING</span>
+        <h2>高性能科学计算</h2>
+        <p>从算法复杂度、访存模式和通信成本出发组织并行计算，用剖析数据而非直觉决定 CPU、GPU 与分布式优化。</p>
+        <div class="cm-card-tags"><span class="cm-chip">parallel</span><span class="cm-chip">GPU</span><span class="cm-chip">profiling</span></div>
+      </article>
+    </section>
+    <div class="cm-empty">该筛选条件下暂无分类。</div>
+
+    <section class="cm-section" id="workflow">
+      <h2>通用科研闭环</h2>
+      <p class="cm-section-lead">计算结果不是截图，而是从假设到结论的可审计链条。任何方法都应该能够落入下面六个阶段。</p>
+      <div class="cm-pipeline">
+        <div class="cm-stage"><strong>建模</strong><span>假设、尺度、边界与量纲</span></div>
+        <div class="cm-stage"><strong>分析</strong><span>适定性、正则性与结构</span></div>
+        <div class="cm-stage"><strong>离散</strong><span>一致性、稳定性与误差</span></div>
+        <div class="cm-stage"><strong>求解</strong><span>复杂度、收敛与鲁棒性</span></div>
+        <div class="cm-stage"><strong>验证</strong><span>真解、制造解与网格序列</span></div>
+        <div class="cm-stage"><strong>归档</strong><span>配置、日志、数据与版本</span></div>
+      </div>
+    </section>
+
+    <section class="cm-section" id="verification">
+      <h2>可信数值实验</h2>
+      <p class="cm-section-lead">一个漂亮图像只能说明程序运行过；收敛阶、守恒误差、残差与对照实验才能说明它算对了。</p>
+      <div class="cm-two-col">
+        <div class="cm-panel">
+          <h3>最低验证集合</h3>
+          <ul class="cm-checklist">
+            <li>制造解或可验证基准算例</li>
+            <li>至少三层空间或时间分辨率</li>
+            <li>报告误差范数、收敛率与停止准则</li>
+            <li>区分离散误差、迭代误差与统计误差</li>
+            <li>记录失败算例和非收敛原因</li>
+          </ul>
+        </div>
+        <div class="cm-panel" id="reproducibility">
+          <h3>可复现检查表</h3>
+          <ul class="cm-checklist">
+            <li>固定随机种子并保存完整配置</li>
+            <li>记录代码版本、依赖与硬件信息</li>
+            <li>原始数据与派生结果分层存放</li>
+            <li>统一运行日志、指标表和图像命名</li>
+            <li>用单一入口重新生成核心结果</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="cm-section" aria-labelledby="existing-entry-title">
+      <h2 id="existing-entry-title">现有内容入口</h2>
+      <p class="cm-section-lead">原来的一级按钮与页面全部保留；研究地图只增加组织层，不替换个人内容。</p>
+      <div class="cm-two-col">
+        <div class="cm-panel">
+          <h3>方法与模型</h3>
+          <div class="cm-resource-list">
+            <a class="cm-resource" href="/Numerical-method"><strong>数值方法</strong><span>离散与逼近</span></a>
+            <a class="cm-resource" href="/Differential%20equation"><strong>微分方程</strong><span>模型与结构</span></a>
+            <a class="cm-resource" href="/Algorithm"><strong>算法</strong><span>求解与优化</span></a>
+          </div>
+        </div>
+        <div class="cm-panel">
+          <h3>工具与个人栏目</h3>
+          <div class="cm-resource-list">
+            <a class="cm-resource" href="/Software-system"><strong>操作系统</strong><span>环境与工具</span></a>
+            <a class="cm-resource" href="/Sci-Fi"><strong>科幻</strong><span>原栏目保留</span></a>
+            <a class="cm-resource" href="/Miles%20and%20Memories"><strong>在路上</strong><span>原栏目保留</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <div class="foot-item">
+        <div class="foot-item__head">计算 · 验证 · 复现</div>
+        <div class="foot-item__body">面向计算数学研究者的通用知识与工作流导航。</div>
+      </div>
+      <div class="copyright">
+        <a href="https://adventurer-j.github.io">Numerical Algorithms and Sci-Fi</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/search.js"></script>
+  <script>searchInitialize("/search.json");</script>
+  <script src="/js/copy-code.js"></script>
+</body>
+</html>
