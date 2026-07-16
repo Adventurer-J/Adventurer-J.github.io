@@ -2675,3 +2675,14 @@ body::before{background-image:linear-gradient(rgba(8,123,121,.035) 1px,transpare
 @media(min-width:1024px) and (max-width:1320px){.nav{padding:0 20px}.nav-menu-item{font-size:.78rem;padding-left:6px;padding-right:6px}.cm-nav-caret{width:20px}#search-btn .search-shortcut-key{display:none}}
 @media(max-width:620px){.cm-back-top{bottom:16px;height:40px;right:16px;width:40px}}
 @media(prefers-reduced-motion:reduce){.cm-back-top{transition:none}}
+
+/* Interactive Three-Body particle field */
+.cm-threebody-field{cursor:crosshair}
+.cm-threebody-label{align-items:center;bottom:24px;color:var(--cm-muted);display:flex;font:600 .58rem/1 ui-monospace,monospace;gap:8px;letter-spacing:.12em;opacity:.72;pointer-events:none;position:absolute;right:28px;z-index:2}
+.cm-threebody-label>span{animation:cm-threebody-pulse 2.4s ease-in-out infinite;background:#ffc75c;border-radius:50%;box-shadow:0 0 14px rgba(255,199,92,.7);height:6px;width:6px}
+.cm-threebody-label b{border-left:1px solid var(--cm-line);color:var(--cm-v3-accent);font-weight:500;margin-left:3px;padding-left:10px}
+.cm-threebody-field .cm-particle-canvas{mix-blend-mode:multiply}
+[data-cm-theme="dark"] .cm-threebody-field .cm-particle-canvas{mix-blend-mode:screen}
+@keyframes cm-threebody-pulse{50%{box-shadow:0 0 26px rgba(255,199,92,.95);transform:scale(1.35)}}
+@media(max-width:620px){.cm-threebody-label{bottom:14px;right:16px}.cm-threebody-label b{display:none}}
+@media(prefers-reduced-motion:reduce){.cm-threebody-label{display:none}.cm-threebody-label>span{animation:none}}
