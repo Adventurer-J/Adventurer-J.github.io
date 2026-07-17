@@ -661,6 +661,14 @@
     "Miles and Memories": "#af9158"
   };
 
+  const categoryKickerMap = Object.freeze({
+    "Numerical-method": "NUMERICS / 数值计算",
+    "Differential equation": "EQUATIONS / 方程与模型",
+    "Algorithm": "ALGORITHMS / 计算策略",
+    "Software-system": "WORKFLOW / 科研工作流",
+    "Miles and Memories": "FIELD NOTES / 行路札记"
+  });
+
   const categoryMap = {
     "Numerical-method": [["逼近与表示", "插值、投影与基函数", "/research/#approximation"], ["离散化", "有限差分、有限元与谱方法", "/research/#discretization"], ["自适应计算", "网格、阶次与后验估计", "/research/#adaptivity"], ["验证", "误差、收敛率与基准", "/research/#verification"]],
     "Differential equation": [["方程结构", "椭圆、抛物与双曲问题", "/research/#equations"], ["时间演化", "时间积分与稳定性", "/research/#time"], ["反问题与随机模型", "正则化与不确定性量化", "/research/#inverse"], ["建模工作流", "从问题到可信结果", "/research/#workflow"]],
@@ -681,7 +689,7 @@
     const main = wall.querySelector(".wall-main") || wall;
     const kicker = document.createElement("p");
     kicker.className = "cm-category-kicker";
-    kicker.textContent = ["Sci-Fi", "Miles and Memories"].includes(key) ? "COLLECTION / 内容索引" : "INDEX / 主题索引";
+    kicker.textContent = categoryKickerMap[key] ?? "EXPLORE / 内容导航";
     main.prepend(kicker);
     const grid = document.createElement("div");
     grid.className = "cm-category-grid";
