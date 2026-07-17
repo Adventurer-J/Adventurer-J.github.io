@@ -257,6 +257,7 @@
     wall.prepend(canvas);
     const ctx = canvas.getContext("2d");
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
     const pointer = {x: .5, y: .5, tx: .5, ty: .5};
     const colors = ["185,215,255", "222,232,255", "255,244,225", "255,205,168"];
     let width = 0, height = 0, stars = [], meteor = null, frame = 0, visible = true, time = 0;
@@ -308,13 +309,156 @@
       ctx.globalCompositeOperation="source-over";
       if(!staticFrame&&visible&&!document.hidden)frame=requestAnimationFrame(draw);
     }
-    wall.addEventListener("pointermove",(event)=>{const box=wall.getBoundingClientRect();pointer.tx=(event.clientX-box.left)/box.width;pointer.ty=(event.clientY-box.top)/box.height;},{passive:true});
-    wall.addEventListener("pointerleave",()=>{pointer.tx=.5;pointer.ty=.5;},{passive:true});
+    let interfaceFrame = 0;
+    const interfacePointer = {clientX:0, clientY:0, target:null};
+    wall.addEventListener("pointermove",(event)=>{
+      const box=wall.getBoundingClientRect();
+      pointer.tx=(event.clientX-box.left)/box.width;
+      pointer.ty=(event.clientY-box.top)/box.height;
+      if(reduced||!finePointer)return;
+      interfacePointer.clientX=event.clientX;
+      interfacePointer.clientY=event.clientY;
+      interfacePointer.target=event.target;
+      if(interfaceFrame)return;
+      interfaceFrame=requestAnimationFrame(()=>{
+        interfaceFrame=0;
+        const x=Math.max(0,Math.min(1,pointer.tx));
+        const y=Math.max(0,Math.min(1,pointer.ty));
+        wall.style.setProperty("--sf-pointer-x",(x*100).toFixed(2)+"%");
+        wall.style.setProperty("--sf-pointer-y",(y*100).toFixed(2)+"%");
+        wall.style.setProperty("--sf-shift-x",((x-.5)*8).toFixed(2)+"px");
+        wall.style.setProperty("--sf-shift-y",((y-.5)*6).toFixed(2)+"px");
+        wall.style.setProperty("--sf-orbit-x",((.5-x)*5).toFixed(2)+"px");
+        wall.style.setProperty("--sf-orbit-y",((.5-y)*4).toFixed(2)+"px");
+        const target=interfacePointer.target&&interfacePointer.target.closest?interfacePointer.target.closest("[data-sci-fi-sector]"):null;
+        if(!target)return;
+        const cardBox=target.getBoundingClientRect();
+        const localX=Math.max(0,Math.min(1,(interfacePointer.clientX-cardBox.left)/cardBox.width));
+        const localY=Math.max(0,Math.min(1,(interfacePointer.clientY-cardBox.top)/cardBox.height));
+        target.style.setProperty("--sf-card-x",(localX*100).toFixed(2)+"%");
+        target.style.setProperty("--sf-card-y",(localY*100).toFixed(2)+"%");
+        target.style.setProperty("--sf-tilt-x",((.5-localY)*3).toFixed(2)+"deg");
+        target.style.setProperty("--sf-tilt-y",((localX-.5)*3).toFixed(2)+"deg");
+      });
+    },{passive:true});
+    wall.addEventListener("pointerleave",()=>{
+      pointer.tx=.5;pointer.ty=.5;
+      cancelAnimationFrame(interfaceFrame);interfaceFrame=0;
+      wall.style.setProperty("--sf-pointer-x","50%");
+      wall.style.setProperty("--sf-pointer-y","34%");
+      wall.style.setProperty("--sf-shift-x","0px");
+      wall.style.setProperty("--sf-shift-y","0px");
+      wall.style.setProperty("--sf-orbit-x","0px");
+      wall.style.setProperty("--sf-orbit-y","0px");
+    },{passive:true});
     resize();
     if(!reduced)draw();
     if("ResizeObserver" in window)new ResizeObserver(resize).observe(wall);
     if("IntersectionObserver" in window)new IntersectionObserver(([entry])=>{const next=entry.isIntersecting;if(next===visible)return;visible=next;if(!visible){cancelAnimationFrame(frame);frame=0;}else if(!frame&&!reduced)draw();},{rootMargin:"160px"}).observe(wall);
     document.addEventListener("visibilitychange",()=>{cancelAnimationFrame(frame);frame=0;if(!document.hidden&&visible&&!reduced)draw();});
+  }
+
+  function initializeSciFiInteractions() {
+    const stage = document.querySelector("[data-sci-fi-viewport]");
+    if (!stage || stage.dataset.sciFiInteractionsReady) return;
+    const tabs = Array.from(stage.querySelectorAll("[role=tab][data-sci-fi-sector]"));
+    const panel = stage.querySelector("#cm-sci-fi-sector-panel");
+    if (!tabs.length || !panel) return;
+    stage.dataset.sciFiInteractionsReady = "true";
+
+    const channels = {
+      civilization: {
+        code:"01 / ERA",
+        title:"文明与时间",
+        copy:"沿文明兴衰、记忆保存与历史选择，观察个体如何进入漫长时间尺度。",
+        detail:"TIME SCALE / CIVILIZATION MEMORY",
+        listen:"1420.405 MHz",
+        vector:"α CENTAURI",
+        distance:"4.37 LY",
+        era:"CHAOTIC",
+        traceTitle:"RED COAST / SIGNAL TRACE",
+        traceWarning:"DO NOT ANSWER / 不要回答",
+        traceStatus:"LISTENING · ΔT 00:00:08.74"
+      },
+      unknown: {
+        code:"02 / SIGNAL",
+        title:"科技与未知",
+        copy:"从智能、计算边界与未知信号出发，用想象力检验技术乐观主义的盲区。",
+        detail:"TECH FRONTIER / MODEL UNCERTAINTY",
+        listen:"2.45 GHz",
+        vector:"TECH FRONTIER",
+        distance:"0.00 AU",
+        era:"EMERGENT",
+        traceTitle:"TECHNOLOGY / UNKNOWN SIGNAL",
+        traceWarning:"MODEL INCOMPLETE / 边界未定",
+        traceStatus:"PROBING · CONFIDENCE 0.61"
+      },
+      cosmos: {
+        code:"03 / VECTOR",
+        title:"宇宙尺度",
+        copy:"把人类放回行星、恒星与宇宙时间坐标，重新衡量距离、风险与意义。",
+        detail:"COSMIC FRAME / OBSERVER SCALE",
+        listen:"10⁻²¹ Hz",
+        vector:"LOCAL GROUP",
+        distance:"2.54 MLY",
+        era:"COSMIC",
+        traceTitle:"COSMIC FRAME / SCALE TRACE",
+        traceWarning:"OBSERVER INCLUDED / 观察者在内",
+        traceStatus:"MAPPING · FRAME CMB"
+      }
+    };
+    const hooks = {
+      code:panel.querySelector("[data-sci-fi-detail-code]"),
+      title:panel.querySelector("[data-sci-fi-detail-title]"),
+      copy:panel.querySelector("[data-sci-fi-detail-copy]"),
+      detail:panel.querySelector("[data-sci-fi-detail-metric]"),
+      listen:stage.querySelector("[data-sci-fi-metric=listen]"),
+      vector:stage.querySelector("[data-sci-fi-metric=vector]"),
+      distance:stage.querySelector("[data-sci-fi-metric=distance]"),
+      era:stage.querySelector("[data-sci-fi-metric=era]"),
+      traceTitle:stage.querySelector("[data-sci-fi-trace-title]"),
+      traceWarning:stage.querySelector("[data-sci-fi-trace-warning]"),
+      traceStatus:stage.querySelector("[data-sci-fi-trace-status]"),
+      announcer:stage.querySelector("[data-sci-fi-announcer]")
+    };
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function activate(tab, announce) {
+      const channel = channels[tab.dataset.sciFiSector];
+      if (!channel) return;
+      tabs.forEach((item)=>{
+        const selected=item===tab;
+        item.classList.toggle("is-active",selected);
+        item.setAttribute("aria-selected",String(selected));
+        item.tabIndex=selected?0:-1;
+      });
+      panel.setAttribute("aria-labelledby",tab.id);
+      Object.keys(channel).forEach((key)=>{
+        if(hooks[key])hooks[key].textContent=channel[key];
+      });
+      stage.dataset.sciFiChannel=tab.dataset.sciFiSector;
+      if(!reduced){
+        panel.classList.add("is-switching");
+        requestAnimationFrame(()=>requestAnimationFrame(()=>panel.classList.remove("is-switching")));
+      }
+      if(announce&&hooks.announcer)hooks.announcer.textContent="已切换到"+channel.title+"观察频道";
+    }
+
+    tabs.forEach((tab,index)=>{
+      tab.addEventListener("click",()=>activate(tab,true));
+      tab.addEventListener("keydown",(event)=>{
+        let next=index;
+        if(event.key==="ArrowRight"||event.key==="ArrowDown")next=(index+1)%tabs.length;
+        else if(event.key==="ArrowLeft"||event.key==="ArrowUp")next=(index-1+tabs.length)%tabs.length;
+        else if(event.key==="Home")next=0;
+        else if(event.key==="End")next=tabs.length-1;
+        else return;
+        event.preventDefault();
+        tabs[next].focus();
+        activate(tabs[next],true);
+      });
+    });
+    activate(tabs.find((tab)=>tab.getAttribute("aria-selected")==="true")||tabs[0],false);
   }
 
   function initializeImageStretch() {
@@ -791,6 +935,7 @@
     initializeResearchFilters();
     initializeCategoryPage();
     initializeSciFiDeepSpace();
+    initializeSciFiInteractions();
     initializeGlassSurfaces();
     initializeImageStretch();
     initializeParallax();
