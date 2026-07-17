@@ -163,35 +163,51 @@
       <p class="wall-category-description">孤身坠入地球，等不到群星的来信。</p>
 
       <div class="cm-sci-fi-signalbar" aria-label="深空信号状态">
-        <span><small>LISTEN</small><b>1420.405</b> MHz</span>
-        <span><small>VECTOR</small><b>α CENTAURI</b></span>
-        <span><small>DISTANCE</small><b>4.37</b> LY</span>
-        <span class="is-live"><small>ERA</small><b>CHAOTIC</b></span>
+        <span><small>LISTEN</small><b data-sci-fi-metric="listen">1420.405 MHz</b></span>
+        <span><small>VECTOR</small><b data-sci-fi-metric="vector">α CENTAURI</b></span>
+        <span><small>DISTANCE</small><b data-sci-fi-metric="distance">4.37 LY</b></span>
+        <span class="is-live"><small>ERA</small><b data-sci-fi-metric="era">CHAOTIC</b></span>
       </div>
 
-      <ol class="cm-sci-fi-sectors" aria-label="科幻栏目">
-        <li>
-          <span>01</span>
-          <div><strong>文明与时间</strong><small>在长时间尺度上理解选择</small></div>
-          <b>ERA</b>
+      <ol class="cm-sci-fi-sectors" role="tablist" aria-label="科幻观察频道">
+        <li role="presentation">
+          <button class="cm-sci-fi-sector is-active" type="button" role="tab" aria-selected="true" aria-controls="cm-sci-fi-sector-panel" id="cm-sci-fi-sector-civilization" tabindex="0" data-sci-fi-sector="civilization">
+            <span class="cm-sci-fi-sector-index" aria-hidden="true">01</span>
+            <span class="cm-sci-fi-sector-copy"><strong>文明与时间</strong><small>在长时间尺度上理解选择</small></span>
+            <b aria-hidden="true">ERA</b>
+          </button>
         </li>
-        <li>
-          <span>02</span>
-          <div><strong>科技与未知</strong><small>以想象力检验技术边界</small></div>
-          <b>SIGNAL</b>
+        <li role="presentation">
+          <button class="cm-sci-fi-sector" type="button" role="tab" aria-selected="false" aria-controls="cm-sci-fi-sector-panel" id="cm-sci-fi-sector-unknown" tabindex="-1" data-sci-fi-sector="unknown">
+            <span class="cm-sci-fi-sector-index" aria-hidden="true">02</span>
+            <span class="cm-sci-fi-sector-copy"><strong>科技与未知</strong><small>以想象力检验技术边界</small></span>
+            <b aria-hidden="true">SIGNAL</b>
+          </button>
         </li>
-        <li>
-          <span>03</span>
-          <div><strong>宇宙尺度</strong><small>从更大的坐标系观察人类</small></div>
-          <b>VECTOR</b>
+        <li role="presentation">
+          <button class="cm-sci-fi-sector" type="button" role="tab" aria-selected="false" aria-controls="cm-sci-fi-sector-panel" id="cm-sci-fi-sector-cosmos" tabindex="-1" data-sci-fi-sector="cosmos">
+            <span class="cm-sci-fi-sector-index" aria-hidden="true">03</span>
+            <span class="cm-sci-fi-sector-copy"><strong>宇宙尺度</strong><small>从更大的坐标系观察人类</small></span>
+            <b aria-hidden="true">VECTOR</b>
+          </button>
         </li>
       </ol>
 
-      <aside class="cm-sci-fi-signal-trace" aria-label="红岸信号">
-        <div><span>RED COAST / SIGNAL TRACE</span><b>DO NOT ANSWER / 不要回答</b></div>
+      <section class="cm-sci-fi-sector-panel" id="cm-sci-fi-sector-panel" role="tabpanel" aria-labelledby="cm-sci-fi-sector-civilization" tabindex="0">
+        <div>
+          <span data-sci-fi-detail-code>01 / ERA</span>
+          <h2 data-sci-fi-detail-title>文明与时间</h2>
+        </div>
+        <p data-sci-fi-detail-copy>沿文明兴衰、记忆保存与历史选择，观察个体如何进入漫长时间尺度。</p>
+        <small data-sci-fi-detail-metric>TIME SCALE / CIVILIZATION MEMORY</small>
+      </section>
+
+      <aside class="cm-sci-fi-signal-trace" id="cm-sci-fi-signal-trace" aria-label="深空信号">
+        <div><span data-sci-fi-trace-title>RED COAST / SIGNAL TRACE</span><b data-sci-fi-trace-warning>DO NOT ANSWER / 不要回答</b></div>
         <div class="cm-sci-fi-spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <em>LISTENING · ΔT 00:00:08.74</em>
+        <em data-sci-fi-trace-status>LISTENING · ΔT 00:00:08.74</em>
       </aside>
+      <p class="cm-sr-only" data-sci-fi-announcer aria-live="polite" aria-atomic="true"></p>
     </div>
   </main>
 
