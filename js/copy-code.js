@@ -25,6 +25,129 @@
     ]
   };
 
+
+  function initializeTerminalProgress() {
+    if (document.querySelector(".cm-terminal-progress")) return;
+    const terminal = document.createElement("div");
+    terminal.className = "cm-terminal-progress";
+    terminal.setAttribute("role", "progressbar");
+    terminal.setAttribute("aria-label", "页面滚动进度");
+    terminal.setAttribute("aria-valuemin", "0");
+    terminal.setAttribute("aria-valuemax", "100");
+    terminal.innerHTML = '<span class="cm-terminal-readout"></span><span class="cm-terminal-cursor" aria-hidden="true">_</span>';
+    document.body.prepend(terminal);
+    const readout = terminal.querySelector(".cm-terminal-readout");
+    let scheduled = false;
+
+    function update() {
+      const max = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+      const progress = max ? Math.min(100, Math.max(0, Math.round(scrollY / max * 100))) : 100;
+      const cells = 16;
+      const filled = Math.round(progress / 100 * cells);
+      const gauge = "█".repeat(filled) + "░".repeat(cells - filled);
+      const complete = progress >= 100;
+      readout.textContent = `[${gauge}] ${String(progress).padStart(3, " ")}% | ${complete ? "TASK COMPLETED" : "COMPUTING..."}`;
+      terminal.setAttribute("aria-valuenow", String(progress));
+      terminal.classList.toggle("is-complete", complete);
+      if (complete && terminal.dataset.completed !== "true") {
+        terminal.dataset.completed = "true";
+        terminal.classList.remove("cm-terminal-flash");
+        void terminal.offsetWidth;
+        terminal.classList.add("cm-terminal-flash");
+      } else if (!complete) {
+        terminal.dataset.completed = "false";
+        terminal.classList.remove("cm-terminal-flash");
+      }
+      scheduled = false;
+    }
+    function requestUpdate() {
+      if (!scheduled) { scheduled = true; requestAnimationFrame(update); }
+    }
+    addEventListener("scroll", requestUpdate, {passive: true});
+    addEventListener("resize", requestUpdate, {passive: true});
+    if ("ResizeObserver" in window) new ResizeObserver(requestUpdate).observe(document.body);
+    update();
+  }
+
+  function initializeSymbolField() {
+    if (document.querySelector(".cm-symbol-field")) return;
+    const canvas = document.createElement("canvas");
+    canvas.className = "cm-symbol-field";
+    canvas.setAttribute("aria-hidden", "true");
+    document.body.prepend(canvas);
+    const ctx = canvas.getContext("2d");
+    const glyphs = ["∫", "∇", "Σ", "∂", "∞", "0", "1", "λ", "Δ", "∏"];
+    const pointer = {x: -999, y: -999, active: false};
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let width = 0, height = 0, particles = [], frame = 0;
+
+    function createParticle(randomY = true) {
+      return {
+        glyph: glyphs[Math.floor(Math.random() * glyphs.length)],
+        x: Math.random() * width,
+        y: randomY ? Math.random() * height : height + 30,
+        vx: (Math.random() - .5) * .025,
+        vy: -(Math.random() * .055 + .025),
+        size: Math.random() * 11 + 8,
+        alpha: Math.random() * .09 + .025,
+        gray: Math.floor(Math.random() * 130 + 80),
+        phase: Math.random() * Math.PI * 2
+      };
+    }
+
+    function resize() {
+      const dpr = Math.min(devicePixelRatio || 1, 1.5);
+      width = innerWidth; height = innerHeight;
+      canvas.width = width * dpr; canvas.height = height * dpr;
+      canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = width < 680 ? 18 : Math.min(42, Math.round(width / 34));
+      particles = Array.from({length: count}, () => createParticle(true));
+      if (reduced) draw(true);
+    }
+
+    function draw(staticFrame = false) {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p) => {
+        if (!staticFrame) {
+          if (pointer.active) {
+            const dx = p.x - pointer.x, dy = p.y - pointer.y;
+            const distance = Math.max(20, Math.hypot(dx, dy));
+            if (distance < 150) {
+              const force = (1 - distance / 150) * .006;
+              p.vx += dx / distance * force;
+              p.vy += dy / distance * force;
+            }
+          }
+          p.vx *= .985;
+          p.vy += (-.045 - p.vy) * .0025;
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.y < -30) Object.assign(p, createParticle(false));
+          if (p.x < -30) p.x = width + 30;
+          if (p.x > width + 30) p.x = -30;
+        }
+        const shimmer = staticFrame ? .65 : .62 + Math.sin(performance.now() * .00025 + p.phase) * .18;
+        ctx.font = `${p.size}px "Fira Code", "SFMono-Regular", Consolas, monospace`;
+        ctx.fillStyle = `rgba(${p.gray},${p.gray},${p.gray},${Math.min(.15, p.alpha * shimmer)})`;
+        ctx.fillText(p.glyph, p.x, p.y);
+      });
+      if (!staticFrame) frame = requestAnimationFrame(draw);
+    }
+
+    addEventListener("pointermove", (event) => {
+      pointer.x = event.clientX; pointer.y = event.clientY; pointer.active = true;
+    }, {passive: true});
+    document.documentElement.addEventListener("pointerleave", () => { pointer.active = false; }, {passive: true});
+    addEventListener("resize", resize, {passive: true});
+    resize();
+    if (!reduced) draw();
+    document.addEventListener("visibilitychange", () => {
+      cancelAnimationFrame(frame);
+      if (!document.hidden && !reduced) draw();
+    });
+  }
+
   function initializeCodeCopy() {
     document.querySelectorAll("figure.highlight").forEach((codeBlock) => {
       if (codeBlock.querySelector(".copy-button")) return;
@@ -373,6 +496,8 @@
 
   function initialize() {
     document.documentElement.classList.add(`cm-page-${document.querySelector(".cm-home") ? "home" : document.querySelector(".cm-hub") ? "research" : document.querySelector(".post-content") ? "article" : document.querySelector(".wall-category") ? "category" : "default"}`);
+    initializeTerminalProgress();
+    initializeSymbolField();
     initializeSearchInterface();
     initializeCodeCopy();
     initializeNestedNavigation();
