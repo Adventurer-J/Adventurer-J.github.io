@@ -210,15 +210,19 @@
   function initializeLoadingExperience() {
     if (document.querySelector(".cm-loader")) return;
     const loader = document.createElement("div");
-    loader.className = "cm-loader is-active";
+    loader.className = "cm-loader";
     loader.setAttribute("role", "status");
     loader.setAttribute("aria-live", "polite");
     loader.innerHTML = '<span class="cm-loader-orbit" aria-hidden="true"><i></i><i></i><i></i></span><span><b>LOADING</b><small>resolving page</small></span>';
     document.body.appendChild(loader);
-    const started = performance.now();
+    let finished = false;
+    const showTimer = window.setTimeout(() => {
+      if (!finished) loader.classList.add("is-active");
+    }, 140);
     const hide = () => {
-      const delay = Math.max(0, 420 - (performance.now() - started));
-      window.setTimeout(() => loader.classList.remove("is-active"), delay);
+      finished = true;
+      clearTimeout(showTimer);
+      loader.classList.remove("is-active");
     };
     if (document.readyState === "complete") hide();
     else addEventListener("load", hide, {once: true});
@@ -581,18 +585,18 @@
 
   function initialize() {
     document.documentElement.classList.add(`cm-page-${document.querySelector(".cm-home") ? "home" : document.querySelector(".cm-hub") ? "research" : document.querySelector(".post-content") ? "article" : document.querySelector(".wall-category") ? "category" : "default"}`);
-    initializeSubpageCleanup();
-    initializeGlassSurfaces();
-    initializeParallax();
     initializeLoadingExperience();
     initializeTerminalProgress();
-    initializeSymbolField();
+    initializeTheme();
+    initializeSubpageCleanup();
     initializeSearchInterface();
     initializeCodeCopy();
     initializeNestedNavigation();
-    initializeTheme();
     initializeResearchFilters();
     initializeCategoryPage();
+    initializeGlassSurfaces();
+    initializeParallax();
+    initializeSymbolField();
     initializeParticles();
     initializeMotion();
     initializeReadingProgress();
