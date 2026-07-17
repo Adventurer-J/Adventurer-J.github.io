@@ -242,6 +242,104 @@
     addEventListener("pageshow", () => loader.classList.remove("is-active"));
   }
 
+
+  function initializeSciFiDeepSpace() {
+    const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
+    const wall = document.querySelector(".wall-category");
+    if (key !== "Sci-Fi" || !wall || wall.querySelector(".cm-deep-space-canvas")) return;
+    document.documentElement.classList.add("cm-deep-space-active");
+    const canvas = document.createElement("canvas");
+    canvas.className = "cm-deep-space-canvas";
+    canvas.setAttribute("aria-hidden", "true");
+    wall.prepend(canvas);
+    const ctx = canvas.getContext("2d");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pointer = {x: .5, y: .5, tx: .5, ty: .5};
+    const colors = ["185,215,255", "222,232,255", "255,244,225", "255,205,168"];
+    let width = 0, height = 0, stars = [], meteor = null, frame = 0, visible = true, time = 0;
+
+    function makeStar() {
+      const depth = Math.random();
+      return {x:Math.random(), y:Math.random(), depth, size:.28+depth*1.45, alpha:.2+Math.random()*.66, phase:Math.random()*Math.PI*2, color:colors[Math.floor(Math.random()*colors.length)], bright:Math.random()>.965};
+    }
+    function resize() {
+      const dpr = Math.min(devicePixelRatio || 1, 1.5);
+      width = wall.clientWidth; height = wall.clientHeight;
+      canvas.width = width*dpr; canvas.height = height*dpr;
+      canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      const count = width < 680 ? 120 : Math.min(260, Math.round(width/5.5));
+      stars = Array.from({length:count}, makeStar);
+      if (reduced) draw(true);
+    }
+    function spawnMeteor() {
+      meteor = {x:width*(.15+Math.random()*.55),y:height*(.06+Math.random()*.24),vx:5+Math.random()*3,vy:2.2+Math.random()*1.8,life:1};
+    }
+    function draw(staticFrame=false) {
+      frame=0; time+=.006;
+      ctx.clearRect(0,0,width,height);
+      ctx.globalCompositeOperation="screen";
+      pointer.x+=(pointer.tx-pointer.x)*.045; pointer.y+=(pointer.ty-pointer.y)*.045;
+      stars.forEach((star)=>{
+        const shiftX=(pointer.x-.5)*34*star.depth;
+        const shiftY=(pointer.y-.5)*22*star.depth;
+        const x=star.x*width-shiftX, y=star.y*height-shiftY;
+        const twinkle=staticFrame ? .72 : .68+Math.sin(time*(1.2+star.depth)+star.phase)*.22;
+        const alpha=Math.min(.92,star.alpha*twinkle);
+        ctx.fillStyle=`rgba(${star.color},${alpha})`;
+        ctx.beginPath();ctx.arc(x,y,star.size,0,Math.PI*2);ctx.fill();
+        if(star.bright){
+          ctx.strokeStyle=`rgba(${star.color},${alpha*.28})`;ctx.lineWidth=.45;
+          ctx.beginPath();ctx.moveTo(x-star.size*5,y);ctx.lineTo(x+star.size*5,y);ctx.moveTo(x,y-star.size*3.2);ctx.lineTo(x,y+star.size*3.2);ctx.stroke();
+        }
+      });
+      if(!staticFrame && !meteor && Math.random()<.0012) spawnMeteor();
+      if(meteor){
+        const gradient=ctx.createLinearGradient(meteor.x-90,meteor.y-42,meteor.x,meteor.y);
+        gradient.addColorStop(0,"rgba(160,210,255,0)");gradient.addColorStop(1,`rgba(230,246,255,${meteor.life*.72})`);
+        ctx.strokeStyle=gradient;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(meteor.x-90,meteor.y-42);ctx.lineTo(meteor.x,meteor.y);ctx.stroke();
+        if(!staticFrame){meteor.x+=meteor.vx;meteor.y+=meteor.vy;meteor.life-=.018;if(meteor.life<=0)meteor=null;}
+      }
+      ctx.globalCompositeOperation="source-over";
+      if(!staticFrame&&visible&&!document.hidden)frame=requestAnimationFrame(draw);
+    }
+    wall.addEventListener("pointermove",(event)=>{const box=wall.getBoundingClientRect();pointer.tx=(event.clientX-box.left)/box.width;pointer.ty=(event.clientY-box.top)/box.height;},{passive:true});
+    wall.addEventListener("pointerleave",()=>{pointer.tx=.5;pointer.ty=.5;},{passive:true});
+    resize();
+    if(!reduced)draw();
+    if("ResizeObserver" in window)new ResizeObserver(resize).observe(wall);
+    if("IntersectionObserver" in window)new IntersectionObserver(([entry])=>{const next=entry.isIntersecting;if(next===visible)return;visible=next;if(!visible){cancelAnimationFrame(frame);frame=0;}else if(!frame&&!reduced)draw();},{rootMargin:"160px"}).observe(wall);
+    document.addEventListener("visibilitychange",()=>{cancelAnimationFrame(frame);frame=0;if(!document.hidden&&visible&&!reduced)draw();});
+  }
+
+  function initializeImageStretch() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.querySelectorAll(".post-content__body img, .cm-sci-fi-observation img").forEach((image) => {
+      if (image.closest(".cm-image-warp")) return;
+      const wrap = document.createElement("span");
+      wrap.className = "cm-image-warp";
+      image.parentNode.insertBefore(wrap,image);
+      wrap.appendChild(image);
+    });
+    document.querySelectorAll(".cm-image-warp").forEach((wrap) => {
+      const image = wrap.querySelector("img");
+      if (!image || wrap.dataset.stretchReady) return;
+      wrap.dataset.stretchReady = "true";
+      const state={rx:0,ry:0,sx:1,sy:1,sk:0},velocity={rx:0,ry:0,sx:0,sy:0,sk:0},target={rx:0,ry:0,sx:1,sy:1,sk:0};
+      let frame=0;
+      function tick(){
+        frame=0;let moving=false;
+        Object.keys(state).forEach((key)=>{velocity[key]+=(target[key]-state[key])*.105;velocity[key]*=.74;state[key]+=velocity[key];if(Math.abs(target[key]-state[key])>.001||Math.abs(velocity[key])>.001)moving=true;});
+        image.style.setProperty("--warp-rx",`${state.rx.toFixed(3)}deg`);image.style.setProperty("--warp-ry",`${state.ry.toFixed(3)}deg`);
+        image.style.setProperty("--warp-sx",state.sx.toFixed(4));image.style.setProperty("--warp-sy",state.sy.toFixed(4));image.style.setProperty("--warp-sk",`${state.sk.toFixed(3)}deg`);
+        if(moving)frame=requestAnimationFrame(tick);
+      }
+      function start(){if(!frame)frame=requestAnimationFrame(tick);}
+      wrap.addEventListener("pointermove",(event)=>{const box=wrap.getBoundingClientRect(),nx=(event.clientX-box.left)/box.width*2-1,ny=(event.clientY-box.top)/box.height*2-1;target.ry=nx*4.2;target.rx=-ny*3.4;target.sx=1+Math.abs(nx)*.032;target.sy=1+Math.abs(ny)*.022;target.sk=nx*1.15;wrap.style.setProperty("--warp-x",`${((nx+1)/2*100).toFixed(1)}%`);wrap.style.setProperty("--warp-y",`${((ny+1)/2*100).toFixed(1)}%`);image.style.transformOrigin=`${(nx+1)/2*100}% ${(ny+1)/2*100}%`;start();},{passive:true});
+      wrap.addEventListener("pointerleave",()=>{target.rx=0;target.ry=0;target.sx=1;target.sy=1;target.sk=0;image.style.transformOrigin="50% 50%";start();},{passive:true});
+    });
+  }
+
   function initializeCodeCopy() {
     document.querySelectorAll("figure.highlight").forEach((codeBlock) => {
       if (codeBlock.querySelector(".copy-button")) return;
@@ -463,6 +561,7 @@
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const targets = document.querySelectorAll(".cm-home-hero, .cm-hero, .wall-category, .post-content__head");
     targets.forEach((target) => {
+      if (target.matches(".wall-category") && document.documentElement.classList.contains("cm-deep-space-active")) return;
       if (target.querySelector(":scope > .cm-particle-canvas")) return;
       const canvas = document.createElement("canvas");
       canvas.className = "cm-particle-canvas";
@@ -626,7 +725,9 @@
     initializeNestedNavigation();
     initializeResearchFilters();
     initializeCategoryPage();
+    initializeSciFiDeepSpace();
     initializeGlassSurfaces();
+    initializeImageStretch();
     initializeParallax();
     initializeSymbolField();
     initializeParticles();
