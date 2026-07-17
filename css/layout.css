@@ -3166,3 +3166,37 @@ html[data-cm-theme="dark"] .cm-home-ok{color:#98c379!important}
 @media(prefers-reduced-motion:reduce){
   html[data-cm-theme="dark"] .cm-home-button{transition:none}
 }
+
+
+/* Subpage particle profiles and interaction traces */
+.cm-subpage-particle-field{--cm-subpage-field-opacity:.64}
+.cm-particle-canvas--subpage{filter:saturate(.94) contrast(1.025);mix-blend-mode:normal;opacity:var(--cm-subpage-field-opacity);transition:filter .28s ease,opacity .28s ease}
+html[data-cm-theme="dark"] .cm-particle-canvas--subpage{filter:saturate(.82) brightness(.92);mix-blend-mode:screen;opacity:.58}
+@media(hover:hover) and (pointer:fine){
+  .cm-subpage-particle-field:hover>.cm-particle-canvas--subpage{filter:saturate(1.06) contrast(1.04);opacity:.78}
+  html[data-cm-theme="dark"] .cm-subpage-particle-field:hover>.cm-particle-canvas--subpage{filter:saturate(.96) brightness(.98);opacity:.68}
+}
+.cm-page-article .cm-particle-canvas--subpage{-webkit-mask-image:linear-gradient(90deg,transparent 2%,rgba(0,0,0,.2) 30%,#000 62%);mask-image:linear-gradient(90deg,transparent 2%,rgba(0,0,0,.2) 30%,#000 62%)}
+.cm-subpage-particle-field--flow>.cm-particle-canvas--subpage{opacity:.72}
+.cm-subpage-particle-field--signal>.cm-particle-canvas--subpage{opacity:.68}
+.cm-subpage-particle-field--glyph>.cm-particle-canvas--subpage{opacity:.56}
+.cm-page-category .cm-category-card::before,
+.cm-page-research .cm-card::before{background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--cm-section-accent,#56b6c2) 68%,transparent),transparent);content:"";height:1px;left:16px;opacity:0;pointer-events:none;position:absolute;right:16px;top:0;transform:scaleX(.22);transition:opacity .2s ease,transform .36s cubic-bezier(.2,.8,.2,1);z-index:2}
+.cm-page-category .cm-category-card:hover::before,
+.cm-page-research .cm-card:hover::before{opacity:.8;transform:scaleX(1)}
+.cm-sci-fi-page .cm-deep-space-canvas{pointer-events:none}
+@media(max-width:620px){
+  .cm-particle-canvas--subpage,
+  .cm-subpage-particle-field--flow>.cm-particle-canvas--subpage,
+  .cm-subpage-particle-field--signal>.cm-particle-canvas--subpage,
+  .cm-subpage-particle-field--glyph>.cm-particle-canvas--subpage{opacity:.46}
+}
+@media(prefers-reduced-motion:reduce){
+  .cm-particle-canvas--subpage{display:none!important}
+  .cm-page-category .cm-category-card::before,
+  .cm-page-research .cm-card::before{transition:none}
+}
+@media(forced-colors:active){
+  .cm-particle-canvas--subpage,
+  .cm-deep-space-canvas{display:none!important}
+}
