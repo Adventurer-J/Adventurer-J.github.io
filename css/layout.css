@@ -2871,6 +2871,7 @@ button:active,.cm-home-button:active,.cm-filter:active,.cm-resource:active,.cm-c
 .cm-page-category .cm-empty-state h2{font-size:1.3rem;margin:0}
 .cm-page-category .cm-empty-state p{color:var(--cm-muted);font-size:.84rem;margin:0}
 .cm-page-category .wall-category.cm-category-shell{background:radial-gradient(circle at 82% 0,color-mix(in srgb,var(--cm-section-accent) 11%,transparent),transparent 40%),color-mix(in srgb,var(--cm-surface) 76%,transparent)!important}
+.cm-deep-space-active .wall-category.cm-category-shell{background:#04090f!important}
 .cm-hub .cm-quote{min-height:148px}
 .cm-hub .cm-card{min-height:218px}
 
