@@ -3200,3 +3200,142 @@ html[data-cm-theme="dark"] .cm-particle-canvas--subpage{filter:saturate(.82) bri
   .cm-particle-canvas--subpage,
   .cm-deep-space-canvas{display:none!important}
 }
+
+
+/* Sci-Fi daylight observatory theme */
+html[data-cm-theme="light"] .cm-page-sci-fi-shell{
+  --sf-nav-top:rgba(225,237,234,.98);
+  --sf-nav-bottom:rgba(239,244,241,.96);
+  --sf-nav-surface:rgba(255,254,249,.8);
+  --sf-nav-line:rgba(13,102,100,.24);
+  --sf-nav-text:#17252b;
+  --sf-nav-muted:#5b6a70;
+  --sf-nav-accent:#0d6664;
+  --sf-light-page:#f4f6f3;
+  --sf-light-stage:#edf5f2;
+  --sf-light-glass:rgba(255,254,249,.72);
+  --sf-light-glass-strong:rgba(237,242,239,.84);
+  --sf-light-line:rgba(13,102,100,.2);
+  --sf-light-line-strong:#71948f;
+  --sf-light-ink:#17252b;
+  --sf-light-navy:#1e3654;
+  --sf-light-muted:#5b6a70;
+  --sf-light-signal:#a3473f;
+  --sf-light-shadow:0 22px 64px rgba(30,54,84,.11);
+  background:var(--sf-light-page);
+  color:var(--sf-light-ink);
+  color-scheme:light
+}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell>.head,
+html[data-cm-theme="light"] .cm-page-sci-fi-shell>.head.head--sticky{
+  background:linear-gradient(180deg,var(--sf-nav-top),var(--sf-nav-bottom))!important;
+  border-bottom-color:rgba(13,102,100,.2)!important;
+  box-shadow:0 12px 34px rgba(30,54,84,.09)!important
+}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell>.head::after{background:linear-gradient(90deg,transparent,rgba(13,102,100,.34),transparent)}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .nav-logo img{filter:none;opacity:.78}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .nav-menu-item:hover,
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .nav-menu-item[aria-current="page"],
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .cm-submenu-link:hover{background:rgba(13,102,100,.09);color:var(--sf-nav-accent)}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .cm-nav-caret:hover,
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .cm-theme-toggle:hover{background:rgba(13,102,100,.08);border-color:rgba(13,102,100,.3);color:var(--sf-nav-accent)}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .cm-submenu{background:rgba(244,246,243,.98)!important;border-color:var(--sf-nav-line);box-shadow:0 22px 56px rgba(30,54,84,.14)}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell #search-btn{background:rgba(255,254,249,.62);border-color:var(--sf-nav-line);color:var(--sf-nav-text)}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell #search-btn:hover{background:rgba(13,102,100,.08);border-color:#71948f;color:var(--sf-nav-accent)}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .search-shortcut-key{background:#edf2ef;border-color:var(--sf-nav-line);color:var(--sf-nav-muted)}
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .nav-menu-item:focus-visible,
+html[data-cm-theme="light"] .cm-page-sci-fi-shell #search-btn:focus-visible,
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .cm-nav-caret:focus-visible,
+html[data-cm-theme="light"] .cm-page-sci-fi-shell .cm-theme-toggle:focus-visible{outline-color:#075f66}
+
+html[data-cm-theme="light"] .cm-sci-fi-page{
+  background:radial-gradient(circle at 80% 8%,rgba(21,170,165,.1),transparent 31%),radial-gradient(circle at 12% 70%,rgba(30,54,84,.055),transparent 36%),linear-gradient(180deg,#edf5f2,#f8f9f5 58%,#f4f6f3)!important;
+  color:var(--sf-light-ink)
+}
+html[data-cm-theme="light"] .cm-sci-fi-page::before{
+  background:radial-gradient(circle at 78% 10%,rgba(13,102,100,.09),transparent 29%),radial-gradient(circle at 12% 76%,rgba(116,85,138,.045),transparent 34%),linear-gradient(rgba(30,54,84,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(30,54,84,.035) 1px,transparent 1px);
+  background-size:auto,auto,64px 64px,64px 64px
+}
+html[data-cm-theme="light"] .cm-sci-fi-page .wall-category.cm-sci-fi-stage{
+  --sf-accent-rgb:13,102,100;
+  --sf-accent:#0d6664;
+  background:radial-gradient(circle at 84% 12%,rgba(21,170,165,.12),transparent 34%),linear-gradient(145deg,rgba(248,250,247,.94),rgba(229,239,236,.9) 62%,rgba(237,243,240,.96))!important;
+  border-color:rgba(13,102,100,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.78),0 32px 88px rgba(30,54,84,.14)!important
+}
+html[data-cm-theme="light"] .cm-sci-fi-page .cm-sci-fi-stage[data-sci-fi-channel="unknown"]{--sf-accent-rgb:57,111,159;--sf-accent:#396f9f}
+html[data-cm-theme="light"] .cm-sci-fi-page .cm-sci-fi-stage[data-sci-fi-channel="cosmos"]{--sf-accent-rgb:116,85,138;--sf-accent:#74558a}
+html[data-cm-theme="light"] .cm-sci-fi-page .wall-category.cm-sci-fi-stage::before{background:radial-gradient(520px circle at var(--sf-pointer-x) var(--sf-pointer-y),rgba(var(--sf-accent-rgb),.11),transparent 68%)!important}
+html[data-cm-theme="light"] .cm-sci-fi-page .wall-category.cm-sci-fi-stage::after{background:linear-gradient(180deg,rgba(255,255,255,.24),transparent 24%,transparent 72%,rgba(30,54,84,.075)),radial-gradient(ellipse at center,transparent 62%,rgba(30,54,84,.055) 100%)!important}
+html[data-cm-theme="light"] .cm-sci-fi-page .cm-deep-space-canvas{filter:saturate(.82) contrast(1.025);mix-blend-mode:multiply;opacity:.74}
+html[data-cm-theme="light"] .cm-sci-fi-kicker{color:var(--sf-light-signal)}
+html[data-cm-theme="light"] .cm-sci-fi-page .wall-category-title{color:var(--sf-light-navy)!important;text-shadow:none!important}
+html[data-cm-theme="light"] .cm-sci-fi-page .wall-category-title .title-icon{filter:grayscale(1) brightness(.42) sepia(.18) hue-rotate(132deg) saturate(1.3) drop-shadow(0 0 9px rgba(13,102,100,.18));opacity:.7}
+html[data-cm-theme="light"] .cm-sci-fi-page .wall-category-title small,
+html[data-cm-theme="light"] .cm-sci-fi-page .wall-category-description{color:var(--sf-light-muted)!important}
+html[data-cm-theme="light"] .cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-horizon{filter:saturate(.52) sepia(.1) hue-rotate(126deg) brightness(1.16);mix-blend-mode:multiply;opacity:.16}
+html[data-cm-theme="light"] .cm-sci-fi-orbit-system::before{border-color:rgba(57,111,159,.15)}
+html[data-cm-theme="light"] .cm-sci-fi-orbit-system::after{border-color:rgba(13,102,100,.13)}
+html[data-cm-theme="light"] .cm-sci-fi-orbit-system i{background:#1e3654;box-shadow:0 0 12px rgba(30,54,84,.24)}
+html[data-cm-theme="light"] .cm-sci-fi-orbit-system i:nth-child(2){background:#a3473f;box-shadow:0 0 10px rgba(163,71,63,.26)}
+html[data-cm-theme="light"] .cm-sci-fi-orbit-system i:nth-child(3){background:#0d6664;box-shadow:0 0 10px rgba(13,102,100,.24)}
+
+html[data-cm-theme="light"] .cm-sci-fi-signalbar,
+html[data-cm-theme="light"] .cm-sci-fi-sector,
+html[data-cm-theme="light"] .cm-sci-fi-sector-panel,
+html[data-cm-theme="light"] .cm-sci-fi-signal-trace,
+html[data-cm-theme="light"] .cm-sci-fi-page .cm-sci-fi-transmission{
+  background:linear-gradient(135deg,var(--sf-light-glass),rgba(237,242,239,.66))!important;
+  border-color:var(--sf-light-line)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72),var(--sf-light-shadow)!important
+}
+html[data-cm-theme="light"] .cm-sci-fi-signalbar>span{border-color:rgba(13,102,100,.16)}
+html[data-cm-theme="light"] .cm-sci-fi-signalbar small,
+html[data-cm-theme="light"] .cm-sci-fi-sector small,
+html[data-cm-theme="light"] .cm-sci-fi-sector>b,
+html[data-cm-theme="light"] .cm-sci-fi-sector-panel p,
+html[data-cm-theme="light"] .cm-sci-fi-sector-panel>small,
+html[data-cm-theme="light"] .cm-sci-fi-signal-trace span,
+html[data-cm-theme="light"] .cm-sci-fi-signal-trace em,
+html[data-cm-theme="light"] .cm-sci-fi-transmission>span,
+html[data-cm-theme="light"] .cm-sci-fi-transmission p{color:var(--sf-light-muted)}
+html[data-cm-theme="light"] .cm-sci-fi-signalbar b,
+html[data-cm-theme="light"] .cm-sci-fi-sector strong,
+html[data-cm-theme="light"] .cm-sci-fi-sector-panel h2,
+html[data-cm-theme="light"] .cm-sci-fi-transmission h2{color:var(--sf-light-ink)}
+html[data-cm-theme="light"] .cm-sci-fi-signalbar .is-live b,
+html[data-cm-theme="light"] .cm-sci-fi-signal-trace b{color:var(--sf-light-signal)}
+html[data-cm-theme="light"] .cm-sci-fi-signalbar .is-live small::before,
+html[data-cm-theme="light"] .cm-sci-fi-transmission>i{background:var(--sf-light-signal);box-shadow:0 0 10px rgba(163,71,63,.3)}
+html[data-cm-theme="light"] .cm-sci-fi-sector.is-active,
+html[data-cm-theme="light"] .cm-sci-fi-sector[aria-selected="true"]{
+  background:linear-gradient(145deg,rgba(var(--sf-accent-rgb),.12),rgba(255,254,249,.82))!important;
+  border-color:rgba(var(--sf-accent-rgb),.42)!important;
+  box-shadow:inset 3px 0 0 var(--sf-accent),inset 0 1px 0 rgba(255,255,255,.72),0 16px 38px rgba(30,54,84,.1)!important
+}
+html[data-cm-theme="light"] .cm-sci-fi-sector:focus-visible,
+html[data-cm-theme="light"] .cm-sci-fi-sector-panel:focus-visible{border-color:#71948f;outline-color:#075f66}
+@media(hover:hover) and (pointer:fine){
+  html[data-cm-theme="light"] .cm-sci-fi-sector:hover{background:linear-gradient(145deg,rgba(255,254,249,.86),rgba(229,239,236,.76))!important;border-color:#71948f!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.78),0 20px 48px rgba(30,54,84,.14)!important}
+}
+@media(max-width:1023px){
+  html[data-cm-theme="light"] .cm-page-sci-fi-shell>.head .nav{background:linear-gradient(180deg,var(--sf-nav-top),var(--sf-nav-bottom))!important}
+  html[data-cm-theme="light"] .cm-page-sci-fi-shell .nav-menu{background:linear-gradient(180deg,rgba(244,246,243,.99),rgba(237,244,241,.99))!important;border-top-color:rgba(13,102,100,.16)}
+  html[data-cm-theme="light"] .cm-page-sci-fi-shell .cm-nav-group{border-bottom-color:rgba(13,102,100,.16)}
+  html[data-cm-theme="light"] .cm-page-sci-fi-shell .cm-submenu{background:#edf2ef!important}
+  html[data-cm-theme="light"] .cm-page-sci-fi-shell .nav-btn::before,
+  html[data-cm-theme="light"] .cm-page-sci-fi-shell .nav-btn::after{background:#1e3654}
+}
+@media(max-width:900px){
+  html[data-cm-theme="light"] .cm-sci-fi-signalbar>span:nth-child(-n+2){border-bottom-color:rgba(13,102,100,.16)}
+}
+@media(prefers-contrast:more){
+  html[data-cm-theme="light"] .cm-sci-fi-signalbar,
+  html[data-cm-theme="light"] .cm-sci-fi-sector,
+  html[data-cm-theme="light"] .cm-sci-fi-sector-panel,
+  html[data-cm-theme="light"] .cm-sci-fi-signal-trace,
+  html[data-cm-theme="light"] .cm-sci-fi-page .cm-sci-fi-transmission{border-color:#71948f!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-cm-theme="light"] .cm-sci-fi-page .cm-deep-space-canvas{filter:saturate(.72);opacity:.68}
+}
