@@ -167,7 +167,12 @@
       articleBody.hidden = true;
       document.documentElement.classList.add("cm-article-empty");
     }
-    document.querySelectorAll(".wall-category-tags, #tags-outer, #tagCanvas").forEach((node) => { node.hidden = true; });
+    const tagShell = document.querySelector(".wall-category-tags");
+    const tagOuter = document.querySelector("#tags-outer");
+    if (tagOuter) { tagOuter.hidden = true; tagOuter.replaceChildren(); }
+    if (tagShell) tagShell.hidden = true;
+    const articleFoot = document.querySelector(".post__foot");
+    if (articleFoot && !articleFoot.textContent.trim() && !articleFoot.querySelector("a[href], button, img")) articleFoot.hidden = true;
   }
 
   function initializeGlassSurfaces() {
@@ -433,10 +438,13 @@
     const grid = document.createElement("div");
     grid.className = "cm-category-grid";
     items.forEach(([title, note, href], index) => {
-      const card = document.createElement("a");
-      card.className = "cm-category-card cm-reveal";
-      card.href = href;
-      card.innerHTML = `<span>${String(index + 1).padStart(2, "0")}</span><strong></strong><small></small><i aria-hidden="true">↗</i>`;
+      const targetPath = decodeURIComponent(new URL(href, location.origin).pathname).replace(/\/$/, "") || "/";
+      const currentPath = decodeURIComponent(location.pathname).replace(/\/$/, "") || "/";
+      const isSelfLink = targetPath === currentPath;
+      const card = document.createElement(isSelfLink ? "div" : "a");
+      card.className = `cm-category-card cm-reveal${isSelfLink ? " cm-category-card--static" : ""}`;
+      if (!isSelfLink) card.href = href;
+      card.innerHTML = `<span>${String(index + 1).padStart(2, "0")}</span><strong></strong><small></small><i aria-hidden="true">${isSelfLink ? "·" : "↗"}</i>`;
       card.querySelector("strong").textContent = title;
       card.querySelector("small").textContent = note;
       grid.appendChild(card);
@@ -462,7 +470,7 @@
       target.prepend(canvas);
       const ctx = canvas.getContext("2d");
       const isThreeBody = target.matches(".cm-home-hero, .cm-hero");
-      let points = [], width = 0, height = 0, frame = 0, time = 0;
+      let points = [], width = 0, height = 0, frame = 0, time = 0, inView = true;
       const pointer = {x: 0, y: 0, active: false};
       let stateLabel = null;
 
@@ -501,6 +509,7 @@
       }
 
       function draw() {
+        frame = 0;
         ctx.clearRect(0, 0, width, height);
         time += .008;
         const dark = document.documentElement.dataset.cmTheme === "dark";
@@ -550,7 +559,7 @@
         });
         ctx.globalCompositeOperation = "source-over";
         if(pointer.active){const glow=ctx.createRadialGradient(pointer.x,pointer.y,0,pointer.x,pointer.y,105);glow.addColorStop(0,"rgba(255,199,92,.12)");glow.addColorStop(1,"rgba(255,199,92,0)");ctx.fillStyle=glow;ctx.beginPath();ctx.arc(pointer.x,pointer.y,90,0,Math.PI*2);ctx.fill();}
-        frame=requestAnimationFrame(draw);
+        if (inView && !document.hidden) frame=requestAnimationFrame(draw);
       }
 
       function locate(event) { const box=target.getBoundingClientRect(); pointer.x=event.clientX-box.left; pointer.y=event.clientY-box.top; pointer.active=true; }
@@ -559,7 +568,19 @@
       resize(); draw();
       if ("ResizeObserver" in window) new ResizeObserver(resize).observe(target);
       else addEventListener("resize", resize, {passive:true});
-      document.addEventListener("visibilitychange", () => { cancelAnimationFrame(frame); if(!document.hidden) draw(); });
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(([entry]) => {
+          const next = entry.isIntersecting;
+          if (next === inView) return;
+          inView = next;
+          if (!inView) { cancelAnimationFrame(frame); frame = 0; }
+          else if (!frame && !document.hidden) draw();
+        }, {rootMargin: "120px"}).observe(target);
+      }
+      document.addEventListener("visibilitychange", () => {
+        cancelAnimationFrame(frame); frame = 0;
+        if (!document.hidden && inView) draw();
+      });
     });
   }
 
@@ -572,6 +593,7 @@
     }));
     const nodes = document.querySelectorAll(".cm-reveal, .cm-home-section, .cm-home-workflow, .post-item");
     if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) { nodes.forEach(n => n.classList.add("is-visible")); return; }
+    document.documentElement.classList.add("cm-motion-ready");
     const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("is-visible"); observer.unobserve(entry.target); } }), {threshold: .08});
     nodes.forEach(node => { node.classList.add("cm-reveal"); observer.observe(node); });
   }
