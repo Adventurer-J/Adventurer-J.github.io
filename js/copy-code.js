@@ -620,7 +620,7 @@
           suns.forEach((sun, index) => {
             ctx.strokeStyle = `rgba(${sun.color},.045)`;
             ctx.beginPath();
-            ctx.ellipse(width*.73, height*.39, Math.min(width*.18,230)*(1-index*.2), Math.min(height*.24,150)*(1-index*.12), index*.55, 0, Math.PI*2);
+            ctx.ellipse(width*.78, height*.36, Math.min(width*.15,190)*(1-index*.2), Math.min(height*.2,118)*(1-index*.12), index*.55, 0, Math.PI*2);
             ctx.stroke();
             const glowRadius = sun.r * 4.2;
             const glow = ctx.createRadialGradient(sun.x,sun.y,0,sun.x,sun.y,glowRadius);
