@@ -76,7 +76,12 @@
     canvas.setAttribute("aria-hidden", "true");
     document.body.prepend(canvas);
     const ctx = canvas.getContext("2d");
-    const glyphs = ["∫", "∇", "Σ", "∂", "∞", "0", "1", "λ", "Δ", "∏"];
+    const isHome = !!document.querySelector(".cm-home");
+    const glyphs = isHome
+      ? ["∫", "∇", "Σ", "∂", "∞", "0", "1", "λ", "Δ", "∏"]
+      : ["∫", "∇", "Σ", "∂", "∞", "0", "1", "λ", "Δ", "∏", "ε", "π", "⊗", "∥"];
+    const interactionRadius = isHome ? 150 : 195;
+    const interactionForce = isHome ? .006 : .01;
     const pointer = {x: -999, y: -999, active: false};
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let width = 0, height = 0, particles = [], frame = 0;
@@ -113,8 +118,8 @@
           if (pointer.active) {
             const dx = p.x - pointer.x, dy = p.y - pointer.y;
             const distance = Math.max(20, Math.hypot(dx, dy));
-            if (distance < 150) {
-              const force = (1 - distance / 150) * .006;
+            if (distance < interactionRadius) {
+              const force = (1 - distance / interactionRadius) * interactionForce;
               p.vx += dx / distance * force;
               p.vy += dy / distance * force;
             }
@@ -144,7 +149,8 @@
     if (!reduced) draw();
     document.addEventListener("visibilitychange", () => {
       cancelAnimationFrame(frame);
-      if (!document.hidden && !reduced) draw();
+      frame = 0;
+      if (!document.hidden && !reduced && !frame) draw();
     });
   }
 
@@ -258,9 +264,9 @@
     const ctx = canvas.getContext("2d");
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const pointer = {x: .5, y: .5, tx: .5, ty: .5};
+    const pointer = {x: .5, y: .5, tx: .5, ty: .5, inside: false};
     const colors = ["185,215,255", "222,232,255", "255,244,225", "255,205,168"];
-    let width = 0, height = 0, stars = [], meteor = null, frame = 0, visible = true, time = 0;
+    let width = 0, height = 0, stars = [], meteor = null, ripples = [], frame = 0, visible = true, time = 0;
 
     function makeStar() {
       const depth = Math.random();
@@ -286,12 +292,18 @@
       ctx.clearRect(0,0,width,height);
       ctx.globalCompositeOperation="screen";
       pointer.x+=(pointer.tx-pointer.x)*.045; pointer.y+=(pointer.ty-pointer.y)*.045;
+      const nearStars=[];
       stars.forEach((star)=>{
         const shiftX=(pointer.x-.5)*18*star.depth;
         const shiftY=(pointer.y-.5)*11*star.depth;
-        const x=star.x*width-shiftX, y=star.y*height-shiftY;
+        let x=star.x*width-shiftX, y=star.y*height-shiftY;
         const twinkle=staticFrame ? .72 : .68+Math.sin(time*(1.2+star.depth)+star.phase)*.22;
         const alpha=Math.min(.92,star.alpha*twinkle);
+        if(pointer.inside&&finePointer){
+          const px=pointer.x*width,py=pointer.y*height,dx=x-px,dy=y-py,distance=Math.max(18,Math.hypot(dx,dy));
+          if(distance<165){const lens=(1-distance/165)*7*star.depth;x+=dx/distance*lens;y+=dy/distance*lens;}
+          if(distance<190&&star.depth>.58)nearStars.push({x:x,y:y,distance:distance,alpha:alpha,color:star.color});
+        }
         ctx.fillStyle=`rgba(${star.color},${alpha})`;
         ctx.beginPath();ctx.arc(x,y,star.size,0,Math.PI*2);ctx.fill();
         if(star.bright){
@@ -299,6 +311,14 @@
           ctx.beginPath();ctx.moveTo(x-star.size*5,y);ctx.lineTo(x+star.size*5,y);ctx.moveTo(x,y-star.size*3.2);ctx.lineTo(x,y+star.size*3.2);ctx.stroke();
         }
       });
+      if(pointer.inside&&nearStars.length){
+        const px=pointer.x*width,py=pointer.y*height;
+        nearStars.sort((a,b)=>a.distance-b.distance).slice(0,6).forEach((star,index,list)=>{
+          ctx.strokeStyle=`rgba(126,202,198,${.085*(1-star.distance/190)})`;ctx.lineWidth=.45;
+          ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(star.x,star.y);ctx.stroke();
+          if(index){const previous=list[index-1];ctx.strokeStyle=`rgba(97,175,239,${.045*(1-star.distance/190)})`;ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(star.x,star.y);ctx.stroke();}
+        });
+      }
       if(!staticFrame && !meteor && Math.random()<.00065) spawnMeteor();
       if(meteor){
         const gradient=ctx.createLinearGradient(meteor.x-90,meteor.y-42,meteor.x,meteor.y);
@@ -306,6 +326,13 @@
         ctx.strokeStyle=gradient;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(meteor.x-90,meteor.y-42);ctx.lineTo(meteor.x,meteor.y);ctx.stroke();
         if(!staticFrame){meteor.x+=meteor.vx;meteor.y+=meteor.vy;meteor.life-=.018;if(meteor.life<=0)meteor=null;}
       }
+      ripples=ripples.filter((ripple)=>{
+        if(!staticFrame){ripple.radius+=2.4;ripple.life-=.018;}
+        if(ripple.life<=0)return false;
+        ctx.strokeStyle=`rgba(126,202,198,${ripple.life*.28})`;ctx.lineWidth=.65+ripple.life;
+        ctx.beginPath();ctx.arc(ripple.x,ripple.y,ripple.radius,0,Math.PI*2);ctx.stroke();
+        return true;
+      });
       ctx.globalCompositeOperation="source-over";
       if(!staticFrame&&visible&&!document.hidden)frame=requestAnimationFrame(draw);
     }
@@ -315,6 +342,7 @@
       const box=wall.getBoundingClientRect();
       pointer.tx=(event.clientX-box.left)/box.width;
       pointer.ty=(event.clientY-box.top)/box.height;
+      pointer.inside=true;
       if(reduced||!finePointer)return;
       interfacePointer.clientX=event.clientX;
       interfacePointer.clientY=event.clientY;
@@ -342,7 +370,7 @@
       });
     },{passive:true});
     wall.addEventListener("pointerleave",()=>{
-      pointer.tx=.5;pointer.ty=.5;
+      pointer.tx=.5;pointer.ty=.5;pointer.inside=false;
       cancelAnimationFrame(interfaceFrame);interfaceFrame=0;
       wall.style.setProperty("--sf-pointer-x","50%");
       wall.style.setProperty("--sf-pointer-y","34%");
@@ -351,9 +379,17 @@
       wall.style.setProperty("--sf-orbit-x","0px");
       wall.style.setProperty("--sf-orbit-y","0px");
     },{passive:true});
+    wall.addEventListener("pointerdown",(event)=>{
+      if(reduced)return;
+      const box=wall.getBoundingClientRect();
+      ripples.push({x:event.clientX-box.left,y:event.clientY-box.top,radius:5,life:1});
+      if(ripples.length>4)ripples.shift();
+      if(!frame&&visible&&!document.hidden)draw();
+    },{passive:true});
     resize();
     if(!reduced)draw();
     if("ResizeObserver" in window)new ResizeObserver(resize).observe(wall);
+    else addEventListener("resize",resize,{passive:true});
     if("IntersectionObserver" in window)new IntersectionObserver(([entry])=>{const next=entry.isIntersecting;if(next===visible)return;visible=next;if(!visible){cancelAnimationFrame(frame);frame=0;}else if(!frame&&!reduced)draw();},{rootMargin:"160px"}).observe(wall);
     document.addEventListener("visibilitychange",()=>{cancelAnimationFrame(frame);frame=0;if(!document.hidden&&visible&&!reduced)draw();});
   }
@@ -715,9 +751,350 @@
     });
   }
 
+
+  function initializeSubpageParticleFields() {
+    if (document.querySelector(".cm-home") || document.documentElement.classList.contains("cm-deep-space-active")) return;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+    const coarse = matchMedia("(pointer: coarse)").matches;
+    const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
+    const categoryProfiles = {
+      "Numerical-method": "mesh",
+      "Differential equation": "flow",
+      "Algorithm": "signal",
+      "Software-system": "signal",
+      "Miles and Memories": "waypoint"
+    };
+    let target = null;
+    let profile = "";
+    if (document.documentElement.classList.contains("cm-page-research")) {
+      target = document.querySelector(".cm-hub .cm-hero");
+      profile = "signal";
+    } else if (document.documentElement.classList.contains("cm-page-category") && key !== "Sci-Fi") {
+      target = document.querySelector(".wall-category:not(.cm-sci-fi-stage)");
+      profile = categoryProfiles[key] || "mesh";
+    } else if (document.documentElement.classList.contains("cm-page-article")) {
+      target = document.querySelector(".post-content__head");
+      profile = "glyph";
+    }
+    if (!target || target.matches("[data-sci-fi-viewport], .cm-sci-fi-stage") || target.querySelector(":scope > .cm-particle-canvas--subpage")) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "cm-particle-canvas cm-particle-canvas--subpage";
+    canvas.dataset.particleProfile = profile;
+    canvas.setAttribute("aria-hidden", "true");
+    target.classList.add("cm-subpage-particle-field", "cm-subpage-particle-field--" + profile);
+    target.prepend(canvas);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const profilePalette = {
+      mesh: ["35,184,177", "97,175,239"],
+      flow: ["97,175,239", "86,182,194"],
+      signal: key === "Software-system" ? ["229,192,123", "86,182,194"] : ["198,120,221", "86,182,194"],
+      waypoint: ["229,192,123", "86,182,194"],
+      glyph: ["97,175,239", "198,120,221"]
+    };
+    const palette = profilePalette[profile] || profilePalette.mesh;
+    const glyphs = ["∫", "∇", "Σ", "∂", "∞", "λ", "Δ", "0", "1"];
+    const pointer = {x:-999, y:-999, clientX:0, clientY:0, active:false, lastX:-999, lastY:-999};
+    let width = 0, height = 0, points = [], links = [], pulses = [], ripples = [], sparks = [];
+    let frame = 0, pointerFrame = 0, visible = true, lastFrame = 0, time = 0;
+
+    function point(x, y, index) {
+      return {
+        x:x, y:y, homeX:x, homeY:y, px:x, py:y,
+        vx:(Math.random()-.5)*.08, vy:(Math.random()-.5)*.08,
+        radius:.55+Math.random()*1.05, depth:.42+Math.random()*.58,
+        phase:Math.random()*Math.PI*2, color:palette[index%palette.length],
+        glyph:glyphs[index%glyphs.length]
+      };
+    }
+
+    function buildMesh() {
+      const gap = coarse ? 116 : 96;
+      const cols = Math.max(5, Math.round(width/gap));
+      const rows = Math.max(4, Math.round(height/gap));
+      const stepX = width/(cols+1), stepY = height/(rows+1);
+      points = [];
+      links = [];
+      for (let row=0; row<rows; row++) {
+        for (let col=0; col<cols; col++) {
+          const jitterX = (Math.random()-.5)*stepX*.34;
+          const jitterY = (Math.random()-.5)*stepY*.34;
+          points.push(point(stepX*(col+1)+jitterX, stepY*(row+1)+jitterY, row*cols+col));
+          const index = row*cols+col;
+          if (col) links.push([index-1,index]);
+          if (row) links.push([index-cols,index]);
+          if (row && col && (row+col)%2===0) links.push([index-cols-1,index]);
+        }
+      }
+    }
+
+    function buildFlow() {
+      const count = coarse ? 24 : Math.min(48, Math.max(34, Math.round(width/25)));
+      points = Array.from({length:count}, (_, index) => point(Math.random()*width, Math.random()*height, index));
+      links = [];
+    }
+
+    function buildSignal() {
+      const count = coarse ? 17 : Math.min(30, Math.max(22, Math.round(width/42)));
+      points = Array.from({length:count}, (_, index) => point(width*(.05+Math.random()*.9), height*(.12+Math.random()*.76), index));
+      const edgeSet = new Set();
+      links = [];
+      points.forEach((p, index) => {
+        const nearest = points.map((q, qIndex) => [qIndex, Math.hypot(p.x-q.x,p.y-q.y)])
+          .filter(([qIndex]) => qIndex !== index)
+          .sort((a,b) => a[1]-b[1])
+          .slice(0, index%3===0 ? 2 : 1);
+        nearest.forEach(([qIndex]) => {
+          const a=Math.min(index,qIndex), b=Math.max(index,qIndex), edge=a+":"+b;
+          if (!edgeSet.has(edge)) { edgeSet.add(edge); links.push([a,b]); }
+        });
+      });
+      pulses = Array.from({length:coarse ? 2 : 4}, (_, index) => ({
+        edge:index%Math.max(1,links.length), t:Math.random(), speed:.0028+Math.random()*.0022
+      }));
+    }
+
+    function buildDrift() {
+      const count = coarse ? 10 : profile === "glyph" ? 18 : 22;
+      const left = profile === "glyph" ? width*.48 : width*.06;
+      points = Array.from({length:count}, (_, index) => {
+        const p=point(left+Math.random()*(width-left-width*.04), height*(.12+Math.random()*.76), index);
+        p.vx=(Math.random()-.5)*.035;
+        p.vy=-(.025+Math.random()*.045);
+        return p;
+      });
+      links = [];
+    }
+
+    function rebuild() {
+      if (profile === "mesh") buildMesh();
+      else if (profile === "flow") buildFlow();
+      else if (profile === "signal") buildSignal();
+      else buildDrift();
+    }
+
+    function resize() {
+      const nextWidth = Math.max(1,target.clientWidth);
+      const nextHeight = Math.max(1,target.clientHeight);
+      if (nextWidth === width && nextHeight === height) return;
+      width=nextWidth; height=nextHeight;
+      const dpr=Math.min(devicePixelRatio||1,coarse?1.25:1.5);
+      canvas.width=Math.round(width*dpr);
+      canvas.height=Math.round(height*dpr);
+      canvas.style.width=width+"px";
+      canvas.style.height=height+"px";
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      rebuild();
+    }
+
+    function applyPointer(p, radius, strength, swirl) {
+      if (!pointer.active) return 0;
+      const dx=p.x-pointer.x, dy=p.y-pointer.y;
+      const distance=Math.max(16,Math.hypot(dx,dy));
+      if (distance>=radius) return 0;
+      const influence=1-distance/radius;
+      p.vx+=dx/distance*strength*influence-dy/distance*swirl*influence;
+      p.vy+=dy/distance*strength*influence+dx/distance*swirl*influence;
+      return influence;
+    }
+
+    function updatePoint(p, index) {
+      p.px=p.x; p.py=p.y;
+      if (profile === "mesh" || profile === "signal") {
+        const spring=profile==="mesh"?.018:.009;
+        p.vx+=(p.homeX-p.x)*spring;
+        p.vy+=(p.homeY-p.y)*spring;
+        applyPointer(p,profile==="mesh"?165:145,profile==="mesh"?.13:.07,profile==="signal"?.018:0);
+        p.vx*=profile==="mesh"?.88:.92;
+        p.vy*=profile==="mesh"?.88:.92;
+      } else if (profile === "flow") {
+        const nx=p.x/width-.5, ny=p.y/height-.5;
+        const angle=Math.sin(ny*4.2+time*.7)*.82+Math.cos(nx*3.6-time*.45)*.62;
+        p.vx+=Math.cos(angle)*.008;
+        p.vy+=Math.sin(angle)*.008;
+        applyPointer(p,180,.025,.085);
+        p.vx*=.982; p.vy*=.982;
+        const speed=Math.max(.001,Math.hypot(p.vx,p.vy));
+        if (speed>.62) { p.vx=p.vx/speed*.62; p.vy=p.vy/speed*.62; }
+      } else {
+        applyPointer(p,190,.04,profile==="waypoint"?.012:0);
+        p.vx*=.992; p.vy+=(profile==="glyph"?-.0004:.00015);
+        p.vy*=.995;
+      }
+      p.x+=p.vx; p.y+=p.vy;
+      if (profile === "flow") {
+        if (p.x<-12) p.x=width+12; else if (p.x>width+12) p.x=-12;
+        if (p.y<-12) p.y=height+12; else if (p.y>height+12) p.y=-12;
+      } else if (profile === "glyph" || profile === "waypoint") {
+        if (p.y<-24) { p.y=height+24; p.x=(profile==="glyph"?width*.48:0)+Math.random()*(profile==="glyph"?width*.48:width); }
+        if (p.x<-24) p.x=width+24; else if (p.x>width+24) p.x=-24;
+      }
+      return .58+Math.sin(time*1.7+p.phase+index*.13)*.2;
+    }
+
+    function drawLinks(dark) {
+      links.forEach(([a,b], index) => {
+        const p=points[a], q=points[b];
+        if (!p || !q) return;
+        const distance=Math.hypot(p.x-q.x,p.y-q.y);
+        const nearPointer=pointer.active ? Math.max(0,1-Math.min(Math.hypot((p.x+q.x)/2-pointer.x,(p.y+q.y)/2-pointer.y)/180,1)) : 0;
+        let alpha=(profile==="signal"?.075:.06)+nearPointer*.105;
+        if (profile==="mesh" && distance>Math.max(width,height)*.24) alpha*=.25;
+        ctx.strokeStyle="rgba("+palette[index%palette.length]+","+alpha+")";
+        ctx.lineWidth=nearPointer>.2?.85:.5;
+        ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
+      });
+      if (profile==="signal") {
+        pulses.forEach((pulse,index)=>{
+          if (!links.length) return;
+          pulse.t+=pulse.speed*(pointer.active?1.45:1);
+          if (pulse.t>1) { pulse.t=0; pulse.edge=(pulse.edge+1+index)%links.length; }
+          const edge=links[pulse.edge], a=points[edge[0]], b=points[edge[1]];
+          const x=a.x+(b.x-a.x)*pulse.t, y=a.y+(b.y-a.y)*pulse.t;
+          const glow=ctx.createRadialGradient(x,y,0,x,y,7);
+          glow.addColorStop(0,"rgba("+palette[index%palette.length]+",.62)");
+          glow.addColorStop(1,"rgba("+palette[index%palette.length]+",0)");
+          ctx.fillStyle=glow;ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fill();
+        });
+      }
+    }
+
+    function drawMeshRefinement() {
+      if (!pointer.active || profile!=="mesh") return;
+      ctx.strokeStyle="rgba("+palette[0]+",.13)";
+      ctx.fillStyle="rgba("+palette[1]+",.36)";
+      ctx.lineWidth=.45;
+      for (let i=0;i<6;i++) {
+        const angle=i*Math.PI/3+time*.12;
+        const radius=26+(i%2)*12;
+        const x=pointer.x+Math.cos(angle)*radius, y=pointer.y+Math.sin(angle)*radius;
+        ctx.beginPath();ctx.moveTo(pointer.x,pointer.y);ctx.lineTo(x,y);ctx.stroke();
+        ctx.beginPath();ctx.arc(x,y,1.1,0,Math.PI*2);ctx.fill();
+      }
+    }
+
+    function drawWaypoints() {
+      if (profile!=="waypoint") return;
+      const order=points.slice().sort((a,b)=>a.x-b.x);
+      ctx.setLineDash([2,7]);
+      ctx.strokeStyle="rgba("+palette[0]+",.11)";
+      ctx.lineWidth=.7;ctx.beginPath();
+      order.slice(0,12).forEach((p,index)=>index?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+      ctx.stroke();ctx.setLineDash([]);
+    }
+
+    function drawRipples() {
+      ripples= ripples.filter((r)=>{
+        r.radius+=2.3; r.life-=.026;
+        if (r.life<=0) return false;
+        ctx.strokeStyle="rgba("+r.color+","+(r.life*.34)+")";
+        ctx.lineWidth=.7+r.life;
+        ctx.beginPath();ctx.arc(r.x,r.y,r.radius,0,Math.PI*2);ctx.stroke();
+        return true;
+      });
+      sparks=sparks.filter((spark)=>{
+        spark.x+=spark.vx; spark.y+=spark.vy; spark.life-=.045;
+        if (spark.life<=0) return false;
+        ctx.fillStyle="rgba("+spark.color+","+(spark.life*.42)+")";
+        ctx.beginPath();ctx.arc(spark.x,spark.y,.7+spark.life,0,Math.PI*2);ctx.fill();
+        return true;
+      });
+    }
+
+    function draw(now) {
+      frame=0;
+      if (!visible || document.hidden) return;
+      const interval=coarse?50:33;
+      if (now-lastFrame<interval) { frame=requestAnimationFrame(draw); return; }
+      lastFrame=now;
+      time+=interval*.001;
+      ctx.clearRect(0,0,width,height);
+      const dark=document.documentElement.dataset.cmTheme==="dark";
+      ctx.globalCompositeOperation=dark?"screen":"source-over";
+      drawLinks(dark);
+      drawWaypoints();
+      points.forEach((p,index)=>{
+        const pulse=updatePoint(p,index);
+        if (profile==="flow") {
+          ctx.strokeStyle="rgba("+p.color+","+(dark?.16:.12)*p.depth+")";
+          ctx.lineWidth=.45+p.depth*.45;
+          ctx.beginPath();ctx.moveTo(p.px,p.py);ctx.lineTo(p.x-p.vx*8,p.y-p.vy*8);ctx.stroke();
+        } else if (profile==="glyph") {
+          ctx.font=(10+p.depth*8)+'px "Fira Code","SFMono-Regular",Consolas,monospace';
+          ctx.fillStyle="rgba("+p.color+","+(dark?.16:.11)*pulse+")";
+          ctx.fillText(p.glyph,p.x,p.y);
+        } else {
+          ctx.fillStyle="rgba("+p.color+","+(dark?.42:.34)*pulse+")";
+          ctx.beginPath();ctx.arc(p.x,p.y,p.radius*(.7+p.depth),0,Math.PI*2);ctx.fill();
+        }
+      });
+      drawMeshRefinement();
+      drawRipples();
+      if (pointer.active) {
+        const halo=ctx.createRadialGradient(pointer.x,pointer.y,0,pointer.x,pointer.y,profile==="glyph"?120:100);
+        halo.addColorStop(0,"rgba("+palette[0]+","+(dark?".075":".055")+")");
+        halo.addColorStop(1,"rgba("+palette[0]+",0)");
+        ctx.fillStyle=halo;ctx.beginPath();ctx.arc(pointer.x,pointer.y,profile==="glyph"?120:100,0,Math.PI*2);ctx.fill();
+      }
+      ctx.globalCompositeOperation="source-over";
+      start();
+    }
+
+    function start() {
+      if (!frame && visible && !document.hidden) frame=requestAnimationFrame(draw);
+    }
+    function stop() {
+      cancelAnimationFrame(frame); frame=0;
+    }
+    function updatePointer() {
+      pointerFrame=0;
+      const box=target.getBoundingClientRect();
+      const nextX=pointer.clientX-box.left, nextY=pointer.clientY-box.top;
+      if (finePointer && pointer.active && Math.hypot(nextX-pointer.lastX,nextY-pointer.lastY)>18) {
+        sparks.push({x:nextX,y:nextY,vx:(Math.random()-.5)*.55,vy:(Math.random()-.5)*.55,life:.7,color:palette[sparks.length%palette.length]});
+        if (sparks.length>12) sparks.shift();
+        pointer.lastX=nextX;pointer.lastY=nextY;
+      }
+      pointer.x=nextX;pointer.y=nextY;pointer.active=true;
+    }
+    function queuePointer(event) {
+      pointer.clientX=event.clientX;pointer.clientY=event.clientY;
+      if (!pointerFrame) pointerFrame=requestAnimationFrame(updatePointer);
+    }
+    function addRipple(event) {
+      const box=target.getBoundingClientRect();
+      const x=event.clientX-box.left, y=event.clientY-box.top;
+      ripples.push({x:x,y:y,radius:4,life:1,color:palette[ripples.length%palette.length]});
+      if (ripples.length>4) ripples.shift();
+      if (!finePointer) { pointer.x=x;pointer.y=y;pointer.active=true;setTimeout(()=>{pointer.active=false;},650); }
+    }
+
+    if (finePointer) target.addEventListener("pointermove",queuePointer,{passive:true});
+    target.addEventListener("pointerdown",addRipple,{passive:true});
+    target.addEventListener("pointerleave",()=>{
+      pointer.active=false;pointer.lastX=-999;pointer.lastY=-999;
+      cancelAnimationFrame(pointerFrame);pointerFrame=0;
+    },{passive:true});
+    resize();
+    start();
+    if ("ResizeObserver" in window) new ResizeObserver(resize).observe(target);
+    else addEventListener("resize",resize,{passive:true});
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([entry])=>{
+        visible=entry.isIntersecting;
+        if (visible) start(); else stop();
+      },{rootMargin:"140px"}).observe(target);
+    }
+    document.addEventListener("visibilitychange",()=>document.hidden?stop():start());
+  }
+
   function initializeParticles() {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const targets = document.querySelectorAll(".cm-home-hero, .cm-hero");
+    const targets = document.querySelectorAll(".cm-home-hero");
     targets.forEach((target) => {
       if (target.querySelector(":scope > .cm-particle-canvas")) return;
       const canvas = document.createElement("canvas");
@@ -948,6 +1325,7 @@
     initializeImageStretch();
     initializeParallax();
     initializeSymbolField();
+    initializeSubpageParticleFields();
     initializeParticles();
     initializeMotion();
     initializeReadingProgress();
