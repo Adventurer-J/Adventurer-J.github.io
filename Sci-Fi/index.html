@@ -3,6 +3,19 @@
   <head>
     <meta charset="utf8" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <script>
+      (function () {
+        var theme = null;
+        try {
+          var saved = localStorage.getItem("cm-theme");
+          if (saved === "light" || saved === "dark") theme = saved;
+        } catch (error) {}
+        if (!theme) {
+          theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.dataset.cmTheme = theme;
+      })();
+    </script>
     <title>
       
         科幻 | Numerical Algorithms and Sci-Fi
