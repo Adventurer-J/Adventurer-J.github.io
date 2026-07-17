@@ -63,10 +63,10 @@
     <section class="cm-home-hero">
       <div class="cm-home-hero-copy">
         <div class="cm-home-kicker"><span>CM</span> Computational Mathematics Workspace</div>
-        <div class="cm-home-quote-rotator" data-cm-quote-rotator aria-live="off">
+        <div class="cm-home-quote-rotator" data-cm-quote-rotator data-cm-quote-kind="math" aria-live="off">
           <h1 data-cm-rotating-quote>计算的目的，是洞察，而非数字。</h1>
           <div class="cm-home-quote-meta">
-            <span data-cm-quote-index>01 / 03</span>
+            <span data-cm-quote-index>001 / 100</span>
             <cite data-cm-quote-source>Richard W. Hamming</cite>
           </div>
         </div>
@@ -83,9 +83,10 @@
           <strong>research.pipeline</strong>
           <em>01</em>
         </div>
-        <div class="cm-home-equation">
-          <span class="cm-home-equation-label">MODEL</span>
-          <div>∂<sub>t</sub>u + 𝒩(u; μ) = f</div>
+        <div class="cm-home-equation" data-cm-equation-gallery role="button" tabindex="0" aria-label="数学公式画廊，点击或按回车切换" aria-live="off">
+          <span class="cm-home-equation-label" data-cm-equation-label>EULER / IDENTITY</span>
+          <div data-cm-equation-expression>e<sup>iπ</sup> + 1 = 0</div>
+          <small data-cm-equation-note>five constants · one line</small>
         </div>
         <div class="cm-home-console-grid">
           <div class="cm-home-console-item">
@@ -119,28 +120,24 @@
       <div class="cm-home-research-grid">
         <a class="cm-home-research-card" href="/research/#equations">
           <span class="cm-home-card-no">01</span>
-          <div class="cm-home-card-symbol">𝓛u=f</div>
           <h3>模型与方程</h3>
           <p>分类结构、边界条件、正则性与尺度。</p>
           <div class="cm-home-card-tags"><span>ODE/DAE</span><span>PDE</span><span>随机模型</span></div>
         </a>
         <a class="cm-home-research-card" href="/research/#discretization">
           <span class="cm-home-card-no">02</span>
-          <div class="cm-home-card-symbol">V<sub>h</sub> ⊂ V</div>
           <h3>离散与逼近</h3>
           <p>一致性、稳定性、守恒性与高阶逼近。</p>
           <div class="cm-home-card-tags"><span>FDM/FVM</span><span>FEM/DG</span><span>Spectral</span></div>
         </a>
         <a class="cm-home-research-card" href="/research/#solvers">
           <span class="cm-home-card-no">03</span>
-          <div class="cm-home-card-symbol">A x = b</div>
           <h3>算法与求解器</h3>
           <p>线性、非线性、优化与特征值计算。</p>
           <div class="cm-home-card-tags"><span>Krylov</span><span>Newton</span><span>Multigrid</span></div>
         </a>
         <a class="cm-home-research-card" href="/research/#verification">
           <span class="cm-home-card-no">04</span>
-          <div class="cm-home-card-symbol">‖e<sub>h</sub>‖</div>
           <h3>验证与复现</h3>
           <p>误差、收敛率、基准、日志与结果追溯。</p>
           <div class="cm-home-card-tags"><span>V&amp;V</span><span>Benchmark</span><span>Archive</span></div>
@@ -183,10 +180,11 @@
       </div>
     </section>
 
-    <section class="cm-home-quote-band">
-      <div class="cm-home-quote-index">∞</div>
-      <blockquote>“给岁月以文明，而不是给文明以岁月。”</blockquote>
-      <cite>刘慈欣 · 《三体Ⅱ：黑暗森林》</cite>
+    <section class="cm-home-quote-band" data-cm-quote-rotator data-cm-quote-kind="scifi" aria-live="off">
+      <div class="cm-home-quote-index" aria-hidden="true">∞</div>
+      <blockquote data-cm-rotating-quote>弱小和无知不是生存的障碍，傲慢才是。</blockquote>
+      <cite data-cm-quote-source>刘慈欣 · 《死神永生》</cite>
+      <span class="cm-home-quote-counter" data-cm-quote-index>001 / 100</span>
       <a href="/Sci-Fi">进入科幻栏目 →</a>
     </section>
   </main>
@@ -208,6 +206,7 @@
 
   <script src="/js/search.js"></script>
   <script>searchInitialize("/search.json");</script>
+  <script src="/js/quote-library.js"></script>
   <script src="/js/copy-code.js"></script>
 </body>
 </html>
