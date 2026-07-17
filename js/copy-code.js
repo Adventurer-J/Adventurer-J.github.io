@@ -181,14 +181,17 @@
       ".cm-card", ".cm-panel", ".wall-category", ".cm-category-card",
       ".post-content__head", ".post-content__body", ".post__foot", "#gitalk-container"
     ];
-    document.querySelectorAll(selectors.join(",")).forEach((surface) => surface.classList.add("cm-glass"));
+    document.querySelectorAll(selectors.join(",")).forEach((surface) => {
+      if (surface.matches(".cm-sci-fi-stage")) return;
+      surface.classList.add("cm-glass");
+    });
   }
 
   function initializeParallax() {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches || innerWidth < 760) return;
     const layers = [
       [document.querySelector(".cm-hero"), .032],
-      [document.querySelector(".wall-category .wall-main"), .045],
+      [document.documentElement.classList.contains("cm-deep-space-active") ? null : document.querySelector(".wall-category .wall-main"), .045],
       [document.querySelector(".post-content__head"), .036],
       [document.querySelector(".cm-analysis-equation"), .022]
     ].filter(([element]) => element);
@@ -245,7 +248,7 @@
 
   function initializeSciFiDeepSpace() {
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
-    const wall = document.querySelector(".wall-category");
+    const wall = document.querySelector("[data-sci-fi-viewport]") || document.querySelector(".wall-category");
     if (key !== "Sci-Fi" || !wall || wall.querySelector(".cm-deep-space-canvas")) return;
     document.documentElement.classList.add("cm-deep-space-active");
     const canvas = document.createElement("canvas");
@@ -260,15 +263,17 @@
 
     function makeStar() {
       const depth = Math.random();
-      return {x:Math.random(), y:Math.random(), depth, size:.24+depth*1.18, alpha:.14+Math.random()*.5, phase:Math.random()*Math.PI*2, color:colors[Math.floor(Math.random()*colors.length)], bright:Math.random()>.978};
+      return {x:Math.random(), y:Math.random(), depth, size:.22+depth*1.05, alpha:.12+Math.random()*.42, phase:Math.random()*Math.PI*2, color:colors[Math.floor(Math.random()*colors.length)], bright:Math.random()>.984};
     }
     function resize() {
       const dpr = Math.min(devicePixelRatio || 1, 1.5);
-      width = wall.clientWidth; height = wall.clientHeight;
+      const nextWidth = wall.clientWidth, nextHeight = wall.clientHeight;
+      if (nextWidth === width && nextHeight === height) return;
+      width = nextWidth; height = nextHeight;
       canvas.width = width*dpr; canvas.height = height*dpr;
       canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
       ctx.setTransform(dpr,0,0,dpr,0,0);
-      const count = width < 680 ? 84 : Math.min(180, Math.round(width/8.5));
+      const count = width < 680 ? 48 : Math.min(108, Math.round(width/13.5));
       stars = Array.from({length:count}, makeStar);
       if (reduced) draw(true);
     }
@@ -281,8 +286,8 @@
       ctx.globalCompositeOperation="screen";
       pointer.x+=(pointer.tx-pointer.x)*.045; pointer.y+=(pointer.ty-pointer.y)*.045;
       stars.forEach((star)=>{
-        const shiftX=(pointer.x-.5)*34*star.depth;
-        const shiftY=(pointer.y-.5)*22*star.depth;
+        const shiftX=(pointer.x-.5)*18*star.depth;
+        const shiftY=(pointer.y-.5)*11*star.depth;
         const x=star.x*width-shiftX, y=star.y*height-shiftY;
         const twinkle=staticFrame ? .72 : .68+Math.sin(time*(1.2+star.depth)+star.phase)*.22;
         const alpha=Math.min(.92,star.alpha*twinkle);
@@ -314,7 +319,7 @@
 
   function initializeImageStretch() {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    document.querySelectorAll(".post-content__body img, .cm-sci-fi-observation img").forEach((image) => {
+    document.querySelectorAll(".post-content__body img").forEach((image) => {
       if (image.closest(".cm-image-warp")) return;
       const wrap = document.createElement("span");
       wrap.className = "cm-image-warp";
@@ -523,6 +528,7 @@
 
   function initializeCategoryPage() {
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
+    if (key === "Sci-Fi") return;
     const items = categoryMap[key];
     if (categoryAccent[key]) document.documentElement.style.setProperty("--cm-section-accent", categoryAccent[key]);
     const wall = document.querySelector(".wall-category");
