@@ -2843,3 +2843,83 @@ button:active,.cm-home-button:active,.cm-filter:active,.cm-resource:active,.cm-c
 .post-content__body .cm-image-warp{margin:26px auto;width:fit-content}
 @media(max-width:620px){.cm-sci-fi-observation{margin-top:20px;padding:8px;width:calc(100% - 20px)}.cm-sci-fi-observation .cm-image-warp{aspect-ratio:4/3}.cm-sci-fi-observation figcaption{align-items:flex-start;flex-direction:column;gap:5px;padding:10px 5px 2px}}
 @media(prefers-reduced-motion:reduce){.cm-image-warp img{transform:none!important;will-change:auto}}
+
+
+/* Precision refinement: restrained quotes, neutral dark palette, and collision-safe effects */
+.cm-home-quote-rotator{margin-top:clamp(24px,4vw,46px);max-width:760px}
+.cm-home-quote-rotator h1{font-size:clamp(2.5rem,4.2vw,4.1rem);line-height:1.06;margin:0;min-height:2.12em;max-width:760px;text-wrap:balance;transition:opacity .26s ease,transform .26s cubic-bezier(.2,.8,.2,1)}
+.cm-home-quote-rotator.is-changing h1{opacity:0;transform:translateY(10px)}
+.cm-home-quote-meta{align-items:center;color:var(--cm-muted);display:flex;font:650 .62rem/1.2 ui-monospace,"SFMono-Regular",Consolas,monospace;gap:12px;letter-spacing:.11em;margin:16px 0 24px;text-transform:uppercase}
+.cm-home-quote-meta span{color:var(--cm-teal)}
+.cm-home-quote-meta cite{font-style:normal}
+.cm-home-quote-meta cite::before{color:var(--cm-line);content:"/";margin-right:12px}
+.cm-hub .cm-hero h1{font-size:clamp(2.8rem,5.15vw,4.45rem);line-height:1;max-width:1120px}
+
+.cm-threebody-label{bottom:26px!important;left:auto!important;margin:0;position:absolute!important;right:28px!important;top:auto!important;z-index:3}
+.cm-redcoast-signal{position:absolute!important;z-index:3}
+.cm-threebody-field::after{filter:blur(56px);opacity:.42!important}
+.cm-threebody-field .cm-particle-canvas{filter:saturate(.82) contrast(1.01)}
+[data-cm-theme="dark"] .cm-threebody-field::after{opacity:.52!important}
+[data-cm-theme="dark"] .cm-threebody-field .cm-particle-canvas{filter:saturate(.74) brightness(.88)}
+
+.cm-deep-space-active .wall-category > canvas.cm-deep-space-canvas{display:block;flex:none!important;height:100%!important;inset:0!important;max-width:none;min-height:0;min-width:0;position:absolute!important;width:100%!important;z-index:1}
+.cm-deep-space-active .wall-main{box-sizing:border-box;flex:1 1 100%;min-width:0;position:relative!important;width:100%!important;z-index:2}
+.cm-deep-space-active .wall-category::before{filter:blur(48px);opacity:.66}
+.cm-deep-space-active .wall-category::after{opacity:.58}
+
+.cm-page-category .cm-empty-state{background:transparent!important;border:0!important;box-shadow:none!important;display:grid;gap:8px;min-height:112px;padding:32px!important;place-content:center}
+.cm-page-category .cm-empty-state h2{font-size:1.3rem;margin:0}
+.cm-page-category .cm-empty-state p{color:var(--cm-muted);font-size:.84rem;margin:0}
+.cm-page-category .wall-category.cm-category-shell{background:radial-gradient(circle at 82% 0,color-mix(in srgb,var(--cm-section-accent) 11%,transparent),transparent 40%),color-mix(in srgb,var(--cm-surface) 76%,transparent)!important}
+.cm-deep-space-active .wall-category.cm-category-shell{background:#04090f!important}
+.cm-hub .cm-quote{min-height:148px}
+.cm-hub .cm-card{min-height:218px}
+
+.cm-page-category .foot,.cm-page-article .foot,.cm-page-research .foot{background:var(--cm-bg)!important;border-top:1px solid var(--cm-line)!important;box-shadow:none!important}
+.cm-page-category .foot-inner,.cm-page-article .foot-inner,.cm-page-research .foot-inner{background:transparent!important}
+.cm-page-category .copyright,.cm-page-article .copyright,.cm-page-research .copyright{border-top-color:color-mix(in srgb,var(--cm-line) 72%,transparent)!important}
+
+[data-cm-theme="dark"]{
+  --cm-bg:#080d13;
+  --cm-surface:#0e1620;
+  --cm-surface-2:#121d28;
+  --cm-ink:#e6edf3;
+  --cm-muted:#91a1b2;
+  --cm-line:#243241;
+  --cm-navy:#b8d7ff;
+  --cm-teal:#63d8cf;
+  --cm-teal-soft:#102c32;
+  --cm-gold:#d8b16d;
+  --cm-code:#070b10;
+  --cm-shadow:0 18px 50px rgba(0,0,0,.34);
+  --cm-v3-accent:#66d9d0;
+  --cm-v3-cyan:#79e5da;
+  --cm-v3-ink:#edf5ff;
+  --cm-v3-surface:rgba(12,21,30,.78);
+  --cm-v3-border:rgba(128,165,201,.16);
+  --cm-v3-shadow:0 20px 58px rgba(0,0,0,.28);
+  color-scheme:dark;
+}
+[data-cm-theme="dark"] body{background:#080d13;color:var(--cm-ink)}
+[data-cm-theme="dark"] .head,[data-cm-theme="dark"] .nav{background:rgba(8,13,19,.88)!important;border-color:rgba(128,165,201,.12)!important}
+[data-cm-theme="dark"] .cm-home-hero,[data-cm-theme="dark"] .cm-hub .cm-hero{background:radial-gradient(circle at 86% 16%,rgba(56,116,151,.1),transparent 31%),linear-gradient(145deg,rgba(13,22,31,.92),rgba(8,13,19,.82))!important}
+[data-cm-theme="dark"] .cm-threebody-field{background-color:#0a1119}
+[data-cm-theme="dark"] .cm-glass{background:rgba(12,20,29,.76)!important;border-color:rgba(124,157,188,.14)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 16px 46px rgba(0,0,0,.24)!important}
+[data-cm-theme="dark"] .cm-home-console,[data-cm-theme="dark"] .cm-home-research-card,[data-cm-theme="dark"] .cm-home-section-card,[data-cm-theme="dark"] .cm-card,[data-cm-theme="dark"] .post-item,[data-cm-theme="dark"] .cm-category-card{background:rgba(14,22,32,.82)!important;border-color:rgba(128,165,201,.14)!important;box-shadow:0 18px 50px rgba(0,0,0,.23)}
+[data-cm-theme="dark"] #search-mask{background:rgba(3,7,12,.78)}
+[data-cm-theme="dark"] #search-main{background:#0d151f;border-color:#253443;box-shadow:0 30px 100px rgba(0,0,0,.55)}
+[data-cm-theme="dark"] .cm-loader{background:rgba(8,14,21,.94);border-color:rgba(121,229,218,.16);color:#e6edf3}
+[data-cm-theme="dark"] .cm-page-category .foot,[data-cm-theme="dark"] .cm-page-article .foot,[data-cm-theme="dark"] .cm-page-research .foot{background:#080d13!important}
+
+@media(max-width:620px){
+  .cm-home-quote-rotator{margin-top:26px}
+  .cm-home-quote-rotator h1{font-size:clamp(2.25rem,11vw,2.8rem);min-height:3.18em}
+  .cm-home-quote-meta{margin:12px 0 20px}
+  .cm-threebody-label{bottom:14px!important;right:16px!important}
+  .cm-hub .cm-hero{padding-bottom:58px!important}
+  .cm-hub .cm-hero h1{font-size:2.65rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .cm-home-quote-rotator h1{transition:none}
+  .cm-home-quote-rotator.is-changing h1{opacity:1;transform:none}
+}
