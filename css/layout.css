@@ -2925,75 +2925,126 @@ button:active,.cm-home-button:active,.cm-filter:active,.cm-resource:active,.cm-c
 }
 
 
-/* Unified site footer and single-surface Sci-Fi observatory */
+/* Unified footer, homepage quote glass, and interactive Sci-Fi observatory */
 .foot.cm-site-footer{background:linear-gradient(145deg,#071416,#0a2023)!important;border-top:2px solid rgba(63,194,185,.72)!important;box-shadow:none!important;color:#a7bfbb;margin-top:0}
 .cm-site-footer .foot-inner{align-items:center;background:transparent!important;box-sizing:border-box;display:grid;gap:28px;grid-template-columns:1fr auto;margin:0 auto;max-width:1240px;min-height:0;padding:46px 24px 22px!important}
 .cm-site-footer .cm-home-footer-brand{align-items:center;display:flex;gap:14px}
 .cm-site-footer .cm-home-footer-brand>a{display:flex;flex:none}
 .cm-site-footer .cm-home-footer-brand img{filter:invert(1);opacity:.85}
 .cm-site-footer .cm-home-footer-brand strong,.cm-site-footer .cm-home-footer-brand span{display:block}
-.cm-site-footer .cm-home-footer-brand strong{color:#e2eeeb;font-size:.86rem}
+.cm-site-footer .cm-home-footer-brand strong{color:#d5e4e1;font-size:.86rem}
 .cm-site-footer .cm-home-footer-brand span{color:#748c8a;font-size:.65rem;margin-top:3px}
 .cm-site-footer .cm-home-footer-links{display:flex;gap:24px}
 .cm-site-footer .cm-home-footer-links a{color:#a7bfbb;font-size:.72rem;text-decoration:none}
 .cm-site-footer .cm-home-footer-links a:hover{color:#75ddd4}
 .cm-site-footer .copyright{border-top:1px solid #263b40!important;color:#607b78;grid-column:1/-1;justify-content:flex-start;margin:0;padding-top:18px;width:100%}
 
-.cm-sci-fi-page{background:#03070d;color:#d8e5f1;isolation:isolate;max-width:none!important;overflow:hidden;padding:40px 0 72px!important;position:relative;width:100%!important}
-.cm-sci-fi-page::before{background:radial-gradient(circle at 78% 12%,rgba(66,83,183,.15),transparent 29%),radial-gradient(circle at 13% 78%,rgba(9,126,135,.1),transparent 32%),linear-gradient(rgba(100,163,190,.024) 1px,transparent 1px),linear-gradient(90deg,rgba(100,163,190,.024) 1px,transparent 1px);background-size:auto,auto,64px 64px,64px 64px;content:"";inset:0;pointer-events:none;position:absolute;z-index:0}
+/* The Three-Body quote remains a deliberate dark accent in both themes. */
+.cm-home-quote-band{background:radial-gradient(circle at 82% 18%,rgba(81,174,178,.14),transparent 42%),linear-gradient(135deg,rgba(16,40,51,.96),rgba(6,24,31,.98));border:1px solid rgba(132,190,198,.18);border-radius:18px;box-shadow:inset 0 1px 0 rgba(220,242,242,.055),0 22px 58px rgba(8,27,32,.2);color:#cbd9df;isolation:isolate;overflow:hidden;padding:34px 38px;position:relative;-webkit-backdrop-filter:blur(16px) saturate(1.08);backdrop-filter:blur(16px) saturate(1.08);transition:border-color .22s ease,box-shadow .22s ease}
+.cm-home-quote-band::before{background:linear-gradient(110deg,transparent 22%,rgba(178,231,230,.055) 46%,transparent 67%);content:"";inset:0;pointer-events:none;position:absolute;transform:translateX(-34%);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.cm-home-quote-band::after{background:linear-gradient(90deg,transparent,rgba(104,207,201,.56),transparent);content:"";height:1px;left:28px;opacity:.62;position:absolute;right:28px;top:0}
+.cm-home-quote-band:hover{border-color:rgba(118,207,203,.28);box-shadow:inset 0 1px 0 rgba(220,242,242,.07),0 26px 68px rgba(5,23,29,.26)}
+.cm-home-quote-band:hover::before{transform:translateX(34%)}
+.cm-home-quote-band>*{position:relative;z-index:1}
+.cm-home-quote-index{color:#66c5be}
+.cm-home-quote-band blockquote{color:#d1dee4;text-shadow:none}
+.cm-home-quote-band cite{color:#8ba0ad}
+.cm-home-quote-band>a{align-items:center;background:rgba(111,194,190,.075);border:1px solid rgba(122,207,202,.16);border-radius:999px;color:#a6cfcc;display:inline-flex;min-height:38px;padding:0 15px;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}
+.cm-home-quote-band>a:hover{background:rgba(111,194,190,.13);border-color:rgba(122,207,202,.3);color:#d0e6e3;transform:translateX(2px)}
+.cm-home-quote-band>a:focus-visible{border-color:#67cbc5;outline:2px solid #67cbc5;outline-offset:4px}
+html[data-cm-theme="dark"] .cm-home-quote-band{background:radial-gradient(circle at 82% 18%,rgba(80,161,181,.11),transparent 43%),linear-gradient(135deg,rgba(13,27,40,.78),rgba(6,14,23,.88));border-color:rgba(129,180,204,.16);box-shadow:inset 0 1px 0 rgba(219,239,248,.055),0 22px 56px rgba(0,0,0,.28)}
+html[data-cm-theme="dark"] .cm-home-quote-band blockquote{color:#c8d5e0}
+html[data-cm-theme="dark"] .cm-home-quote-band cite{color:#8296a8}
+html[data-cm-theme="dark"] .cm-home-quote-index{color:#64c5c1}
+html[data-cm-theme="dark"] .cm-home-quote-band>a{color:#9ecac8}
+
+.cm-sr-only{border:0!important;clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;height:1px!important;margin:-1px!important;overflow:hidden!important;padding:0!important;position:absolute!important;white-space:nowrap!important;width:1px!important}
+
+.cm-sci-fi-page{background:#02070c;color:#bdccd8;isolation:isolate;max-width:none!important;overflow:hidden;padding:40px 0 72px!important;position:relative;width:100%!important}
+.cm-sci-fi-page::before{background:radial-gradient(circle at 78% 10%,rgba(57,75,161,.13),transparent 29%),radial-gradient(circle at 12% 76%,rgba(8,109,122,.09),transparent 34%),linear-gradient(rgba(100,163,190,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(100,163,190,.022) 1px,transparent 1px);background-size:auto,auto,64px 64px,64px 64px;content:"";inset:0;pointer-events:none;position:absolute;z-index:0}
 .cm-sci-fi-page>*{position:relative;z-index:1}
-.cm-sci-fi-page .wall-category.cm-sci-fi-stage{background:#030812!important;border:1px solid rgba(127,180,224,.17)!important;border-radius:30px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 36px 100px rgba(0,0,0,.42)!important;box-sizing:border-box;display:block;height:auto!important;margin:0 auto!important;max-width:1360px;min-height:720px!important;overflow:hidden;padding:68px 58px 52px!important;width:calc(100% - 40px)!important}
-.cm-sci-fi-page .cm-sci-fi-stage .wall-main{background:transparent!important;border:0!important;border-radius:0;box-shadow:none!important;box-sizing:border-box;display:block;flex:none;height:auto!important;margin:0!important;max-width:none;padding:0!important;position:relative!important;top:auto!important;transform:none!important;width:100%!important;z-index:3}
-.cm-sci-fi-kicker{color:#ff9a86;font:700 .64rem/1.2 ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:.2em;margin:0 0 30px}
-.cm-sci-fi-page .wall-category-title{align-items:center;color:#eef5ff!important;display:flex;font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif;font-size:clamp(3.5rem,7vw,6.2rem);font-weight:560;gap:18px;letter-spacing:-.045em;line-height:.9;margin:0 0 22px!important;text-shadow:0 0 34px rgba(126,187,255,.14)!important}
-.cm-sci-fi-page .wall-category-title .title-icon{filter:grayscale(1) invert(1) drop-shadow(0 0 12px rgba(115,221,215,.3));height:58px;opacity:.72;width:58px}
-.cm-sci-fi-page .wall-category-title small{align-self:flex-end;color:#668397;font:650 .58rem/1 ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:.19em;margin:0 0 7px -8px}
-.cm-sci-fi-page .wall-category-description{color:#9aafc3!important;font-family:sourceHanSerif,"Iowan Old Style",serif;font-size:clamp(1rem,1.8vw,1.28rem);letter-spacing:.04em;margin:0;max-width:720px}
-
-.cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-horizon{bottom:-8%;height:auto;max-width:none;opacity:.68;pointer-events:none;position:absolute!important;right:-4%;width:min(1160px,78%);z-index:2}
-.cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-orbit-system{height:270px;pointer-events:none;position:absolute!important;right:4%;top:50px;width:390px;z-index:2}
-.cm-sci-fi-orbit-system::before,.cm-sci-fi-orbit-system::after{border:1px solid rgba(126,174,211,.13);border-radius:50%;content:"";inset:38px 10px;position:absolute;transform:rotate(-17deg)}
-.cm-sci-fi-orbit-system::after{border-color:rgba(108,214,207,.1);inset:72px 58px;transform:rotate(24deg)}
-.cm-sci-fi-orbit-system i{animation:cm-sci-fi-body 7s ease-in-out infinite alternate;background:#d9e8f4;border-radius:50%;box-shadow:0 0 16px rgba(177,215,241,.5);height:5px;position:absolute;width:5px}
+.cm-sci-fi-page .wall-category.cm-sci-fi-stage{--sf-pointer-x:50%;--sf-pointer-y:34%;--sf-shift-x:0px;--sf-shift-y:0px;--sf-orbit-x:0px;--sf-orbit-y:0px;--sf-accent-rgb:102,202,198;--sf-accent:#66cac6;background:linear-gradient(145deg,rgba(6,16,29,.86),rgba(3,8,19,.8) 62%,rgba(8,12,29,.88))!important;border:1px solid rgba(126,177,208,.16)!important;border-radius:30px;box-shadow:inset 0 1px 0 rgba(215,235,245,.035),0 36px 100px rgba(0,0,0,.42)!important;box-sizing:border-box;display:block;height:auto!important;isolation:isolate;margin:0 auto!important;max-width:1360px;min-height:720px!important;overflow:hidden;padding:66px 58px 52px!important;-webkit-backdrop-filter:blur(12px) saturate(1.1);backdrop-filter:blur(12px) saturate(1.1);width:calc(100% - 40px)!important}
+.cm-sci-fi-page .cm-sci-fi-stage[data-sci-fi-channel="unknown"]{--sf-accent-rgb:113,153,218;--sf-accent:#7199da}
+.cm-sci-fi-page .cm-sci-fi-stage[data-sci-fi-channel="cosmos"]{--sf-accent-rgb:211,137,126;--sf-accent:#d3897e}
+.cm-sci-fi-page .wall-category.cm-sci-fi-stage::before{background:radial-gradient(520px circle at var(--sf-pointer-x) var(--sf-pointer-y),rgba(var(--sf-accent-rgb),.09),transparent 68%)!important;content:"";filter:none!important;inset:0!important;opacity:1!important;pointer-events:none;position:absolute!important;transform:none!important;z-index:2!important}
+.cm-sci-fi-page .wall-category.cm-sci-fi-stage::after{background:linear-gradient(180deg,rgba(142,193,220,.018),transparent 18%,transparent 72%,rgba(3,8,15,.34)),radial-gradient(ellipse at center,transparent 56%,rgba(0,3,8,.32) 100%)!important;content:"";inset:0!important;opacity:1!important;pointer-events:none;position:absolute!important;z-index:2!important}
+.cm-sci-fi-page .cm-sci-fi-stage>.cm-deep-space-canvas{display:block;height:100%!important;inset:0!important;max-width:none!important;min-height:0;position:absolute!important;width:100%!important;z-index:0!important}
+.cm-sci-fi-page .cm-sci-fi-stage .wall-main{background:transparent!important;border:0!important;border-radius:0;box-shadow:none!important;box-sizing:border-box;display:block;flex:none;height:auto!important;margin:0!important;max-width:none;padding:0!important;position:relative!important;top:auto!important;transform:none!important;width:100%!important;z-index:4!important}
+.cm-sci-fi-kicker{color:#d98778;font:700 .65rem/1.2 ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:.2em;margin:0 0 28px}
+.cm-sci-fi-page .wall-category-title{align-items:center;color:#ccd9e5!important;display:flex;font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif;font-size:clamp(3.45rem,6.5vw,5.9rem);font-weight:540;gap:18px;letter-spacing:-.045em;line-height:.92;margin:0 0 22px!important;text-shadow:0 0 28px rgba(111,170,207,.1)!important}
+.cm-sci-fi-page .wall-category-title .title-icon{filter:grayscale(1) invert(1) brightness(.88) drop-shadow(0 0 10px rgba(102,202,198,.22));height:56px;opacity:.58;width:56px}
+.cm-sci-fi-page .wall-category-title small{align-self:flex-end;color:#6f8799;font:650 .61rem/1 ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:.18em;margin:0 0 7px -8px}
+.cm-sci-fi-page .wall-category-description{color:#8ca1b2!important;font-family:sourceHanSerif,"Iowan Old Style",serif;font-size:clamp(1rem,1.8vw,1.24rem);letter-spacing:.04em;margin:0;max-width:720px}
+.cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-horizon{bottom:-8%;height:auto;max-width:none;opacity:.56;pointer-events:none;position:absolute!important;right:-4%;transform:translate3d(var(--sf-shift-x),var(--sf-shift-y),0);transition:transform .45s cubic-bezier(.2,.8,.2,1);width:min(1160px,78%);z-index:1!important}
+.cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-orbit-system{height:270px;pointer-events:none;position:absolute!important;right:4%;top:50px;transform:translate3d(var(--sf-orbit-x),var(--sf-orbit-y),0);transition:transform .55s cubic-bezier(.2,.8,.2,1);width:390px;z-index:3!important}
+.cm-sci-fi-orbit-system::before,.cm-sci-fi-orbit-system::after{border:1px solid rgba(126,174,211,.12);border-radius:50%;content:"";inset:38px 10px;position:absolute;transform:rotate(-17deg)}
+.cm-sci-fi-orbit-system::after{border-color:rgba(108,214,207,.09);inset:72px 58px;transform:rotate(24deg)}
+.cm-sci-fi-orbit-system i{animation:cm-sci-fi-body 7s ease-in-out infinite alternate;background:#b9cbd8;border-radius:50%;box-shadow:0 0 14px rgba(151,196,224,.38);height:5px;position:absolute;width:5px}
 .cm-sci-fi-orbit-system i:nth-child(1){right:30px;top:92px}
-.cm-sci-fi-orbit-system i:nth-child(2){animation-delay:-2.3s;background:#ff9a86;box-shadow:0 0 14px rgba(255,154,134,.46);height:4px;right:174px;top:42px;width:4px}
-.cm-sci-fi-orbit-system i:nth-child(3){animation-delay:-4.8s;background:#72d8d2;box-shadow:0 0 14px rgba(114,216,210,.46);bottom:52px;height:4px;right:96px;width:4px}
+.cm-sci-fi-orbit-system i:nth-child(2){animation-delay:-2.3s;background:#d98778;box-shadow:0 0 12px rgba(217,135,120,.4);height:4px;right:174px;top:42px;width:4px}
+.cm-sci-fi-orbit-system i:nth-child(3){animation-delay:-4.8s;background:#66cac6;box-shadow:0 0 12px rgba(102,202,198,.4);bottom:52px;height:4px;right:96px;width:4px}
 
-.cm-sci-fi-signalbar{border-bottom:1px solid rgba(122,169,201,.12);border-top:1px solid rgba(122,169,201,.12);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:38px 0 22px;max-width:980px}
-.cm-sci-fi-signalbar>span{border-right:1px solid rgba(122,169,201,.12);display:grid;gap:8px;padding:15px 18px}
+.cm-sci-fi-signalbar{background:linear-gradient(135deg,rgba(13,29,43,.48),rgba(5,14,25,.36));border:1px solid rgba(137,185,214,.14);border-radius:14px;box-shadow:inset 0 1px 0 rgba(210,235,246,.035),0 16px 42px rgba(0,0,0,.12);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:38px 0 18px;max-width:1080px;overflow:hidden;-webkit-backdrop-filter:blur(10px) saturate(1.14);backdrop-filter:blur(10px) saturate(1.14)}
+.cm-sci-fi-signalbar>span{border-right:1px solid rgba(133,179,206,.1);display:grid;gap:9px;min-width:0;padding:15px 18px}
 .cm-sci-fi-signalbar>span:last-child{border-right:0}
-.cm-sci-fi-signalbar small{color:#587183;font:600 .52rem/1 ui-monospace,monospace;letter-spacing:.18em}
-.cm-sci-fi-signalbar b{color:#c8d8e6;font:600 .7rem/1 ui-monospace,monospace;letter-spacing:.07em}
-.cm-sci-fi-signalbar .is-live b{color:#ff9a86}
-.cm-sci-fi-signalbar .is-live small::before{animation:cm-sci-fi-pulse 1.8s ease-in-out infinite;background:#ff826f;border-radius:50%;box-shadow:0 0 10px rgba(255,130,111,.65);content:"";display:inline-block;height:5px;margin-right:7px;width:5px}
+.cm-sci-fi-signalbar small{color:#7890a3;font:650 .61rem/1 ui-monospace,monospace;letter-spacing:.16em}
+.cm-sci-fi-signalbar b{color:#afc1cf;font:600 .69rem/1.3 ui-monospace,monospace;letter-spacing:.055em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cm-sci-fi-signalbar .is-live b{color:#d98b7d}
+.cm-sci-fi-signalbar .is-live small::before{animation:cm-sci-fi-pulse 1.8s ease-in-out infinite;background:#d98778;border-radius:50%;box-shadow:0 0 9px rgba(217,135,120,.52);content:"";display:inline-block;height:5px;margin-right:7px;width:5px}
 
 .cm-sci-fi-sectors{display:grid;gap:12px;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;margin:0;max-width:1080px;padding:0}
-.cm-sci-fi-sectors li{background:linear-gradient(145deg,rgba(16,30,43,.74),rgba(7,14,23,.88));border:1px solid rgba(127,180,224,.14);border-radius:6px;box-sizing:border-box;display:grid;grid-template-columns:auto 1fr auto;min-height:138px;padding:22px;position:relative;transition:background .25s ease,border-color .25s ease,box-shadow .25s ease}
-.cm-sci-fi-sectors li::before,.cm-sci-fi-sectors li::after{content:"";height:12px;pointer-events:none;position:absolute;width:12px}
-.cm-sci-fi-sectors li::before{border-left:1px solid #6ad6d0;border-top:1px solid #6ad6d0;left:-1px;top:-1px}
-.cm-sci-fi-sectors li::after{border-bottom:1px solid #ff927e;border-right:1px solid #ff927e;bottom:-1px;right:-1px}
-.cm-sci-fi-sectors li:hover{background:linear-gradient(145deg,rgba(20,42,58,.86),rgba(8,18,29,.94));border-color:rgba(106,214,208,.34);box-shadow:inset 0 0 36px rgba(74,171,182,.055)}
-.cm-sci-fi-sectors li>span{color:#75d7d1;font:700 .62rem/1 ui-monospace,monospace}
-.cm-sci-fi-sectors li>div{align-self:end;display:grid;gap:8px}
-.cm-sci-fi-sectors strong{color:#dce8f3;font-size:1.02rem;letter-spacing:.02em}
-.cm-sci-fi-sectors small{color:#7890a2;font-size:.68rem;line-height:1.45}
-.cm-sci-fi-sectors li>b{color:#516c80;font:600 .5rem/1 ui-monospace,monospace;letter-spacing:.14em}
+.cm-sci-fi-sectors>li{list-style:none;min-width:0}
+.cm-sci-fi-sector{-webkit-appearance:none;appearance:none;background:linear-gradient(145deg,rgba(20,39,56,.52),rgba(6,15,27,.4));border:1px solid rgba(137,185,214,.15);border-radius:16px;box-shadow:inset 0 1px 0 rgba(215,236,246,.035);box-sizing:border-box;color:inherit;cursor:pointer;display:grid;font:inherit;grid-template-columns:auto 1fr auto;min-height:138px;overflow:hidden;padding:22px;position:relative;text-align:left;transform:perspective(800px) rotateX(0) rotateY(0) translateY(0);transform-style:preserve-3d;transition:background .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s cubic-bezier(.2,.8,.2,1);width:100%;-webkit-backdrop-filter:blur(10px) saturate(1.14);backdrop-filter:blur(10px) saturate(1.14)}
+.cm-sci-fi-sector::before{background:radial-gradient(250px circle at var(--sf-card-x,50%) var(--sf-card-y,50%),rgba(var(--sf-accent-rgb),.15),transparent 70%);content:"";inset:0;opacity:0;pointer-events:none;position:absolute;transition:opacity .22s ease}
+.cm-sci-fi-sector::after{background:linear-gradient(90deg,transparent,rgba(var(--sf-accent-rgb),.72),transparent);content:"";height:1px;left:16px;opacity:0;position:absolute;right:16px;top:0;transform:scaleX(.3);transition:opacity .22s ease,transform .35s ease}
+.cm-sci-fi-sector>*{position:relative;z-index:1}
+.cm-sci-fi-sector:hover::before,.cm-sci-fi-sector.is-active::before{opacity:.68}
+.cm-sci-fi-sector:hover::after,.cm-sci-fi-sector.is-active::after{opacity:.72;transform:scaleX(1)}
+.cm-sci-fi-sector.is-active,.cm-sci-fi-sector[aria-selected="true"]{background:linear-gradient(145deg,rgba(var(--sf-accent-rgb),.105),rgba(7,18,31,.55));border-color:rgba(var(--sf-accent-rgb),.34);box-shadow:inset 3px 0 0 var(--sf-accent),inset 0 1px 0 rgba(215,236,246,.045),0 15px 38px rgba(0,0,0,.12)}
+.cm-sci-fi-sector:focus-visible{border-color:rgba(var(--sf-accent-rgb),.7);outline:2px solid var(--sf-accent);outline-offset:3px}
+.cm-sci-fi-sector-index{color:var(--sf-accent);font:700 .66rem/1 ui-monospace,monospace}
+.cm-sci-fi-sector-copy{align-self:end;display:grid;gap:8px;min-width:0}
+.cm-sci-fi-sector strong{color:#c1d0dc;font-size:1rem;letter-spacing:.02em}
+.cm-sci-fi-sector small{color:#849bac;font-size:.73rem;line-height:1.45}
+.cm-sci-fi-sector>b{color:#6f8799;font:650 .58rem/1 ui-monospace,monospace;letter-spacing:.14em}
 
-.cm-sci-fi-signal-trace{align-items:center;background:rgba(5,12,20,.74);border:1px solid rgba(127,180,224,.12);display:grid;gap:22px;grid-template-columns:auto minmax(120px,1fr) auto;margin-top:18px;max-width:1080px;padding:16px 18px}
+.cm-sci-fi-sector-panel{align-items:center;background:linear-gradient(125deg,rgba(13,29,43,.48),rgba(5,14,25,.36));border:1px solid rgba(137,185,214,.13);border-radius:14px;box-shadow:inset 0 1px 0 rgba(210,235,246,.035);display:grid;gap:24px;grid-template-columns:minmax(160px,.72fr) minmax(260px,1.5fr) auto;margin-top:12px;max-width:1080px;min-height:76px;padding:16px 18px;transition:opacity .22s ease,transform .22s ease;-webkit-backdrop-filter:blur(9px) saturate(1.12);backdrop-filter:blur(9px) saturate(1.12)}
+.cm-sci-fi-sector-panel.is-switching{opacity:.42;transform:translateY(4px)}
+.cm-sci-fi-sector-panel>div{display:grid;gap:4px}
+.cm-sci-fi-sector-panel>div>span{color:var(--sf-accent);font:650 .56rem/1 ui-monospace,monospace;letter-spacing:.15em}
+.cm-sci-fi-sector-panel h2{color:#b9cad7;font-size:.94rem;letter-spacing:.02em;margin:0}
+.cm-sci-fi-sector-panel p{color:#8ea4b4;font-size:.72rem;line-height:1.65;margin:0}
+.cm-sci-fi-sector-panel>small{color:#6f8799;font:650 .55rem/1.5 ui-monospace,monospace;letter-spacing:.12em;text-align:right}
+.cm-sci-fi-sector-panel:focus-visible{border-color:rgba(var(--sf-accent-rgb),.55);outline:2px solid var(--sf-accent);outline-offset:3px}
+
+.cm-sci-fi-signal-trace{align-items:center;background:linear-gradient(135deg,rgba(8,20,31,.52),rgba(4,12,21,.42));border:1px solid rgba(137,185,214,.12);border-radius:12px;box-shadow:inset 0 1px 0 rgba(210,235,246,.03);display:grid;gap:22px;grid-template-columns:auto minmax(120px,1fr) auto;margin-top:12px;max-width:1080px;padding:15px 18px;-webkit-backdrop-filter:blur(8px) saturate(1.1);backdrop-filter:blur(8px) saturate(1.1)}
 .cm-sci-fi-signal-trace>div:first-child{display:grid;gap:7px}
-.cm-sci-fi-signal-trace span{color:#668397;font:650 .5rem/1 ui-monospace,monospace;letter-spacing:.17em}
-.cm-sci-fi-signal-trace b{color:#ff9a86;font:650 .54rem/1 ui-monospace,monospace;letter-spacing:.12em}
-.cm-sci-fi-signal-trace em{color:#627d90;font:600 .5rem/1 ui-monospace,monospace;font-style:normal;letter-spacing:.11em}
+.cm-sci-fi-signal-trace span{color:#7890a3;font:650 .59rem/1 ui-monospace,monospace;letter-spacing:.15em}
+.cm-sci-fi-signal-trace b{color:#d98b7d;font:650 .6rem/1.25 ui-monospace,monospace;letter-spacing:.1em}
+.cm-sci-fi-signal-trace em{color:#7890a3;font:600 .57rem/1 ui-monospace,monospace;font-style:normal;letter-spacing:.1em}
 .cm-sci-fi-spectrum{align-items:center;display:flex;gap:5px;height:28px}
-.cm-sci-fi-spectrum i{animation:cm-sci-fi-spectrum 1.25s ease-in-out infinite alternate;background:#68d1cc;display:block;height:24%;opacity:.58;width:3px}
+.cm-sci-fi-spectrum i{animation:cm-sci-fi-spectrum 1.25s ease-in-out infinite alternate;background:var(--sf-accent);display:block;height:24%;opacity:.55;width:3px}
 .cm-sci-fi-spectrum i:nth-child(2n){animation-delay:-.45s;height:64%}.cm-sci-fi-spectrum i:nth-child(3n){animation-delay:-.8s;height:92%}.cm-sci-fi-spectrum i:nth-child(5n){animation-delay:-.2s;height:46%}
 
-.cm-sci-fi-page .cm-sci-fi-transmission{align-items:center;background:rgba(8,18,27,.48)!important;border:1px solid rgba(127,180,224,.12)!important;border-radius:10px;box-shadow:none!important;display:grid;gap:24px;grid-template-columns:auto 1fr auto;margin:24px auto 0!important;max-width:1360px;min-height:0;padding:21px 25px!important;place-content:normal;text-align:left!important;width:calc(100% - 40px)}
-.cm-sci-fi-transmission>span{color:#69869a;font:650 .54rem/1 ui-monospace,monospace;letter-spacing:.16em}
-.cm-sci-fi-transmission h2{color:#dce8f2;font-size:.94rem;margin:0 0 6px}
-.cm-sci-fi-transmission p{color:#71899a;font-size:.68rem;margin:0}
-.cm-sci-fi-transmission>i{animation:cm-sci-fi-pulse 1.8s ease-in-out infinite;background:#ff8f7b;border-radius:50%;box-shadow:0 0 16px rgba(255,143,123,.55);height:7px;width:7px}
+.cm-sci-fi-page .cm-sci-fi-transmission{align-items:center;background:linear-gradient(125deg,rgba(12,27,40,.46),rgba(5,14,24,.38))!important;border:1px solid rgba(137,185,214,.12)!important;border-radius:14px;box-shadow:inset 0 1px 0 rgba(210,235,246,.03)!important;display:grid;gap:24px;grid-template-columns:auto 1fr auto;margin:24px auto 0!important;max-width:1360px;min-height:0;padding:20px 24px!important;place-content:normal;text-align:left!important;width:calc(100% - 40px);-webkit-backdrop-filter:blur(9px) saturate(1.1);backdrop-filter:blur(9px) saturate(1.1)}
+.cm-sci-fi-transmission>span{color:#7890a3;font:650 .59rem/1 ui-monospace,monospace;letter-spacing:.14em}
+.cm-sci-fi-transmission h2{color:#b9cad7;font-size:.94rem;margin:0 0 6px}
+.cm-sci-fi-transmission p{color:#8098a9;font-size:.72rem;margin:0}
+.cm-sci-fi-transmission>i{animation:cm-sci-fi-pulse 1.8s ease-in-out infinite;background:#d98778;border-radius:50%;box-shadow:0 0 14px rgba(217,135,120,.46);height:7px;width:7px}
 
+@media(hover:hover) and (pointer:fine){
+  .cm-sci-fi-sector:hover{border-color:rgba(var(--sf-accent-rgb),.4);box-shadow:inset 0 1px 0 rgba(215,236,246,.045),0 18px 44px rgba(0,0,0,.16);transform:perspective(800px) rotateX(var(--sf-tilt-x,0deg)) rotateY(var(--sf-tilt-y,0deg)) translateY(-3px)}
+}
+@supports not ((-webkit-backdrop-filter:blur(2px)) or (backdrop-filter:blur(2px))){
+  .cm-sci-fi-page .wall-category.cm-sci-fi-stage{background:#050d19!important}
+  .cm-sci-fi-signalbar,.cm-sci-fi-sector,.cm-sci-fi-sector-panel,.cm-sci-fi-signal-trace,.cm-sci-fi-page .cm-sci-fi-transmission{background:#081522!important}
+  .cm-home-quote-band{background:#0c2731}
+}
+@media(prefers-reduced-transparency:reduce){
+  .cm-sci-fi-page .wall-category.cm-sci-fi-stage{background:#050d19!important}
+  .cm-sci-fi-signalbar,.cm-sci-fi-sector,.cm-sci-fi-sector-panel,.cm-sci-fi-signal-trace,.cm-sci-fi-page .cm-sci-fi-transmission{background:#081522!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .cm-home-quote-band{background:#0c2731;-webkit-backdrop-filter:none;backdrop-filter:none}
+}
 @keyframes cm-sci-fi-pulse{50%{opacity:.35;transform:scale(.72)}}
 @keyframes cm-sci-fi-spectrum{to{height:100%;opacity:1}}
 @keyframes cm-sci-fi-body{to{transform:translate3d(8px,-5px,0)}}
@@ -3003,33 +3054,43 @@ button:active,.cm-home-button:active,.cm-filter:active,.cm-resource:active,.cm-c
   .cm-site-footer .copyright{grid-column:1}
   .cm-site-footer .cm-home-footer-links{flex-wrap:wrap}
   .cm-sci-fi-page .wall-category.cm-sci-fi-stage{padding:54px 34px 38px!important}
-  .cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-orbit-system{opacity:.65;right:-70px;top:35px}
+  .cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-orbit-system{opacity:.56;right:-70px;top:35px}
   .cm-sci-fi-signalbar{grid-template-columns:repeat(2,minmax(0,1fr))}
   .cm-sci-fi-signalbar>span:nth-child(2){border-right:0}
-  .cm-sci-fi-signalbar>span:nth-child(-n+2){border-bottom:1px solid rgba(122,169,201,.12)}
+  .cm-sci-fi-signalbar>span:nth-child(-n+2){border-bottom:1px solid rgba(133,179,206,.1)}
   .cm-sci-fi-sectors{grid-template-columns:1fr}
-  .cm-sci-fi-sectors li{min-height:118px}
-  .cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-horizon{bottom:0;opacity:.42;width:110%}
+  .cm-sci-fi-sector{min-height:116px}
+  .cm-sci-fi-sector-panel{grid-template-columns:minmax(150px,.7fr) 1.3fr}
+  .cm-sci-fi-sector-panel>small{grid-column:1/-1;text-align:left}
+  .cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-horizon{bottom:0;opacity:.38;width:110%}
 }
 @media(max-width:620px){
+  .cm-home-quote-band{gap:14px 16px;padding:26px 20px}
+  .cm-home-quote-band>a{justify-self:start}
   .cm-site-footer .foot-inner{padding:36px 20px 20px!important}
   .cm-site-footer .cm-home-footer-links{gap:18px}
   .cm-sci-fi-page{padding:20px 0 54px!important}
   .cm-sci-fi-page .wall-category.cm-sci-fi-stage,.cm-sci-fi-page .cm-sci-fi-transmission{width:calc(100% - 20px)!important}
-  .cm-sci-fi-page .wall-category.cm-sci-fi-stage{border-radius:20px;min-height:0!important;padding:42px 20px 26px!important}
-  .cm-sci-fi-page .wall-category-title{align-items:flex-start;font-size:3.2rem;gap:11px}
+  .cm-sci-fi-page .wall-category.cm-sci-fi-stage{border-radius:20px;min-height:0!important;padding:42px 20px 26px!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .cm-sci-fi-page .wall-category-title{align-items:flex-start;font-size:3.15rem;gap:11px}
   .cm-sci-fi-page .wall-category-title .title-icon{height:40px;width:40px}
   .cm-sci-fi-page .wall-category-title small{display:none}
   .cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-orbit-system{display:none}
-  .cm-sci-fi-signalbar{margin:28px 0 18px}
-  .cm-sci-fi-signalbar>span{padding:13px 10px}
-  .cm-sci-fi-sectors li{min-height:108px;padding:18px}
-  .cm-sci-fi-signal-trace{align-items:flex-start;gap:14px;grid-template-columns:1fr;margin-top:14px}
+  .cm-sci-fi-signalbar{margin:28px 0 16px}
+  .cm-sci-fi-signalbar>span{padding:13px 11px}
+  .cm-sci-fi-sector{min-height:108px;padding:18px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .cm-sci-fi-sector-panel{gap:12px;grid-template-columns:1fr;padding:16px}
+  .cm-sci-fi-sector-panel>small{grid-column:auto}
+  .cm-sci-fi-signal-trace{align-items:flex-start;gap:14px;grid-template-columns:1fr;margin-top:12px}
   .cm-sci-fi-signal-trace em{display:none}
   .cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-horizon{bottom:6%;right:-36%;width:165%}
   .cm-sci-fi-page .cm-sci-fi-transmission{gap:14px;grid-template-columns:1fr auto;padding:18px!important}
   .cm-sci-fi-transmission>span{grid-column:1/-1}
 }
 @media(prefers-reduced-motion:reduce){
+  .cm-home-quote-band,.cm-home-quote-band::before,.cm-home-quote-band>a,.cm-sci-fi-sector,.cm-sci-fi-sector-panel,.cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-horizon,.cm-sci-fi-page .cm-sci-fi-stage>.cm-sci-fi-orbit-system{transition:none!important}
+  .cm-home-quote-band::before{transform:none!important}
+  .cm-sci-fi-sector{transform:none!important}
+  .cm-sci-fi-sector-panel.is-switching{opacity:1;transform:none}
   .cm-sci-fi-signalbar .is-live small::before,.cm-sci-fi-spectrum i,.cm-sci-fi-transmission>i,.cm-sci-fi-orbit-system i{animation:none}
 }
