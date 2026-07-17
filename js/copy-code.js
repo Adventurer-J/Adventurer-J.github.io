@@ -70,7 +70,7 @@
   }
 
   function initializeSymbolField() {
-    if (document.querySelector(".cm-symbol-field")) return;
+    if (document.documentElement.classList.contains("cm-deep-space-active") || document.querySelector(".cm-symbol-field")) return;
     const canvas = document.createElement("canvas");
     canvas.className = "cm-symbol-field";
     canvas.setAttribute("aria-hidden", "true");
@@ -260,7 +260,7 @@
 
     function makeStar() {
       const depth = Math.random();
-      return {x:Math.random(), y:Math.random(), depth, size:.28+depth*1.45, alpha:.2+Math.random()*.66, phase:Math.random()*Math.PI*2, color:colors[Math.floor(Math.random()*colors.length)], bright:Math.random()>.965};
+      return {x:Math.random(), y:Math.random(), depth, size:.24+depth*1.18, alpha:.14+Math.random()*.5, phase:Math.random()*Math.PI*2, color:colors[Math.floor(Math.random()*colors.length)], bright:Math.random()>.978};
     }
     function resize() {
       const dpr = Math.min(devicePixelRatio || 1, 1.5);
@@ -268,7 +268,7 @@
       canvas.width = width*dpr; canvas.height = height*dpr;
       canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
       ctx.setTransform(dpr,0,0,dpr,0,0);
-      const count = width < 680 ? 120 : Math.min(260, Math.round(width/5.5));
+      const count = width < 680 ? 84 : Math.min(180, Math.round(width/8.5));
       stars = Array.from({length:count}, makeStar);
       if (reduced) draw(true);
     }
@@ -293,7 +293,7 @@
           ctx.beginPath();ctx.moveTo(x-star.size*5,y);ctx.lineTo(x+star.size*5,y);ctx.moveTo(x,y-star.size*3.2);ctx.lineTo(x,y+star.size*3.2);ctx.stroke();
         }
       });
-      if(!staticFrame && !meteor && Math.random()<.0012) spawnMeteor();
+      if(!staticFrame && !meteor && Math.random()<.00065) spawnMeteor();
       if(meteor){
         const gradient=ctx.createLinearGradient(meteor.x-90,meteor.y-42,meteor.x,meteor.y);
         gradient.addColorStop(0,"rgba(160,210,255,0)");gradient.addColorStop(1,`rgba(230,246,255,${meteor.life*.72})`);
@@ -504,12 +504,12 @@
   }
 
   const categoryAccent = {
-    "Numerical-method": "#23b8b1",
-    "Differential equation": "#5d9cff",
-    "Algorithm": "#9b7cff",
-    "Software-system": "#55c98b",
-    "Sci-Fi": "#ff8c68",
-    "Miles and Memories": "#d5a84f"
+    "Numerical-method": "#57bdb6",
+    "Differential equation": "#7299c8",
+    "Algorithm": "#9181bd",
+    "Software-system": "#68a982",
+    "Sci-Fi": "#bd7f72",
+    "Miles and Memories": "#af9158"
   };
 
   const categoryMap = {
@@ -559,9 +559,8 @@
 
   function initializeParticles() {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const targets = document.querySelectorAll(".cm-home-hero, .cm-hero, .wall-category, .post-content__head");
+    const targets = document.querySelectorAll(".cm-home-hero, .cm-hero");
     targets.forEach((target) => {
-      if (target.matches(".wall-category") && document.documentElement.classList.contains("cm-deep-space-active")) return;
       if (target.querySelector(":scope > .cm-particle-canvas")) return;
       const canvas = document.createElement("canvas");
       canvas.className = "cm-particle-canvas";
@@ -594,16 +593,16 @@
         canvas.width = width * dpr; canvas.height = height * dpr;
         canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const count = width < 700 ? 24 : Math.min(64, Math.round(width / 20));
+        const count = width < 700 ? 20 : Math.min(46, Math.round(width / 28));
         points = Array.from({length: count}, () => { const x=Math.random()*width,y=Math.random()*height; return {x,y,px:x,py:y,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*1.25+.35,z:Math.random()*.75+.25,phase:Math.random()*Math.PI*2}; });
       }
 
       function bodies(t) {
-        const cx = width * .73, cy = height * .39, rx = Math.min(width * .18, 230), ry = Math.min(height * .24, 150);
+        const cx = width * .78, cy = height * .36, rx = Math.min(width * .15, 190), ry = Math.min(height * .2, 118);
         return [
-          {x:cx + Math.cos(t*.47)*rx, y:cy + Math.sin(t*.61)*ry, r:5.2, color:"255,199,92"},
-          {x:cx + Math.cos(t*.39+2.1)*rx*.72, y:cy + Math.sin(t*.53+2.1)*ry*.85, r:3.8, color:"255,116,82"},
-          {x:cx + Math.cos(t*.59+4.2)*rx*.48, y:cy + Math.sin(t*.43+4.2)*ry*.62, r:3.2, color:"116,226,216"}
+          {x:cx + Math.cos(t*.47)*rx, y:cy + Math.sin(t*.61)*ry, r:3.2, color:"205,222,240"},
+          {x:cx + Math.cos(t*.39+2.1)*rx*.72, y:cy + Math.sin(t*.53+2.1)*ry*.85, r:2.6, color:"224,188,155"},
+          {x:cx + Math.cos(t*.59+4.2)*rx*.48, y:cy + Math.sin(t*.43+4.2)*ry*.62, r:2.2, color:"126,202,198"}
         ];
       }
 
@@ -619,13 +618,14 @@
         }
         if (isThreeBody) {
           suns.forEach((sun, index) => {
-            ctx.strokeStyle = `rgba(${sun.color},.1)`;
+            ctx.strokeStyle = `rgba(${sun.color},.045)`;
             ctx.beginPath();
             ctx.ellipse(width*.73, height*.39, Math.min(width*.18,230)*(1-index*.2), Math.min(height*.24,150)*(1-index*.12), index*.55, 0, Math.PI*2);
             ctx.stroke();
-            const glow = ctx.createRadialGradient(sun.x,sun.y,0,sun.x,sun.y,sun.r*6);
-            glow.addColorStop(0,`rgba(${sun.color},.95)`); glow.addColorStop(.2,`rgba(${sun.color},.5)`); glow.addColorStop(1,`rgba(${sun.color},0)`);
-            ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(sun.x,sun.y,sun.r*6,0,Math.PI*2); ctx.fill();
+            const glowRadius = sun.r * 4.2;
+            const glow = ctx.createRadialGradient(sun.x,sun.y,0,sun.x,sun.y,glowRadius);
+            glow.addColorStop(0,`rgba(${sun.color},.76)`); glow.addColorStop(.24,`rgba(${sun.color},.22)`); glow.addColorStop(1,`rgba(${sun.color},0)`);
+            ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(sun.x,sun.y,glowRadius,0,Math.PI*2); ctx.fill();
           });
         }
         ctx.globalCompositeOperation = dark ? "screen" : "source-over";
@@ -697,6 +697,64 @@
     nodes.forEach(node => { node.classList.add("cm-reveal"); observer.observe(node); });
   }
 
+
+  function initializeRotatingMathQuotes() {
+    const root = document.querySelector("[data-cm-quote-rotator]");
+    if (!root) return;
+    const quote = root.querySelector("[data-cm-rotating-quote]");
+    const source = root.querySelector("[data-cm-quote-source]");
+    const counter = root.querySelector("[data-cm-quote-index]");
+    if (!quote || !source || !counter) return;
+
+    const quotes = [
+      ["计算的目的，是洞察，而非数字。", "Richard W. Hamming"],
+      ["我们必须知道，我们终将知道。", "David Hilbert"],
+      ["数学是赋予不同事物相同名称的艺术。", "Henri Poincaré"]
+    ];
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let index = 0;
+    let interval = 0;
+    let transition = 0;
+
+    function render(nextIndex, immediate) {
+      index = nextIndex % quotes.length;
+      const update = () => {
+        quote.textContent = quotes[index][0];
+        source.textContent = quotes[index][1];
+        counter.textContent = `${String(index + 1).padStart(2, "0")} / ${String(quotes.length).padStart(2, "0")}`;
+        root.classList.remove("is-changing");
+      };
+      clearTimeout(transition);
+      if (immediate || reduced) {
+        update();
+        return;
+      }
+      root.classList.add("is-changing");
+      transition = setTimeout(update, 260);
+    }
+
+    function stop() {
+      clearInterval(interval);
+      interval = 0;
+    }
+
+    function start() {
+      if (reduced || document.hidden || interval) return;
+      interval = setInterval(() => render(index + 1, false), 7600);
+    }
+
+    render(0, true);
+    root.addEventListener("pointerenter", stop, {passive:true});
+    root.addEventListener("pointerleave", start, {passive:true});
+    root.addEventListener("focusin", stop);
+    root.addEventListener("focusout", start);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop();
+      else start();
+    });
+    start();
+  }
+
   function initializeBackToTop() {
     if (document.querySelector(".cm-back-top")) return;
     const button = document.createElement("button");
@@ -719,6 +777,7 @@
     initializeLoadingExperience();
     initializeTerminalProgress();
     initializeTheme();
+    initializeRotatingMathQuotes();
     initializeSubpageCleanup();
     initializeSearchInterface();
     initializeCodeCopy();
