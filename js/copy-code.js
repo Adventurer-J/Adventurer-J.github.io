@@ -76,6 +76,7 @@
     canvas.setAttribute("aria-hidden", "true");
     document.body.prepend(canvas);
     const ctx = canvas.getContext("2d");
+    if (!ctx) { canvas.remove(); return; }
     const isHome = !!document.querySelector(".cm-home");
     const glyphs = isHome
       ? ["∫", "∇", "Σ", "∂", "∞", "0", "1", "λ", "Δ", "∏"]
@@ -108,10 +109,10 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const count = width < 680 ? 18 : Math.min(42, Math.round(width / 34));
       particles = Array.from({length: count}, () => createParticle(true));
-      if (reduced) draw(true);
+      if (reduced || isHome) draw(true, performance.now());
     }
 
-    function draw(staticFrame = false) {
+    function draw(staticFrame = false, now = performance.now()) {
       ctx.clearRect(0, 0, width, height);
       particles.forEach((p) => {
         if (!staticFrame) {
@@ -132,13 +133,15 @@
           if (p.x < -30) p.x = width + 30;
           if (p.x > width + 30) p.x = -30;
         }
-        const shimmer = staticFrame ? .65 : .62 + Math.sin(performance.now() * .00025 + p.phase) * .18;
+        const shimmer = staticFrame ? .65 : .62 + Math.sin(now * .00025 + p.phase) * .18;
         ctx.font = `${p.size}px "Fira Code", "SFMono-Regular", Consolas, monospace`;
         ctx.fillStyle = `rgba(${p.gray},${p.gray},${p.gray},${Math.min(.15, p.alpha * shimmer)})`;
         ctx.fillText(p.glyph, p.x, p.y);
       });
-      if (!staticFrame) frame = requestAnimationFrame(draw);
+      if (!staticFrame) frame = requestAnimationFrame(animate);
     }
+
+    function animate(now) { draw(false, now); }
 
     addEventListener("pointermove", (event) => {
       pointer.x = event.clientX; pointer.y = event.clientY; pointer.active = true;
@@ -146,11 +149,11 @@
     document.documentElement.addEventListener("pointerleave", () => { pointer.active = false; }, {passive: true});
     addEventListener("resize", resize, {passive: true});
     resize();
-    if (!reduced) draw();
+    if (!reduced && !isHome) animate(performance.now());
     document.addEventListener("visibilitychange", () => {
       cancelAnimationFrame(frame);
       frame = 0;
-      if (!document.hidden && !reduced && !frame) draw();
+      if (!document.hidden && !reduced && !isHome && !frame) animate(performance.now());
     });
   }
 
@@ -262,18 +265,28 @@
     canvas.setAttribute("aria-hidden", "true");
     wall.prepend(canvas);
     const ctx = canvas.getContext("2d");
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!ctx) { canvas.remove(); return; }
+    const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
+    const forcedColorsQuery = matchMedia("(forced-colors: active)");
+    const coarse = matchMedia("(pointer: coarse)").matches;
+    let reduced = reducedQuery.matches;
     const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const pointer = {x: .5, y: .5, tx: .5, ty: .5, inside: false};
+    const lowPower = coarse || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory && navigator.deviceMemory <= 4);
+    const pointer = {x:.5, y:.5, tx:.5, ty:.5, vx:0, vy:0, inside:false};
     const starPalettes = {
       dark: ["185,215,255", "222,232,255", "255,244,225", "255,205,168"],
       light: ["30,54,84", "13,102,100", "57,111,159", "83,111,120"]
     };
-    let width = 0, height = 0, stars = [], meteor = null, ripples = [], frame = 0, visible = true, time = 0;
+    let width = 0, height = 0, stars = [], dust = [], meteor = null, ripples = [], bursts = [];
+    let frame = 0, visible = true, time = 0, lastFrame = 0, interfaceFrame = 0;
 
     function makeStar() {
       const depth = Math.random();
       return {x:Math.random(), y:Math.random(), depth, size:.22+depth*1.05, alpha:.12+Math.random()*.42, phase:Math.random()*Math.PI*2, tone:Math.floor(Math.random()*4), bright:Math.random()>.984};
+    }
+    function makeDust() {
+      const depth = .25 + Math.random() * .75;
+      return {x:Math.random(), y:Math.random(), depth, size:.18+Math.random()*.42, alpha:.035+Math.random()*.09, phase:Math.random()*Math.PI*2, tone:Math.floor(Math.random()*4)};
     }
     function resize() {
       const dpr = Math.min(devicePixelRatio || 1, 1.5);
@@ -283,22 +296,102 @@
       canvas.width = width*dpr; canvas.height = height*dpr;
       canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
       ctx.setTransform(dpr,0,0,dpr,0,0);
-      const count = width < 680 ? 48 : Math.min(108, Math.round(width/13.5));
+      const count = width < 680 ? 48 : lowPower ? Math.min(76,Math.round(width/19)) : Math.min(112,Math.round(width/13));
       stars = Array.from({length:count}, makeStar);
-      if (reduced) draw(true);
+      dust = Array.from({length:width < 680 ? 18 : lowPower ? 30 : 52}, makeDust);
+      if (reduced) draw(true, performance.now());
     }
     function spawnMeteor() {
       meteor = {x:width*(.15+Math.random()*.55),y:height*(.06+Math.random()*.24),vx:5+Math.random()*3,vy:2.2+Math.random()*1.8,life:1};
     }
-    function draw(staticFrame=false) {
-      frame=0; time+=.006;
+
+    function drawNebula(dark) {
+      const driftX=(pointer.x-.5)*width*.018, driftY=(pointer.y-.5)*height*.014;
+      const first=ctx.createRadialGradient(width*.76-driftX,height*.16-driftY,0,width*.76-driftX,height*.16-driftY,Math.max(width,height)*.48);
+      first.addColorStop(0,dark?"rgba(86,182,194,.052)":"rgba(13,102,100,.035)");
+      first.addColorStop(.42,dark?"rgba(97,175,239,.022)":"rgba(57,111,159,.016)");
+      first.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=first;ctx.fillRect(0,0,width,height);
+      const second=ctx.createRadialGradient(width*.22+driftX,height*.82+driftY,0,width*.22+driftX,height*.82+driftY,Math.max(width,height)*.38);
+      second.addColorStop(0,dark?"rgba(198,120,221,.028)":"rgba(116,85,138,.018)");
+      second.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=second;ctx.fillRect(0,0,width,height);
+    }
+
+    function drawDust(colors,dark) {
+      const px=pointer.x*width,py=pointer.y*height;
+      dust.forEach((mote,index)=>{
+        const drift=time*.18+mote.phase;
+        let x=mote.x*width+Math.cos(time*.19+mote.phase)*11*mote.depth;
+        let y=mote.y*height+Math.sin(time*.13+mote.phase)*8*mote.depth;
+        if(pointer.inside&&finePointer){
+          const dx=x-px,dy=y-py,distance=Math.max(22,Math.hypot(dx,dy));
+          if(distance<210){
+            const influence=(1-distance/210)*mote.depth;
+            const radial=(7+Math.min(18,Math.hypot(pointer.vx,pointer.vy)*.18))*influence;
+            const swirl=5.5*influence;
+            x+=dx/distance*radial-dy/distance*swirl;
+            y+=dy/distance*radial+dx/distance*swirl;
+          }
+        }
+        const pulse=.64+Math.sin(drift+index*.37)*.26;
+        ctx.fillStyle=`rgba(${colors[mote.tone%colors.length]},${mote.alpha*pulse*(dark?1:.68)})`;
+        ctx.beginPath();ctx.arc(x,y,mote.size*(.7+mote.depth),0,Math.PI*2);ctx.fill();
+      });
+    }
+
+    function drawGravityRing(dark,tracePrimary,traceSecondary) {
+      if(!pointer.inside||!finePointer)return;
+      const px=pointer.x*width,py=pointer.y*height;
+      const energy=Math.min(1,Math.hypot(pointer.vx,pointer.vy)/30);
+      ctx.save();ctx.translate(px,py);ctx.rotate(time*.48);
+      ctx.lineCap="round";
+      ctx.strokeStyle=`rgba(${tracePrimary},${(dark?.12:.095)+energy*.055})`;
+      ctx.lineWidth=.65+energy*.55;
+      ctx.beginPath();ctx.arc(0,0,52+energy*8,.18,Math.PI*1.36);ctx.stroke();
+      ctx.rotate(-time*.9);
+      ctx.strokeStyle=`rgba(${traceSecondary},${(dark?.075:.065)+energy*.035})`;
+      ctx.lineWidth=.5;
+      ctx.beginPath();ctx.arc(0,0,78+energy*12,Math.PI*.72,Math.PI*1.94);ctx.stroke();
+      for(let i=0;i<3;i++){
+        const angle=time*(.56+i*.12)+i*Math.PI*2/3;
+        const radius=52+i*13+energy*5;
+        ctx.fillStyle=`rgba(${i%2?traceSecondary:tracePrimary},${dark?.42:.34})`;
+        ctx.beginPath();ctx.arc(Math.cos(angle)*radius,Math.sin(angle)*radius,.85+i*.12,0,Math.PI*2);ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawBursts(dark) {
+      bursts=bursts.filter((spark)=>{
+        if(!spark.static){spark.x+=spark.vx;spark.y+=spark.vy;spark.vx*=.982;spark.vy*=.982;spark.life-=.032;}
+        if(spark.life<=0)return false;
+        ctx.strokeStyle=`rgba(${spark.color},${spark.life*(dark?.48:.32)})`;
+        ctx.lineWidth=.55+spark.life*.5;
+        ctx.beginPath();ctx.moveTo(spark.x,spark.y);ctx.lineTo(spark.x-spark.vx*7,spark.y-spark.vy*7);ctx.stroke();
+        return true;
+      });
+    }
+
+    function draw(staticFrame=false, now=performance.now()) {
+      frame=0;
+      if(!staticFrame){
+        const interval=lowPower?50:33;
+        if(lastFrame&&now-lastFrame<interval){frame=requestAnimationFrame(animate);return;}
+        const delta=lastFrame?Math.min(3,Math.max(.4,(now-lastFrame)/16.667)):1;
+        lastFrame=now;
+        time+=.006*delta;
+      }
       ctx.clearRect(0,0,width,height);
       const dark=document.documentElement.dataset.cmTheme!=="light";
       const colors=starPalettes[dark?"dark":"light"];
       const tracePrimary=dark?"126,202,198":"13,102,100";
       const traceSecondary=dark?"97,175,239":"57,111,159";
+      ctx.globalCompositeOperation="source-over";
+      drawNebula(dark);
       ctx.globalCompositeOperation=dark?"screen":"source-over";
       pointer.x+=(pointer.tx-pointer.x)*.045; pointer.y+=(pointer.ty-pointer.y)*.045;
+      pointer.vx*=.88;pointer.vy*=.88;
       const nearStars=[];
       stars.forEach((star,index)=>{
         if(!dark&&index%3===0)return;
@@ -310,8 +403,14 @@
         const color=colors[star.tone%colors.length];
         if(pointer.inside&&finePointer){
           const px=pointer.x*width,py=pointer.y*height,dx=x-px,dy=y-py,distance=Math.max(18,Math.hypot(dx,dy));
-          if(distance<165){const lens=(1-distance/165)*7*star.depth;x+=dx/distance*lens;y+=dy/distance*lens;}
-          if(distance<190&&star.depth>.58)nearStars.push({x:x,y:y,distance:distance,alpha:alpha,color:color});
+          if(distance<205){
+            const influence=(1-distance/205)*star.depth;
+            const lens=(8+Math.min(18,Math.hypot(pointer.vx,pointer.vy)*.16))*influence;
+            const swirl=6.5*influence;
+            x+=dx/distance*lens-dy/distance*swirl;
+            y+=dy/distance*lens+dx/distance*swirl;
+          }
+          if(distance<215&&star.depth>.5)nearStars.push({x:x,y:y,distance:distance,alpha:alpha,color:color});
         }
         ctx.fillStyle=`rgba(${color},${alpha})`;
         ctx.beginPath();ctx.arc(x,y,star.size,0,Math.PI*2);ctx.fill();
@@ -320,15 +419,17 @@
           ctx.beginPath();ctx.moveTo(x-star.size*5,y);ctx.lineTo(x+star.size*5,y);ctx.moveTo(x,y-star.size*3.2);ctx.lineTo(x,y+star.size*3.2);ctx.stroke();
         }
       });
+      drawDust(colors,dark);
       if(pointer.inside&&nearStars.length){
         const px=pointer.x*width,py=pointer.y*height;
-        nearStars.sort((a,b)=>a.distance-b.distance).slice(0,6).forEach((star,index,list)=>{
-          ctx.strokeStyle=`rgba(${tracePrimary},${(dark?.085:.13)*(1-star.distance/190)})`;ctx.lineWidth=.45;
+        nearStars.sort((a,b)=>a.distance-b.distance).slice(0,8).forEach((star,index,list)=>{
+          ctx.strokeStyle=`rgba(${tracePrimary},${(dark?.105:.13)*(1-star.distance/215)})`;ctx.lineWidth=.45;
           ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(star.x,star.y);ctx.stroke();
-          if(index){const previous=list[index-1];ctx.strokeStyle=`rgba(${traceSecondary},${(dark?.045:.075)*(1-star.distance/190)})`;ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(star.x,star.y);ctx.stroke();}
+          if(index){const previous=list[index-1];ctx.strokeStyle=`rgba(${traceSecondary},${(dark?.055:.075)*(1-star.distance/215)})`;ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(star.x,star.y);ctx.stroke();}
         });
       }
-      if(!staticFrame && !meteor && Math.random()<.00065) spawnMeteor();
+      drawGravityRing(dark,tracePrimary,traceSecondary);
+      if(!staticFrame && !meteor && Math.random()<(lowPower?.00065:.00125)) spawnMeteor();
       if(meteor){
         const gradient=ctx.createLinearGradient(meteor.x-90,meteor.y-42,meteor.x,meteor.y);
         gradient.addColorStop(0,dark?"rgba(160,210,255,0)":"rgba(57,111,159,0)");gradient.addColorStop(1,dark?`rgba(230,246,255,${meteor.life*.72})`:`rgba(30,84,112,${meteor.life*.42})`);
@@ -342,15 +443,20 @@
         ctx.beginPath();ctx.arc(ripple.x,ripple.y,ripple.radius,0,Math.PI*2);ctx.stroke();
         return true;
       });
+      drawBursts(dark);
       ctx.globalCompositeOperation="source-over";
-      if(!staticFrame&&visible&&!document.hidden)frame=requestAnimationFrame(draw);
+      if(!staticFrame&&visible&&!document.hidden&&!forcedColorsQuery.matches)frame=requestAnimationFrame(animate);
     }
-    let interfaceFrame = 0;
+    function animate(now){draw(false,now);}
     const interfacePointer = {clientX:0, clientY:0, target:null};
     wall.addEventListener("pointermove",(event)=>{
       const box=wall.getBoundingClientRect();
-      pointer.tx=(event.clientX-box.left)/box.width;
-      pointer.ty=(event.clientY-box.top)/box.height;
+      const nextX=(event.clientX-box.left)/box.width;
+      const nextY=(event.clientY-box.top)/box.height;
+      pointer.vx=Math.max(-42,Math.min(42,pointer.vx+(nextX-pointer.tx)*box.width));
+      pointer.vy=Math.max(-42,Math.min(42,pointer.vy+(nextY-pointer.ty)*box.height));
+      pointer.tx=nextX;
+      pointer.ty=nextY;
       pointer.inside=true;
       if(reduced||!finePointer)return;
       interfacePointer.clientX=event.clientX;
@@ -379,7 +485,7 @@
       });
     },{passive:true});
     wall.addEventListener("pointerleave",()=>{
-      pointer.tx=.5;pointer.ty=.5;pointer.inside=false;
+      pointer.tx=.5;pointer.ty=.5;pointer.vx=0;pointer.vy=0;pointer.inside=false;
       cancelAnimationFrame(interfaceFrame);interfaceFrame=0;
       wall.style.setProperty("--sf-pointer-x","50%");
       wall.style.setProperty("--sf-pointer-y","34%");
@@ -389,19 +495,46 @@
       wall.style.setProperty("--sf-orbit-y","0px");
     },{passive:true});
     wall.addEventListener("pointerdown",(event)=>{
-      if(reduced)return;
+      if(reduced||forcedColorsQuery.matches)return;
       const box=wall.getBoundingClientRect();
-      ripples.push({x:event.clientX-box.left,y:event.clientY-box.top,radius:5,life:1});
+      const x=event.clientX-box.left,y=event.clientY-box.top;
+      const dark=document.documentElement.dataset.cmTheme!=="light";
+      const colors=starPalettes[dark?"dark":"light"];
+      ripples.push({x:x,y:y,radius:5,life:1});
       if(ripples.length>4)ripples.shift();
-      if(!frame&&visible&&!document.hidden)draw();
+      for(let i=0;i<(lowPower?7:12);i++){
+        const angle=Math.PI*2*i/(lowPower?7:12)+(Math.random()-.5)*.24;
+        const speed=.7+Math.random()*1.8;
+        bursts.push({x:x,y:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:.72+Math.random()*.28,color:colors[i%colors.length]});
+      }
+      if(bursts.length>24)bursts.splice(0,bursts.length-24);
+      if(!frame&&visible&&!document.hidden)animate(performance.now());
     },{passive:true});
     resize();
-    if(!reduced)draw();
-    if("ResizeObserver" in window)new ResizeObserver(resize).observe(wall);
+    if(!reduced&&!forcedColorsQuery.matches)animate(performance.now());
+    else draw(true,performance.now());
+    let resizeObserver=null,visibilityObserver=null;
+    if("ResizeObserver" in window){resizeObserver=new ResizeObserver(resize);resizeObserver.observe(wall);}
     else addEventListener("resize",resize,{passive:true});
-    if("IntersectionObserver" in window)new IntersectionObserver(([entry])=>{const next=entry.isIntersecting;if(next===visible)return;visible=next;if(!visible){cancelAnimationFrame(frame);frame=0;}else if(!frame&&!reduced)draw();},{rootMargin:"160px"}).observe(wall);
-    document.addEventListener("visibilitychange",()=>{cancelAnimationFrame(frame);frame=0;if(!document.hidden&&visible&&!reduced)draw();});
-    document.addEventListener("cm:themechange",()=>{if(reduced)draw(true);});
+    if("IntersectionObserver" in window){visibilityObserver=new IntersectionObserver(([entry])=>{const next=entry.isIntersecting;if(next===visible)return;visible=next;if(!visible){cancelAnimationFrame(frame);frame=0;}else if(!frame&&!reduced&&!forcedColorsQuery.matches)animate(performance.now());},{rootMargin:"160px"});visibilityObserver.observe(wall);}
+    document.addEventListener("visibilitychange",()=>{cancelAnimationFrame(frame);frame=0;lastFrame=0;if(!document.hidden&&visible&&!reduced&&!forcedColorsQuery.matches)animate(performance.now());});
+    document.addEventListener("cm:themechange",()=>{if(reduced)draw(true,performance.now());});
+    const onReducedChange=(event)=>{reduced=event.matches;cancelAnimationFrame(frame);frame=0;lastFrame=0;if(reduced)draw(true,performance.now());else if(visible&&!document.hidden&&!forcedColorsQuery.matches)animate(performance.now());};
+    const onForcedColorsChange=(event)=>{canvas.hidden=event.matches;cancelAnimationFrame(frame);frame=0;lastFrame=0;if(!event.matches&&!reduced&&visible&&!document.hidden)animate(performance.now());};
+    if(reducedQuery.addEventListener)reducedQuery.addEventListener("change",onReducedChange);
+    else if(reducedQuery.addListener)reducedQuery.addListener(onReducedChange);
+    if(forcedColorsQuery.addEventListener)forcedColorsQuery.addEventListener("change",onForcedColorsChange);
+    else if(forcedColorsQuery.addListener)forcedColorsQuery.addListener(onForcedColorsChange);
+    addEventListener("pagehide",()=>{cancelAnimationFrame(frame);cancelAnimationFrame(interfaceFrame);frame=0;interfaceFrame=0;if(resizeObserver)resizeObserver.disconnect();if(visibilityObserver)visibilityObserver.disconnect();});
+    addEventListener("pageshow",(event)=>{
+      if(!event.persisted)return;
+      lastFrame=0;resize();
+      if(resizeObserver)resizeObserver.observe(wall);
+      if(visibilityObserver)visibilityObserver.observe(wall);
+      canvas.hidden=forcedColorsQuery.matches;
+      if(reduced)draw(true,performance.now());
+      else if(visible&&!document.hidden&&!forcedColorsQuery.matches)animate(performance.now());
+    });
   }
 
   function initializeSciFiInteractions() {
@@ -774,8 +907,9 @@
 
   function initializeSubpageParticleFields() {
     if (document.querySelector(".cm-home") || document.documentElement.classList.contains("cm-deep-space-active")) return;
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
+    const forcedColorsQuery = matchMedia("(forced-colors: active)");
+    if (reducedQuery.matches || forcedColorsQuery.matches) return;
     const coarse = matchMedia("(pointer: coarse)").matches;
     const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
@@ -809,16 +943,29 @@
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const profilePalette = {
-      mesh: ["35,184,177", "97,175,239"],
-      flow: ["97,175,239", "86,182,194"],
-      signal: key === "Software-system" ? ["229,192,123", "86,182,194"] : ["198,120,221", "86,182,194"],
-      waypoint: ["229,192,123", "86,182,194"],
-      glyph: ["97,175,239", "198,120,221"]
+    const profilePalettes = {
+      dark: {
+        mesh: ["86,182,194", "97,175,239"],
+        flow: ["97,175,239", "86,182,194"],
+        signal: key === "Software-system" ? ["229,192,123", "86,182,194"] : ["198,120,221", "86,182,194"],
+        waypoint: ["229,192,123", "86,182,194"],
+        glyph: ["97,175,239", "198,120,221"]
+      },
+      light: {
+        mesh: ["13,102,100", "57,111,159"],
+        flow: ["57,111,159", "13,102,100"],
+        signal: key === "Software-system" ? ["142,91,28", "13,102,100"] : ["116,85,138", "13,102,100"],
+        waypoint: ["142,91,28", "13,102,100"],
+        glyph: ["57,111,159", "116,85,138"]
+      }
     };
-    const palette = profilePalette[profile] || profilePalette.mesh;
+    function resolvePalette() {
+      const theme=document.documentElement.dataset.cmTheme==="dark"?"dark":"light";
+      return profilePalettes[theme][profile] || profilePalettes[theme].mesh;
+    }
+    let palette = resolvePalette();
     const glyphs = ["∫", "∇", "Σ", "∂", "∞", "λ", "Δ", "0", "1"];
-    const pointer = {x:-999, y:-999, clientX:0, clientY:0, active:false, lastX:-999, lastY:-999};
+    const pointer = {x:-999, y:-999, clientX:0, clientY:0, active:false, lastX:-999, lastY:-999, vx:0, vy:0, energy:0};
     let width = 0, height = 0, points = [], links = [], pulses = [], ripples = [], sparks = [];
     let frame = 0, pointerFrame = 0, visible = true, lastFrame = 0, time = 0;
 
@@ -827,7 +974,7 @@
         x:x, y:y, homeX:x, homeY:y, px:x, py:y,
         vx:(Math.random()-.5)*.08, vy:(Math.random()-.5)*.08,
         radius:.55+Math.random()*1.05, depth:.42+Math.random()*.58,
-        phase:Math.random()*Math.PI*2, color:palette[index%palette.length],
+        phase:Math.random()*Math.PI*2, tone:index%palette.length, color:palette[index%palette.length],
         glyph:glyphs[index%glyphs.length]
       };
     }
@@ -917,8 +1064,9 @@
       const distance=Math.max(16,Math.hypot(dx,dy));
       if (distance>=radius) return 0;
       const influence=1-distance/radius;
-      p.vx+=dx/distance*strength*influence-dy/distance*swirl*influence;
-      p.vy+=dy/distance*strength*influence+dx/distance*swirl*influence;
+      const boost=1+pointer.energy*.85;
+      p.vx+=(dx/distance*strength*influence-dy/distance*swirl*influence)*boost;
+      p.vy+=(dy/distance*strength*influence+dx/distance*swirl*influence)*boost;
       return influence;
     }
 
@@ -1007,6 +1155,52 @@
       ctx.stroke();ctx.setLineDash([]);
     }
 
+    function drawProfileSweep(dark) {
+      if (profile!=="signal") return;
+      const x=((time*.072)%1)*width;
+      const gradient=ctx.createLinearGradient(x-54,0,x+10,0);
+      gradient.addColorStop(0,"rgba("+palette[0]+",0)");
+      gradient.addColorStop(1,"rgba("+palette[0]+","+(dark?".085":".06")+")");
+      ctx.fillStyle=gradient;
+      ctx.fillRect(x-54,0,64,height);
+      ctx.strokeStyle="rgba("+palette[1]+","+(dark?".15":".11")+")";
+      ctx.lineWidth=.55;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,height);ctx.stroke();
+    }
+
+    function drawPointerConstellation(dark) {
+      if (!pointer.active || !finePointer) return;
+      const radius=profile==="glyph"?235:215;
+      const nearby=points.map((p,index)=>({p:p,index:index,distance:Math.hypot(p.x-pointer.x,p.y-pointer.y)}))
+        .filter((item)=>item.distance<radius)
+        .sort((a,b)=>a.distance-b.distance)
+        .slice(0,coarse?5:7);
+      const energy=.35+pointer.energy*.65;
+      nearby.forEach((item,index,list)=>{
+        const alpha=(1-item.distance/radius)*(dark?.18:.13)*energy;
+        ctx.strokeStyle="rgba("+palette[index%palette.length]+","+alpha+")";
+        ctx.lineWidth=.45+pointer.energy*.42;
+        ctx.beginPath();ctx.moveTo(pointer.x,pointer.y);ctx.lineTo(item.p.x,item.p.y);ctx.stroke();
+        if(index){
+          const previous=list[index-1].p;
+          ctx.strokeStyle="rgba("+palette[(index+1)%palette.length]+","+(alpha*.58)+")";
+          ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(item.p.x,item.p.y);ctx.stroke();
+        }
+      });
+      ctx.save();ctx.translate(pointer.x,pointer.y);ctx.rotate(time*.65);
+      ctx.strokeStyle="rgba("+palette[0]+","+(dark?.13:.095)*energy+")";
+      ctx.lineWidth=.65;ctx.beginPath();ctx.arc(0,0,42+pointer.energy*12,.12,Math.PI*1.5);ctx.stroke();
+      ctx.rotate(-time*1.1);
+      ctx.strokeStyle="rgba("+palette[1]+","+(dark?.09:.07)*energy+")";
+      ctx.beginPath();ctx.arc(0,0,67+pointer.energy*15,Math.PI*.62,Math.PI*1.92);ctx.stroke();
+      for(let i=0;i<4;i++){
+        const angle=time*(.8+i*.07)+i*Math.PI/2;
+        const orbit=43+i*7+pointer.energy*8;
+        ctx.fillStyle="rgba("+palette[i%palette.length]+","+(dark?.52:.4)*energy+")";
+        ctx.beginPath();ctx.arc(Math.cos(angle)*orbit,Math.sin(angle)*orbit,.72+i*.08,0,Math.PI*2);ctx.fill();
+      }
+      ctx.restore();
+    }
+
     function drawRipples() {
       ripples= ripples.filter((r)=>{
         r.radius+=2.3; r.life-=.026;
@@ -1032,11 +1226,13 @@
       if (now-lastFrame<interval) { frame=requestAnimationFrame(draw); return; }
       lastFrame=now;
       time+=interval*.001;
+      pointer.energy*=.94;
       ctx.clearRect(0,0,width,height);
       const dark=document.documentElement.dataset.cmTheme==="dark";
       ctx.globalCompositeOperation=dark?"screen":"source-over";
       drawLinks(dark);
       drawWaypoints();
+      drawProfileSweep(dark);
       points.forEach((p,index)=>{
         const pulse=updatePoint(p,index);
         if (profile==="flow") {
@@ -1053,19 +1249,24 @@
         }
       });
       drawMeshRefinement();
+      drawPointerConstellation(dark);
       drawRipples();
       if (pointer.active) {
-        const halo=ctx.createRadialGradient(pointer.x,pointer.y,0,pointer.x,pointer.y,profile==="glyph"?120:100);
-        halo.addColorStop(0,"rgba("+palette[0]+","+(dark?".075":".055")+")");
+        const haloRadius=(profile==="glyph"?132:112)+pointer.energy*24;
+        const halo=ctx.createRadialGradient(pointer.x,pointer.y,0,pointer.x,pointer.y,haloRadius);
+        halo.addColorStop(0,"rgba("+palette[0]+","+(dark?".09":".065")+")");
         halo.addColorStop(1,"rgba("+palette[0]+",0)");
-        ctx.fillStyle=halo;ctx.beginPath();ctx.arc(pointer.x,pointer.y,profile==="glyph"?120:100,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle=halo;ctx.beginPath();ctx.arc(pointer.x,pointer.y,haloRadius,0,Math.PI*2);ctx.fill();
       }
       ctx.globalCompositeOperation="source-over";
       start();
     }
 
+    function effectsDisabled() {
+      return reducedQuery.matches||forcedColorsQuery.matches;
+    }
     function start() {
-      if (!frame && visible && !document.hidden) frame=requestAnimationFrame(draw);
+      if (!frame && visible && !document.hidden && !effectsDisabled()) frame=requestAnimationFrame(draw);
     }
     function stop() {
       cancelAnimationFrame(frame); frame=0;
@@ -1074,29 +1275,43 @@
       pointerFrame=0;
       const box=target.getBoundingClientRect();
       const nextX=pointer.clientX-box.left, nextY=pointer.clientY-box.top;
-      if (finePointer && pointer.active && Math.hypot(nextX-pointer.lastX,nextY-pointer.lastY)>18) {
-        sparks.push({x:nextX,y:nextY,vx:(Math.random()-.5)*.55,vy:(Math.random()-.5)*.55,life:.7,color:palette[sparks.length%palette.length]});
-        if (sparks.length>12) sparks.shift();
+      const dx=pointer.active?nextX-pointer.x:0,dy=pointer.active?nextY-pointer.y:0;
+      const speed=Math.hypot(dx,dy);
+      pointer.vx=dx;pointer.vy=dy;
+      pointer.energy+=(Math.min(1,speed/36)-pointer.energy)*.58;
+      if (finePointer && pointer.active && Math.hypot(nextX-pointer.lastX,nextY-pointer.lastY)>14) {
+        sparks.push({x:nextX,y:nextY,vx:-dx*.045+(Math.random()-.5)*.7,vy:-dy*.045+(Math.random()-.5)*.7,life:.72,color:palette[sparks.length%palette.length]});
+        if (sparks.length>24) sparks.shift();
         pointer.lastX=nextX;pointer.lastY=nextY;
       }
       pointer.x=nextX;pointer.y=nextY;pointer.active=true;
     }
     function queuePointer(event) {
+      if(effectsDisabled())return;
       pointer.clientX=event.clientX;pointer.clientY=event.clientY;
       if (!pointerFrame) pointerFrame=requestAnimationFrame(updatePointer);
     }
     function addRipple(event) {
+      if(effectsDisabled())return;
       const box=target.getBoundingClientRect();
       const x=event.clientX-box.left, y=event.clientY-box.top;
       ripples.push({x:x,y:y,radius:4,life:1,color:palette[ripples.length%palette.length]});
       if (ripples.length>4) ripples.shift();
+      const burstCount=coarse?6:10;
+      for(let i=0;i<burstCount;i++){
+        const angle=Math.PI*2*i/burstCount+(Math.random()-.5)*.28;
+        const speed=.45+Math.random()*.9;
+        sparks.push({x:x,y:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:.82,color:palette[i%palette.length]});
+      }
+      if(sparks.length>24)sparks.splice(0,sparks.length-24);
+      pointer.energy=1;
       if (!finePointer) { pointer.x=x;pointer.y=y;pointer.active=true;setTimeout(()=>{pointer.active=false;},650); }
     }
 
     if (finePointer) target.addEventListener("pointermove",queuePointer,{passive:true});
     target.addEventListener("pointerdown",addRipple,{passive:true});
     target.addEventListener("pointerleave",()=>{
-      pointer.active=false;pointer.lastX=-999;pointer.lastY=-999;
+      pointer.active=false;pointer.lastX=-999;pointer.lastY=-999;pointer.vx=0;pointer.vy=0;pointer.energy=0;
       cancelAnimationFrame(pointerFrame);pointerFrame=0;
     },{passive:true});
     resize();
@@ -1110,6 +1325,18 @@
       },{rootMargin:"140px"}).observe(target);
     }
     document.addEventListener("visibilitychange",()=>document.hidden?stop():start());
+    document.addEventListener("cm:themechange",()=>{
+      palette=resolvePalette();
+      points.forEach((p,index)=>{p.tone=index%palette.length;p.color=palette[p.tone];});
+      ripples=[];sparks=[];
+    });
+    const onMotionPreference=()=>{const disabled=effectsDisabled();canvas.hidden=disabled;if(disabled)stop();else start();};
+    if(reducedQuery.addEventListener)reducedQuery.addEventListener("change",onMotionPreference);
+    else if(reducedQuery.addListener)reducedQuery.addListener(onMotionPreference);
+    if(forcedColorsQuery.addEventListener)forcedColorsQuery.addEventListener("change",onMotionPreference);
+    else if(forcedColorsQuery.addListener)forcedColorsQuery.addListener(onMotionPreference);
+    addEventListener("pagehide",()=>{stop();cancelAnimationFrame(pointerFrame);pointerFrame=0;});
+    addEventListener("pageshow",(event)=>{if(event.persisted){resize();start();}});
   }
 
   function initializeParticles() {
@@ -1253,61 +1480,169 @@
   }
 
 
-  function initializeRotatingMathQuotes() {
-    const root = document.querySelector("[data-cm-quote-rotator]");
-    if (!root) return;
-    const quote = root.querySelector("[data-cm-rotating-quote]");
-    const source = root.querySelector("[data-cm-quote-source]");
-    const counter = root.querySelector("[data-cm-quote-index]");
-    if (!quote || !source || !counter) return;
-
-    const quotes = [
-      ["计算的目的，是洞察，而非数字。", "Richard W. Hamming"],
-      ["我们必须知道，我们终将知道。", "David Hilbert"],
-      ["数学是赋予不同事物相同名称的艺术。", "Henri Poincaré"]
+  function initializeEquationGallery() {
+    const root=document.querySelector("[data-cm-equation-gallery]");
+    if(!root)return;
+    const label=root.querySelector("[data-cm-equation-label]");
+    const expression=root.querySelector("[data-cm-equation-expression]");
+    const note=root.querySelector("[data-cm-equation-note]");
+    if(!label||!expression||!note)return;
+    const frames=[
+      {label:"EULER / IDENTITY",expression:"e<sup>iπ</sup> + 1 = 0",note:"five constants · one line"},
+      {label:"GAUSS / INTEGRAL",expression:"∫<sub>−∞</sub><sup>∞</sup> e<sup>−x²</sup> dx = √π",note:"area beneath a bell"},
+      {label:"BASEL / SERIES",expression:"Σ<sub>n=1</sub><sup>∞</sup> 1/n² = π²/6",note:"an infinite sum · a finite form"},
+      {label:"VARIATION / STATIONARY",expression:"δ𝒥(u) = 0",note:"equilibrium in one symbol"}
     ];
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let index = 0;
-    let interval = 0;
-    let transition = 0;
+    const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let active=0,timer=0,transition=0;
 
-    function render(nextIndex, immediate) {
-      index = nextIndex % quotes.length;
-      const update = () => {
-        quote.textContent = quotes[index][0];
-        source.textContent = quotes[index][1];
-        counter.textContent = `${String(index + 1).padStart(2, "0")} / ${String(quotes.length).padStart(2, "0")}`;
+    function render(index,immediate){
+      active=(index+frames.length)%frames.length;
+      const update=()=>{
+        const frameData=frames[active];
+        label.textContent=frameData.label;
+        expression.innerHTML=frameData.expression;
+        note.textContent=frameData.note;
         root.classList.remove("is-changing");
+        transition=0;
       };
       clearTimeout(transition);
-      if (immediate || reduced) {
-        update();
-        return;
-      }
-      root.classList.add("is-changing");
-      transition = setTimeout(update, 260);
+      if(immediate||reduced)update();
+      else{root.classList.add("is-changing");transition=setTimeout(update,220);}
     }
+    function stop(){clearInterval(timer);timer=0;}
+    function start(){if(reduced||document.hidden||timer)return;timer=setInterval(()=>render(active+1,false),10800);}
 
-    function stop() {
-      clearInterval(interval);
-      interval = 0;
-    }
-
-    function start() {
-      if (reduced || document.hidden || interval) return;
-      interval = setInterval(() => render(index + 1, false), 7600);
-    }
-
-    render(0, true);
-    root.addEventListener("pointerenter", stop, {passive:true});
-    root.addEventListener("pointerleave", start, {passive:true});
-    root.addEventListener("focusin", stop);
-    root.addEventListener("focusout", start);
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) stop();
-      else start();
+    root.title="点击切换公式";
+    root.addEventListener("pointerdown",()=>render(active+1,false));
+    root.addEventListener("keydown",(event)=>{
+      if(event.key!=="Enter"&&event.key!==" ")return;
+      event.preventDefault();render(active+1,false);
     });
-    start();
+    root.addEventListener("pointerenter",stop,{passive:true});
+    root.addEventListener("pointerleave",start,{passive:true});
+    document.addEventListener("visibilitychange",()=>document.hidden?stop():start());
+    addEventListener("pagehide",()=>{stop();clearTimeout(transition);transition=0;root.classList.remove("is-changing");});
+    addEventListener("pageshow",(event)=>{if(event.persisted){render(active,true);start();}});
+    render(0,true);start();
+  }
+
+
+  function initializeQuoteRotators() {
+    const library = window.CMQuoteLibrary;
+    const roots = Array.from(document.querySelectorAll("[data-cm-quote-rotator]"));
+    if (!library || !roots.length) return;
+
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timers = new Set();
+    const transitions = new Set();
+    const schedulers = new Set();
+    const modeLabels = {exact:"原句", translated:"中译", paraphrase:"主题意译"};
+
+    function localSlot(date) {
+      const day = Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86400000);
+      return day * 2 + (date.getHours() >= 12 ? 1 : 0);
+    }
+
+    function delayToNextBoundary(date) {
+      const next = new Date(date.getTime());
+      if (date.getHours() < 12) next.setHours(12, 0, 0, 0);
+      else {
+        next.setDate(next.getDate() + 1);
+        next.setHours(0, 0, 0, 0);
+      }
+      return Math.max(1000, next.getTime() - date.getTime() + 80);
+    }
+
+    roots.forEach((root) => {
+      if (root.dataset.cmQuoteReady === "true") return;
+      const kind = root.dataset.cmQuoteKind === "scifi" ? "scifi" : "math";
+      const entries = Array.isArray(library[kind]) ? library[kind] : [];
+      const quote = root.querySelector("[data-cm-rotating-quote]");
+      const source = root.querySelector("[data-cm-quote-source]");
+      const counter = root.querySelector("[data-cm-quote-index]");
+      if (entries.length !== 100 || !quote || !source || !counter) return;
+
+      root.dataset.cmQuoteReady = "true";
+      let activeIndex = -1;
+      let timer = 0;
+      let transition = 0;
+
+      function clearTimer() {
+        if (!timer) return;
+        clearTimeout(timer);
+        timers.delete(timer);
+        timer = 0;
+      }
+
+      function clearTransition() {
+        if (!transition) return;
+        clearTimeout(transition);
+        transitions.delete(transition);
+        transition = 0;
+      }
+
+      function render(immediate) {
+        const slot = localSlot(new Date());
+        const offset = kind === "scifi" ? 47 : 11;
+        const nextIndex = ((slot * 37 + offset) % entries.length + entries.length) % entries.length;
+        if (nextIndex === activeIndex && !immediate) return;
+        activeIndex = nextIndex;
+        const entry = entries[activeIndex];
+        const length = Array.from(entry.text).length;
+        const width = String(entries.length).length;
+        const mode = modeLabels[entry.note] || "摘录";
+        const isHero = root.classList.contains("cm-home-quote-rotator");
+
+        const update = () => {
+          quote.textContent = entry.text;
+          source.textContent = isHero
+            ? `${entry.author} · ${mode}`
+            : `${entry.author} · ${entry.source} · ${mode}`;
+          source.title = `${entry.author} · ${entry.source} · ${mode}`;
+          counter.textContent = `${String(activeIndex + 1).padStart(width, "0")} / ${entries.length}`;
+          root.classList.toggle("is-long-quote", length > 24);
+          root.classList.toggle("is-very-long-quote", length > 34);
+          root.classList.remove("is-changing");
+          transitions.delete(transition);
+          transition = 0;
+        };
+
+        clearTransition();
+        if (immediate || reduced) update();
+        else {
+          root.classList.add("is-changing");
+          transition = setTimeout(update, 260);
+          transitions.add(transition);
+        }
+      }
+
+      function schedule(immediate) {
+        clearTimer();
+        render(immediate);
+        if (document.hidden) return;
+        timer = setTimeout(() => schedule(false), delayToNextBoundary(new Date()));
+        timers.add(timer);
+      }
+
+      schedule(true);
+      schedulers.add(schedule);
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) clearTimer();
+        else schedule(false);
+      });
+    });
+
+    addEventListener("pagehide", () => {
+      timers.forEach(clearTimeout);
+      transitions.forEach(clearTimeout);
+      timers.clear();
+      transitions.clear();
+      roots.forEach((root)=>root.classList.remove("is-changing"));
+    });
+    addEventListener("pageshow", (event) => {
+      if(event.persisted)schedulers.forEach((schedule)=>schedule(true));
+    });
   }
 
   function initializeBackToTop() {
@@ -1332,7 +1667,8 @@
     initializeLoadingExperience();
     initializeTerminalProgress();
     initializeTheme();
-    initializeRotatingMathQuotes();
+    initializeEquationGallery();
+    initializeQuoteRotators();
     initializeSubpageCleanup();
     initializeSearchInterface();
     initializeCodeCopy();
