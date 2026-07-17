@@ -2704,3 +2704,31 @@ body::before{background-image:linear-gradient(rgba(8,123,121,.035) 1px,transpare
 [data-cm-theme="dark"] .cm-threebody-field::after{opacity:1.25}
 .cm-home-console{border-color:color-mix(in srgb,var(--cm-v3-border) 70%,rgba(137,246,231,.26))!important}
 @media(max-width:620px){.cm-threebody-field::after{filter:blur(28px);opacity:.65}}
+
+/* Terminal Progress + Equation Scanner + Ambient Mathematical Field */
+.cm-terminal-progress{align-items:center;background:#0d1117;border-bottom:1px solid rgba(88,166,255,.22);box-sizing:border-box;color:#58a6ff;display:flex;font:600 11px/1 "Fira Code","SFMono-Regular",Consolas,monospace;height:24px;inset:0 0 auto;letter-spacing:.02em;padding:0 12px;position:fixed;white-space:pre;z-index:9999}
+.cm-terminal-progress.is-complete{color:#39d353}
+.cm-terminal-cursor{animation:cm-terminal-cursor 1s steps(1,end) infinite;margin-left:5px}
+.cm-terminal-flash{animation:cm-terminal-complete .48s steps(2,end) 1}
+@keyframes cm-terminal-cursor{50%{opacity:0}}
+@keyframes cm-terminal-complete{0%,100%{background:#0d1117}50%{background:#12351e;text-shadow:0 0 9px #39d353}}
+.head--sticky{top:24px!important}
+.cm-reading-progress{display:none!important}
+.head--sticky~.body{padding-top:100px!important}
+.cm-symbol-field{height:100vh;inset:0;pointer-events:none;position:fixed;width:100vw;z-index:0}
+body{isolation:isolate}
+.body,.foot{position:relative;z-index:1}
+.equation-card{isolation:isolate;position:relative}
+.equation-card::before{background:linear-gradient(to bottom,transparent,rgba(71,189,255,.08) 35%,rgba(71,189,255,.95) 49%,rgba(71,189,255,.12) 54%,transparent);content:"";height:54px;left:0;opacity:0;pointer-events:none;position:absolute;right:0;top:-54px;transform:translateY(0);z-index:4}
+.equation-card:hover{border-color:rgba(71,189,255,.62)!important;box-shadow:0 0 0 1px rgba(71,189,255,.13),0 20px 70px rgba(18,100,145,.18)!important}
+.equation-card:hover::before{animation:cm-equation-scan 2.45s cubic-bezier(.4,0,.2,1) infinite;opacity:1}
+.equation-card:hover .cm-home-equation>div,.equation-card:hover .cm-analysis-formula{text-shadow:0 0 14px rgba(71,189,255,.38)}
+@keyframes cm-equation-scan{from{transform:translateY(0)}to{transform:translateY(calc(var(--scan-distance,420px) + 54px))}}
+.cm-analysis-equation{--scan-distance:210px;background:var(--cm-v3-surface);border:1px solid var(--cm-v3-border);border-radius:20px;box-shadow:0 18px 55px rgba(16,40,41,.08);box-sizing:border-box;margin:32px 0;min-height:210px;overflow:hidden;padding:34px}
+.cm-analysis-label{color:var(--cm-v3-accent);font:700 .64rem/1 ui-monospace,monospace;letter-spacing:.16em}
+.cm-analysis-formula{color:var(--cm-v3-ink);font-family:"Iowan Old Style","Times New Roman",serif;font-size:clamp(1.8rem,4vw,3.4rem);margin:30px 0 18px;transition:text-shadow .25s ease}
+.cm-analysis-equation p{color:var(--cm-muted);font:600 .65rem/1.5 ui-monospace,monospace;letter-spacing:.1em;margin:0}
+.cm-home-console.equation-card{--scan-distance:560px}
+@media(max-width:1023px){.head--sticky~.body{padding-top:84px!important}.nav{top:24px!important}}
+@media(max-width:520px){.cm-terminal-progress{font-size:9px;padding:0 7px}.cm-terminal-cursor{display:none}.cm-analysis-equation{margin:24px 15px;padding:26px 20px}.cm-analysis-formula{font-size:1.65rem}}
+@media(prefers-reduced-motion:reduce){.cm-terminal-cursor{animation:none}.equation-card:hover::before{animation:none;opacity:0}}
