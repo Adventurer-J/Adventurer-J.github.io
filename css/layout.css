@@ -2715,8 +2715,9 @@ body::before{background-image:linear-gradient(rgba(8,123,121,.035) 1px,transpare
 .head--sticky{top:24px!important}
 .cm-reading-progress{display:none!important}
 .head--sticky~.body{padding-top:100px!important}
-.cm-symbol-field{height:100vh;inset:0;pointer-events:none;position:fixed;width:100vw;z-index:-1}
+.cm-symbol-field{height:100vh;inset:0;pointer-events:none;position:fixed;width:100vw;z-index:0}
 body{isolation:isolate}
+.body,.foot{position:relative;z-index:1}
 .equation-card{isolation:isolate;position:relative}
 .equation-card::before{background:linear-gradient(to bottom,transparent,rgba(71,189,255,.08) 35%,rgba(71,189,255,.95) 49%,rgba(71,189,255,.12) 54%,transparent);content:"";height:54px;left:0;opacity:0;pointer-events:none;position:absolute;right:0;top:-54px;transform:translateY(0);z-index:4}
 .equation-card:hover{border-color:rgba(71,189,255,.62)!important;box-shadow:0 0 0 1px rgba(71,189,255,.13),0 20px 70px rgba(18,100,145,.18)!important}
