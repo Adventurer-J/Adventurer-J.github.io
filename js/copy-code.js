@@ -148,6 +148,91 @@
     });
   }
 
+
+  function initializeSubpageCleanup() {
+    document.querySelectorAll(".realated__body, .related__body").forEach((body) => {
+      if (/DEBUG:|请安装插件/.test(body.textContent)) {
+        const section = body.closest(".related-post");
+        if (section) section.remove();
+      }
+    });
+    document.querySelectorAll(".post-list").forEach((list) => {
+      if (/DEBUG:|没有文章/.test(list.textContent) && !list.classList.contains("cm-empty-state")) {
+        list.classList.add("cm-empty-state");
+        list.innerHTML = '<span>INDEX STATUS</span><h2>暂无内容</h2>';
+      }
+    });
+    const articleBody = document.querySelector(".post-content__body");
+    if (articleBody && !articleBody.textContent.trim() && !articleBody.querySelector("img, video, iframe, canvas, figure")) {
+      articleBody.hidden = true;
+      document.documentElement.classList.add("cm-article-empty");
+    }
+    document.querySelectorAll(".wall-category-tags, #tags-outer, #tagCanvas").forEach((node) => { node.hidden = true; });
+  }
+
+  function initializeGlassSurfaces() {
+    const selectors = [
+      ".cm-hero", ".cm-quote", ".cm-analysis-equation", ".cm-controls",
+      ".cm-card", ".cm-panel", ".wall-category", ".cm-category-card",
+      ".post-content__head", ".post-content__body", ".post__foot", "#gitalk-container"
+    ];
+    document.querySelectorAll(selectors.join(",")).forEach((surface) => surface.classList.add("cm-glass"));
+  }
+
+  function initializeParallax() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || innerWidth < 760) return;
+    const layers = [
+      [document.querySelector(".cm-hero"), .032],
+      [document.querySelector(".wall-category .wall-main"), .045],
+      [document.querySelector(".post-content__head"), .036],
+      [document.querySelector(".cm-analysis-equation"), .022]
+    ].filter(([element]) => element);
+    if (!layers.length) return;
+    layers.forEach(([element]) => element.classList.add("cm-parallax-target"));
+    let scheduled = false;
+    function update() {
+      layers.forEach(([element, speed]) => {
+        const rect = element.getBoundingClientRect();
+        const distance = innerHeight * .5 - (rect.top + rect.height * .5);
+        const offset = Math.max(-22, Math.min(22, distance * speed));
+        element.style.setProperty("--cm-parallax-y", `${offset.toFixed(2)}px`);
+      });
+      scheduled = false;
+    }
+    function requestUpdate() {
+      if (!scheduled) { scheduled = true; requestAnimationFrame(update); }
+    }
+    addEventListener("scroll", requestUpdate, {passive: true});
+    addEventListener("resize", requestUpdate, {passive: true});
+    update();
+  }
+
+  function initializeLoadingExperience() {
+    if (document.querySelector(".cm-loader")) return;
+    const loader = document.createElement("div");
+    loader.className = "cm-loader is-active";
+    loader.setAttribute("role", "status");
+    loader.setAttribute("aria-live", "polite");
+    loader.innerHTML = '<span class="cm-loader-orbit" aria-hidden="true"><i></i><i></i><i></i></span><span><b>LOADING</b><small>resolving page</small></span>';
+    document.body.appendChild(loader);
+    const started = performance.now();
+    const hide = () => {
+      const delay = Math.max(0, 420 - (performance.now() - started));
+      window.setTimeout(() => loader.classList.remove("is-active"), delay);
+    };
+    if (document.readyState === "complete") hide();
+    else addEventListener("load", hide, {once: true});
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("a[href]");
+      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || link.target === "_blank" || link.hasAttribute("download")) return;
+      const next = new URL(link.href, location.href);
+      if (next.origin !== location.origin || (next.pathname === location.pathname && next.hash)) return;
+      loader.classList.add("is-active");
+      loader.querySelector("small").textContent = "opening route";
+    });
+    addEventListener("pageshow", () => loader.classList.remove("is-active"));
+  }
+
   function initializeCodeCopy() {
     document.querySelectorAll("figure.highlight").forEach((codeBlock) => {
       if (codeBlock.querySelector(".copy-button")) return;
@@ -496,6 +581,10 @@
 
   function initialize() {
     document.documentElement.classList.add(`cm-page-${document.querySelector(".cm-home") ? "home" : document.querySelector(".cm-hub") ? "research" : document.querySelector(".post-content") ? "article" : document.querySelector(".wall-category") ? "category" : "default"}`);
+    initializeSubpageCleanup();
+    initializeGlassSurfaces();
+    initializeParallax();
+    initializeLoadingExperience();
     initializeTerminalProgress();
     initializeSymbolField();
     initializeSearchInterface();
