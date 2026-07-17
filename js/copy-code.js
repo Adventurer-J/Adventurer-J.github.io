@@ -400,6 +400,15 @@
     });
   }
 
+  const categoryAccent = {
+    "Numerical-method": "#23b8b1",
+    "Differential equation": "#5d9cff",
+    "Algorithm": "#9b7cff",
+    "Software-system": "#55c98b",
+    "Sci-Fi": "#ff8c68",
+    "Miles and Memories": "#d5a84f"
+  };
+
   const categoryMap = {
     "Numerical-method": [["逼近与表示", "插值、投影与基函数", "/research/#approximation"], ["离散化", "有限差分、有限元与谱方法", "/research/#discretization"], ["自适应计算", "网格、阶次与后验估计", "/research/#adaptivity"], ["验证", "误差、收敛率与基准", "/research/#verification"]],
     "Differential equation": [["方程结构", "椭圆、抛物与双曲问题", "/research/#equations"], ["时间演化", "时间积分与稳定性", "/research/#time"], ["反问题与随机模型", "正则化与不确定性量化", "/research/#inverse"], ["建模工作流", "从问题到可信结果", "/research/#workflow"]],
@@ -412,6 +421,7 @@
   function initializeCategoryPage() {
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
     const items = categoryMap[key];
+    if (categoryAccent[key]) document.documentElement.style.setProperty("--cm-section-accent", categoryAccent[key]);
     const wall = document.querySelector(".wall-category");
     if (!items || !wall || wall.querySelector(".cm-category-grid")) return;
     wall.classList.add("cm-category-shell");
