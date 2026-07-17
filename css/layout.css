@@ -2794,3 +2794,30 @@ button:active,.cm-home-button:active,.cm-filter:active,.cm-resource:active,.cm-c
 .cm-page-category .wall-category.cm-category-shell{background:radial-gradient(circle at 82% 0,color-mix(in srgb,var(--cm-section-accent) 19%,transparent),transparent 42%),color-mix(in srgb,var(--cm-surface) 76%,transparent)!important}
 .cm-page-category .cm-category-kicker,.cm-page-category .cm-category-card>span,.cm-page-category .cm-category-card>i{color:var(--cm-section-accent)}
 .cm-page-category .cm-category-card:hover{border-color:color-mix(in srgb,var(--cm-section-accent) 55%,var(--cm-line))!important;box-shadow:0 24px 66px color-mix(in srgb,var(--cm-section-accent) 13%,transparent)!important}
+
+/* Audit fixes: terminal-safe geometry, transform safety, real DOM targeting, and idle animation control */
+:root{--cm-terminal-h:24px;--cm-nav-desktop:76px;--cm-nav-mobile:60px}
+.cm-hub .cm-hero h1{font-size:clamp(3rem,6.2vw,5.15rem);max-width:100%;text-wrap:balance}
+.cm-controls{top:112px!important}
+.cm-reveal{opacity:1;transform:none}
+.cm-motion-ready .cm-reveal:not(.is-visible){opacity:0}
+.cm-motion-ready .cm-reveal{transition:opacity .5s ease}
+.cm-category-card--static{cursor:default}
+.cm-category-card--static:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.42),0 18px 56px rgba(16,40,41,.1)!important;transform:none!important}
+[data-cm-theme="dark"] .nav-logo img{filter:invert(1) brightness(1.6) saturate(.4)}
+.cm-page-category .foot__head,.cm-page-article .foot__head{display:none}
+.cm-page-category .foot-inner,.cm-page-article .foot-inner{min-height:0;padding-bottom:22px;padding-top:34px}
+.cm-page-category .copyright,.cm-page-article .copyright{border-top:1px solid rgba(255,255,255,.08);justify-content:flex-start;margin-top:12px;padding-top:14px}
+.cm-page-article .post__foot[hidden]{display:none!important}
+#search-mask{box-sizing:border-box}
+@media(max-width:1023px){
+  .head:not(.head--sticky){height:84px;margin-top:0}
+  .head:not(.head--sticky)~.body{padding-top:0!important}
+  .nav{top:var(--cm-terminal-h)!important}
+  .nav-menu{top:calc(var(--cm-terminal-h) + var(--cm-nav-mobile))!important}
+  .cm-controls{top:94px!important}
+}
+@media(max-width:760px){
+  #search-main{height:calc(100% - var(--cm-terminal-h))!important;margin-top:var(--cm-terminal-h)!important}
+}
+@media(prefers-reduced-motion:reduce){.cm-motion-ready .cm-reveal,.cm-motion-ready .cm-reveal:not(.is-visible){opacity:1;transition:none}}
