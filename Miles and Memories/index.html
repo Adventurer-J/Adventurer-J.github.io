@@ -159,17 +159,9 @@
         在路上
       </div>
       <div class="wall-category-description">万物与我都是荒诞的寂静, 这里荒芜寸草不生.</div>
-      <div class="wall-category-tags">
-        <div id="tags-outer"><canvas width="500" height="500" id="tagCanvas"><canvas></div>
-      </div>
     </div>
   </div>
-  <div class="post-list">
-    
-      DEBUG: 该子页分类下没有文章！在指定文章头部中添加 category: Miles and Memories 字段，即可将该文章添加至此页。
-    
-    
-  </div>
+  <div class="post-list cm-empty-state"><span>INDEX STATUS</span><h2>暂无内容</h2></div>
 
     </div>
     <div class="foot">
@@ -272,36 +264,6 @@
       <script>searchInitialize("/search.json")</script>
     
     <script src="/js/copy-code.js"></script>
-    
-  
-    <script type="text/javascript"
-            charset="utf-8"
-            src="/js/tagcanvas.min.js"></script>
-    <script type = "text/javascript">
-        window.onload = function() {
-            try {
-                TagCanvas.Start('tagCanvas', '', {
-                    outlineThickness: 1,
-                    maxSpeed: 0.03,
-                    // freezeActive: true,
-                    // freezeDecel: true,
-                    textColour: null,
-                    textColour: null,
-                    outlineColour: "#aaa",
-                    weight: true,
-                    padding: 4,
-                    // clickToFront: 200,
-                    fadIn: 200,
-                    // pinchZoom: true,
-                    wheelZoom: false,
-                    initial: [0.1, -0.03]
-                });
-            } catch (e) {
-                // something went wrong, hide the canvas container
-                document.getElementById('tags-outer').style.display = 'none';
-            }
-        };
-    </script>
   
 
   </body>

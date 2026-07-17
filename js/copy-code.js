@@ -148,6 +148,198 @@
     });
   }
 
+
+  function initializeSubpageCleanup() {
+    document.querySelectorAll(".realated__body, .related__body").forEach((body) => {
+      if (/DEBUG:|请安装插件/.test(body.textContent)) {
+        const section = body.closest(".related-post");
+        if (section) section.remove();
+      }
+    });
+    document.querySelectorAll(".post-list").forEach((list) => {
+      if (/DEBUG:|没有文章/.test(list.textContent) && !list.classList.contains("cm-empty-state")) {
+        list.classList.add("cm-empty-state");
+        list.innerHTML = '<span>INDEX STATUS</span><h2>暂无内容</h2>';
+      }
+    });
+    const articleBody = document.querySelector(".post-content__body");
+    if (articleBody && !articleBody.textContent.trim() && !articleBody.querySelector("img, video, iframe, canvas, figure")) {
+      articleBody.hidden = true;
+      document.documentElement.classList.add("cm-article-empty");
+    }
+    const tagShell = document.querySelector(".wall-category-tags");
+    const tagOuter = document.querySelector("#tags-outer");
+    if (tagOuter) { tagOuter.hidden = true; tagOuter.replaceChildren(); }
+    if (tagShell) tagShell.hidden = true;
+    const articleFoot = document.querySelector(".post__foot");
+    if (articleFoot && !articleFoot.textContent.trim() && !articleFoot.querySelector("a[href], button, img")) articleFoot.hidden = true;
+  }
+
+  function initializeGlassSurfaces() {
+    const selectors = [
+      ".cm-hero", ".cm-quote", ".cm-analysis-equation", ".cm-controls",
+      ".cm-card", ".cm-panel", ".wall-category", ".cm-category-card",
+      ".post-content__head", ".post-content__body", ".post__foot", "#gitalk-container"
+    ];
+    document.querySelectorAll(selectors.join(",")).forEach((surface) => surface.classList.add("cm-glass"));
+  }
+
+  function initializeParallax() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || innerWidth < 760) return;
+    const layers = [
+      [document.querySelector(".cm-hero"), .032],
+      [document.querySelector(".wall-category .wall-main"), .045],
+      [document.querySelector(".post-content__head"), .036],
+      [document.querySelector(".cm-analysis-equation"), .022]
+    ].filter(([element]) => element);
+    if (!layers.length) return;
+    layers.forEach(([element]) => element.classList.add("cm-parallax-target"));
+    let scheduled = false;
+    function update() {
+      layers.forEach(([element, speed]) => {
+        const rect = element.getBoundingClientRect();
+        const distance = innerHeight * .5 - (rect.top + rect.height * .5);
+        const offset = Math.max(-22, Math.min(22, distance * speed));
+        element.style.setProperty("--cm-parallax-y", `${offset.toFixed(2)}px`);
+      });
+      scheduled = false;
+    }
+    function requestUpdate() {
+      if (!scheduled) { scheduled = true; requestAnimationFrame(update); }
+    }
+    addEventListener("scroll", requestUpdate, {passive: true});
+    addEventListener("resize", requestUpdate, {passive: true});
+    update();
+  }
+
+  function initializeLoadingExperience() {
+    if (document.querySelector(".cm-loader")) return;
+    const loader = document.createElement("div");
+    loader.className = "cm-loader";
+    loader.setAttribute("role", "status");
+    loader.setAttribute("aria-live", "polite");
+    loader.innerHTML = '<span class="cm-loader-orbit" aria-hidden="true"><i></i><i></i><i></i></span><span><b>LOADING</b><small>resolving page</small></span>';
+    document.body.appendChild(loader);
+    let finished = false;
+    const showTimer = window.setTimeout(() => {
+      if (!finished) loader.classList.add("is-active");
+    }, 140);
+    const hide = () => {
+      finished = true;
+      clearTimeout(showTimer);
+      loader.classList.remove("is-active");
+    };
+    if (document.readyState === "complete") hide();
+    else addEventListener("load", hide, {once: true});
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("a[href]");
+      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || link.target === "_blank" || link.hasAttribute("download")) return;
+      const next = new URL(link.href, location.href);
+      if (next.origin !== location.origin || (next.pathname === location.pathname && next.hash)) return;
+      loader.classList.add("is-active");
+      loader.querySelector("small").textContent = "opening route";
+    });
+    addEventListener("pageshow", () => loader.classList.remove("is-active"));
+  }
+
+
+  function initializeSciFiDeepSpace() {
+    const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
+    const wall = document.querySelector(".wall-category");
+    if (key !== "Sci-Fi" || !wall || wall.querySelector(".cm-deep-space-canvas")) return;
+    document.documentElement.classList.add("cm-deep-space-active");
+    const canvas = document.createElement("canvas");
+    canvas.className = "cm-deep-space-canvas";
+    canvas.setAttribute("aria-hidden", "true");
+    wall.prepend(canvas);
+    const ctx = canvas.getContext("2d");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pointer = {x: .5, y: .5, tx: .5, ty: .5};
+    const colors = ["185,215,255", "222,232,255", "255,244,225", "255,205,168"];
+    let width = 0, height = 0, stars = [], meteor = null, frame = 0, visible = true, time = 0;
+
+    function makeStar() {
+      const depth = Math.random();
+      return {x:Math.random(), y:Math.random(), depth, size:.28+depth*1.45, alpha:.2+Math.random()*.66, phase:Math.random()*Math.PI*2, color:colors[Math.floor(Math.random()*colors.length)], bright:Math.random()>.965};
+    }
+    function resize() {
+      const dpr = Math.min(devicePixelRatio || 1, 1.5);
+      width = wall.clientWidth; height = wall.clientHeight;
+      canvas.width = width*dpr; canvas.height = height*dpr;
+      canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      const count = width < 680 ? 120 : Math.min(260, Math.round(width/5.5));
+      stars = Array.from({length:count}, makeStar);
+      if (reduced) draw(true);
+    }
+    function spawnMeteor() {
+      meteor = {x:width*(.15+Math.random()*.55),y:height*(.06+Math.random()*.24),vx:5+Math.random()*3,vy:2.2+Math.random()*1.8,life:1};
+    }
+    function draw(staticFrame=false) {
+      frame=0; time+=.006;
+      ctx.clearRect(0,0,width,height);
+      ctx.globalCompositeOperation="screen";
+      pointer.x+=(pointer.tx-pointer.x)*.045; pointer.y+=(pointer.ty-pointer.y)*.045;
+      stars.forEach((star)=>{
+        const shiftX=(pointer.x-.5)*34*star.depth;
+        const shiftY=(pointer.y-.5)*22*star.depth;
+        const x=star.x*width-shiftX, y=star.y*height-shiftY;
+        const twinkle=staticFrame ? .72 : .68+Math.sin(time*(1.2+star.depth)+star.phase)*.22;
+        const alpha=Math.min(.92,star.alpha*twinkle);
+        ctx.fillStyle=`rgba(${star.color},${alpha})`;
+        ctx.beginPath();ctx.arc(x,y,star.size,0,Math.PI*2);ctx.fill();
+        if(star.bright){
+          ctx.strokeStyle=`rgba(${star.color},${alpha*.28})`;ctx.lineWidth=.45;
+          ctx.beginPath();ctx.moveTo(x-star.size*5,y);ctx.lineTo(x+star.size*5,y);ctx.moveTo(x,y-star.size*3.2);ctx.lineTo(x,y+star.size*3.2);ctx.stroke();
+        }
+      });
+      if(!staticFrame && !meteor && Math.random()<.0012) spawnMeteor();
+      if(meteor){
+        const gradient=ctx.createLinearGradient(meteor.x-90,meteor.y-42,meteor.x,meteor.y);
+        gradient.addColorStop(0,"rgba(160,210,255,0)");gradient.addColorStop(1,`rgba(230,246,255,${meteor.life*.72})`);
+        ctx.strokeStyle=gradient;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(meteor.x-90,meteor.y-42);ctx.lineTo(meteor.x,meteor.y);ctx.stroke();
+        if(!staticFrame){meteor.x+=meteor.vx;meteor.y+=meteor.vy;meteor.life-=.018;if(meteor.life<=0)meteor=null;}
+      }
+      ctx.globalCompositeOperation="source-over";
+      if(!staticFrame&&visible&&!document.hidden)frame=requestAnimationFrame(draw);
+    }
+    wall.addEventListener("pointermove",(event)=>{const box=wall.getBoundingClientRect();pointer.tx=(event.clientX-box.left)/box.width;pointer.ty=(event.clientY-box.top)/box.height;},{passive:true});
+    wall.addEventListener("pointerleave",()=>{pointer.tx=.5;pointer.ty=.5;},{passive:true});
+    resize();
+    if(!reduced)draw();
+    if("ResizeObserver" in window)new ResizeObserver(resize).observe(wall);
+    if("IntersectionObserver" in window)new IntersectionObserver(([entry])=>{const next=entry.isIntersecting;if(next===visible)return;visible=next;if(!visible){cancelAnimationFrame(frame);frame=0;}else if(!frame&&!reduced)draw();},{rootMargin:"160px"}).observe(wall);
+    document.addEventListener("visibilitychange",()=>{cancelAnimationFrame(frame);frame=0;if(!document.hidden&&visible&&!reduced)draw();});
+  }
+
+  function initializeImageStretch() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.querySelectorAll(".post-content__body img, .cm-sci-fi-observation img").forEach((image) => {
+      if (image.closest(".cm-image-warp")) return;
+      const wrap = document.createElement("span");
+      wrap.className = "cm-image-warp";
+      image.parentNode.insertBefore(wrap,image);
+      wrap.appendChild(image);
+    });
+    document.querySelectorAll(".cm-image-warp").forEach((wrap) => {
+      const image = wrap.querySelector("img");
+      if (!image || wrap.dataset.stretchReady) return;
+      wrap.dataset.stretchReady = "true";
+      const state={rx:0,ry:0,sx:1,sy:1,sk:0},velocity={rx:0,ry:0,sx:0,sy:0,sk:0},target={rx:0,ry:0,sx:1,sy:1,sk:0};
+      let frame=0;
+      function tick(){
+        frame=0;let moving=false;
+        Object.keys(state).forEach((key)=>{velocity[key]+=(target[key]-state[key])*.105;velocity[key]*=.74;state[key]+=velocity[key];if(Math.abs(target[key]-state[key])>.001||Math.abs(velocity[key])>.001)moving=true;});
+        image.style.setProperty("--warp-rx",`${state.rx.toFixed(3)}deg`);image.style.setProperty("--warp-ry",`${state.ry.toFixed(3)}deg`);
+        image.style.setProperty("--warp-sx",state.sx.toFixed(4));image.style.setProperty("--warp-sy",state.sy.toFixed(4));image.style.setProperty("--warp-sk",`${state.sk.toFixed(3)}deg`);
+        if(moving)frame=requestAnimationFrame(tick);
+      }
+      function start(){if(!frame)frame=requestAnimationFrame(tick);}
+      wrap.addEventListener("pointermove",(event)=>{const box=wrap.getBoundingClientRect(),nx=(event.clientX-box.left)/box.width*2-1,ny=(event.clientY-box.top)/box.height*2-1;target.ry=nx*4.2;target.rx=-ny*3.4;target.sx=1+Math.abs(nx)*.032;target.sy=1+Math.abs(ny)*.022;target.sk=nx*1.15;wrap.style.setProperty("--warp-x",`${((nx+1)/2*100).toFixed(1)}%`);wrap.style.setProperty("--warp-y",`${((ny+1)/2*100).toFixed(1)}%`);image.style.transformOrigin=`${(nx+1)/2*100}% ${(ny+1)/2*100}%`;start();},{passive:true});
+      wrap.addEventListener("pointerleave",()=>{target.rx=0;target.ry=0;target.sx=1;target.sy=1;target.sk=0;image.style.transformOrigin="50% 50%";start();},{passive:true});
+    });
+  }
+
   function initializeCodeCopy() {
     document.querySelectorAll("figure.highlight").forEach((codeBlock) => {
       if (codeBlock.querySelector(".copy-button")) return;
@@ -311,6 +503,15 @@
     });
   }
 
+  const categoryAccent = {
+    "Numerical-method": "#23b8b1",
+    "Differential equation": "#5d9cff",
+    "Algorithm": "#9b7cff",
+    "Software-system": "#55c98b",
+    "Sci-Fi": "#ff8c68",
+    "Miles and Memories": "#d5a84f"
+  };
+
   const categoryMap = {
     "Numerical-method": [["逼近与表示", "插值、投影与基函数", "/research/#approximation"], ["离散化", "有限差分、有限元与谱方法", "/research/#discretization"], ["自适应计算", "网格、阶次与后验估计", "/research/#adaptivity"], ["验证", "误差、收敛率与基准", "/research/#verification"]],
     "Differential equation": [["方程结构", "椭圆、抛物与双曲问题", "/research/#equations"], ["时间演化", "时间积分与稳定性", "/research/#time"], ["反问题与随机模型", "正则化与不确定性量化", "/research/#inverse"], ["建模工作流", "从问题到可信结果", "/research/#workflow"]],
@@ -323,6 +524,7 @@
   function initializeCategoryPage() {
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
     const items = categoryMap[key];
+    if (categoryAccent[key]) document.documentElement.style.setProperty("--cm-section-accent", categoryAccent[key]);
     const wall = document.querySelector(".wall-category");
     if (!items || !wall || wall.querySelector(".cm-category-grid")) return;
     wall.classList.add("cm-category-shell");
@@ -334,10 +536,13 @@
     const grid = document.createElement("div");
     grid.className = "cm-category-grid";
     items.forEach(([title, note, href], index) => {
-      const card = document.createElement("a");
-      card.className = "cm-category-card cm-reveal";
-      card.href = href;
-      card.innerHTML = `<span>${String(index + 1).padStart(2, "0")}</span><strong></strong><small></small><i aria-hidden="true">↗</i>`;
+      const targetPath = decodeURIComponent(new URL(href, location.origin).pathname).replace(/\/$/, "") || "/";
+      const currentPath = decodeURIComponent(location.pathname).replace(/\/$/, "") || "/";
+      const isSelfLink = targetPath === currentPath;
+      const card = document.createElement(isSelfLink ? "div" : "a");
+      card.className = `cm-category-card cm-reveal${isSelfLink ? " cm-category-card--static" : ""}`;
+      if (!isSelfLink) card.href = href;
+      card.innerHTML = `<span>${String(index + 1).padStart(2, "0")}</span><strong></strong><small></small><i aria-hidden="true">${isSelfLink ? "·" : "↗"}</i>`;
       card.querySelector("strong").textContent = title;
       card.querySelector("small").textContent = note;
       grid.appendChild(card);
@@ -356,6 +561,7 @@
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const targets = document.querySelectorAll(".cm-home-hero, .cm-hero, .wall-category, .post-content__head");
     targets.forEach((target) => {
+      if (target.matches(".wall-category") && document.documentElement.classList.contains("cm-deep-space-active")) return;
       if (target.querySelector(":scope > .cm-particle-canvas")) return;
       const canvas = document.createElement("canvas");
       canvas.className = "cm-particle-canvas";
@@ -363,7 +569,7 @@
       target.prepend(canvas);
       const ctx = canvas.getContext("2d");
       const isThreeBody = target.matches(".cm-home-hero, .cm-hero");
-      let points = [], width = 0, height = 0, frame = 0, time = 0;
+      let points = [], width = 0, height = 0, frame = 0, time = 0, inView = true;
       const pointer = {x: 0, y: 0, active: false};
       let stateLabel = null;
 
@@ -402,6 +608,7 @@
       }
 
       function draw() {
+        frame = 0;
         ctx.clearRect(0, 0, width, height);
         time += .008;
         const dark = document.documentElement.dataset.cmTheme === "dark";
@@ -451,7 +658,7 @@
         });
         ctx.globalCompositeOperation = "source-over";
         if(pointer.active){const glow=ctx.createRadialGradient(pointer.x,pointer.y,0,pointer.x,pointer.y,105);glow.addColorStop(0,"rgba(255,199,92,.12)");glow.addColorStop(1,"rgba(255,199,92,0)");ctx.fillStyle=glow;ctx.beginPath();ctx.arc(pointer.x,pointer.y,90,0,Math.PI*2);ctx.fill();}
-        frame=requestAnimationFrame(draw);
+        if (inView && !document.hidden) frame=requestAnimationFrame(draw);
       }
 
       function locate(event) { const box=target.getBoundingClientRect(); pointer.x=event.clientX-box.left; pointer.y=event.clientY-box.top; pointer.active=true; }
@@ -460,7 +667,19 @@
       resize(); draw();
       if ("ResizeObserver" in window) new ResizeObserver(resize).observe(target);
       else addEventListener("resize", resize, {passive:true});
-      document.addEventListener("visibilitychange", () => { cancelAnimationFrame(frame); if(!document.hidden) draw(); });
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(([entry]) => {
+          const next = entry.isIntersecting;
+          if (next === inView) return;
+          inView = next;
+          if (!inView) { cancelAnimationFrame(frame); frame = 0; }
+          else if (!frame && !document.hidden) draw();
+        }, {rootMargin: "120px"}).observe(target);
+      }
+      document.addEventListener("visibilitychange", () => {
+        cancelAnimationFrame(frame); frame = 0;
+        if (!document.hidden && inView) draw();
+      });
     });
   }
 
@@ -473,6 +692,7 @@
     }));
     const nodes = document.querySelectorAll(".cm-reveal, .cm-home-section, .cm-home-workflow, .post-item");
     if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) { nodes.forEach(n => n.classList.add("is-visible")); return; }
+    document.documentElement.classList.add("cm-motion-ready");
     const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("is-visible"); observer.unobserve(entry.target); } }), {threshold: .08});
     nodes.forEach(node => { node.classList.add("cm-reveal"); observer.observe(node); });
   }
@@ -496,14 +716,20 @@
 
   function initialize() {
     document.documentElement.classList.add(`cm-page-${document.querySelector(".cm-home") ? "home" : document.querySelector(".cm-hub") ? "research" : document.querySelector(".post-content") ? "article" : document.querySelector(".wall-category") ? "category" : "default"}`);
+    initializeLoadingExperience();
     initializeTerminalProgress();
-    initializeSymbolField();
+    initializeTheme();
+    initializeSubpageCleanup();
     initializeSearchInterface();
     initializeCodeCopy();
     initializeNestedNavigation();
-    initializeTheme();
     initializeResearchFilters();
     initializeCategoryPage();
+    initializeSciFiDeepSpace();
+    initializeGlassSurfaces();
+    initializeImageStretch();
+    initializeParallax();
+    initializeSymbolField();
     initializeParticles();
     initializeMotion();
     initializeReadingProgress();
