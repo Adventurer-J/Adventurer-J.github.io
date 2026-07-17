@@ -41,7 +41,7 @@
 
     function update() {
       const max = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-      const progress = max ? Math.min(100, Math.max(0, Math.round(scrollY / max * 100))) : 100;
+      const progress = max ? Math.min(100, Math.max(0, Math.floor(scrollY / max * 100))) : 100;
       const cells = 16;
       const filled = Math.round(progress / 100 * cells);
       const gauge = "█".repeat(filled) + "░".repeat(cells - filled);
