@@ -3094,3 +3094,75 @@ html[data-cm-theme="dark"] .cm-home-quote-band>a{color:#56b6c2}
   .cm-sci-fi-sector-panel.is-switching{opacity:1;transform:none}
   .cm-sci-fi-signalbar .is-live small::before,.cm-sci-fi-spectrum i,.cm-sci-fi-transmission>i,.cm-sci-fi-orbit-system i{animation:none}
 }
+
+
+/* Contrast hierarchy and Sci-Fi navigation bridge */
+html[data-cm-theme="dark"]{--cm-line:#4b5263;--cm-muted:#a0a7b4;--cm-v3-border:rgba(171,178,191,.2)}
+html[data-cm-theme="dark"] .cm-home-hero{background:radial-gradient(circle at 86% 16%,rgba(97,175,239,.08),transparent 31%),linear-gradient(145deg,rgba(40,44,52,.98),rgba(33,37,43,.94))!important}
+html[data-cm-theme="dark"] .cm-home-kicker>span{color:#21252b}
+html[data-cm-theme="dark"] .cm-home-lead{color:#a0a7b4}
+html[data-cm-theme="dark"] .cm-home-button--primary{background:#56b6c2;border-color:#56b6c2;color:#21252b;box-shadow:0 8px 24px rgba(86,182,194,.16)}
+html[data-cm-theme="dark"] .cm-home-button--primary:hover{background:#61afef;border-color:#61afef!important;color:#21252b!important}
+html[data-cm-theme="dark"] .cm-home-button:not(.cm-home-button--primary){background:#2f343d;border-color:#7a8394;color:#c5cad3}
+html[data-cm-theme="dark"] .cm-home-button:not(.cm-home-button--primary):hover{background:#35414a;border-color:#56b6c2!important;color:#d7dae0!important}
+html[data-cm-theme="dark"] .cm-home-research-card,
+html[data-cm-theme="dark"] .cm-home-section-card{border-color:#4b5263!important;box-shadow:inset 0 1px 0 rgba(171,178,191,.045),0 18px 50px rgba(18,20,24,.28)}
+html[data-cm-theme="dark"] .cm-home-console{background:linear-gradient(155deg,rgba(47,52,61,.98),rgba(43,48,56,.98))!important;border-color:#5c6370!important;color:#c5cad3;box-shadow:inset 0 1px 0 rgba(171,178,191,.08),0 24px 64px rgba(18,20,24,.38)}
+html[data-cm-theme="dark"] .cm-home-console::after{background:radial-gradient(circle,rgba(86,182,194,.1),transparent 66%)}
+html[data-cm-theme="dark"] .cm-home-console-head,
+html[data-cm-theme="dark"] .cm-home-equation,
+html[data-cm-theme="dark"] .cm-home-console-item{border-color:#454c59}
+html[data-cm-theme="dark"] .cm-home-console-head>div span:first-child{background:#e06c75}
+html[data-cm-theme="dark"] .cm-home-console-head>div span:nth-child(2){background:#e5c07b}
+html[data-cm-theme="dark"] .cm-home-console-head>div span:last-child{background:#98c379}
+html[data-cm-theme="dark"] .cm-home-equation>div{color:#d7dae0}
+html[data-cm-theme="dark"] .cm-home-equation-label{color:#56b6c2}
+html[data-cm-theme="dark"] .cm-home-console-head strong,
+html[data-cm-theme="dark"] .cm-home-console-head em,
+html[data-cm-theme="dark"] .cm-home-console-item>span,
+html[data-cm-theme="dark"] .cm-home-console-item small,
+html[data-cm-theme="dark"] .cm-home-metric>div:first-child span,
+html[data-cm-theme="dark"] .cm-home-metric>div:last-child span{color:#9aa3b2}
+html[data-cm-theme="dark"] .cm-home-console-item strong,
+html[data-cm-theme="dark"] .cm-home-metric strong{color:#c5cad3}
+html[data-cm-theme="dark"] .cm-home-bars i{background:#3e4451}
+html[data-cm-theme="dark"] .cm-home-bars i:nth-child(4){background:#56b6c2}
+html[data-cm-theme="dark"] .cm-home-ok{color:#98c379!important}
+
+.cm-page-sci-fi-shell{--sf-nav-top:rgba(13,17,23,.98);--sf-nav-bottom:rgba(33,37,43,.96);--sf-nav-surface:rgba(47,52,61,.9);--sf-nav-line:rgba(92,99,112,.72);--sf-nav-text:#c5cad3;--sf-nav-muted:#969daa;--sf-nav-accent:#56b6c2;background:#21252b;color:#abb2bf}
+.cm-page-sci-fi-shell>.head,
+.cm-page-sci-fi-shell>.head.head--sticky{background:linear-gradient(180deg,var(--sf-nav-top),var(--sf-nav-bottom))!important;border-bottom:1px solid rgba(86,182,194,.16)!important;box-shadow:0 12px 34px rgba(0,0,0,.18)!important;color:var(--sf-nav-text);-webkit-backdrop-filter:blur(18px) saturate(1.05);backdrop-filter:blur(18px) saturate(1.05)}
+.cm-page-sci-fi-shell>.head::after{background:linear-gradient(90deg,transparent,rgba(86,182,194,.3),transparent);bottom:-1px;content:"";height:1px;left:8%;pointer-events:none;position:absolute;right:8%}
+.cm-page-sci-fi-shell>.head .nav{background:transparent!important}
+.cm-page-sci-fi-shell .nav-logo img{filter:invert(1) brightness(1.32) saturate(.25);opacity:.88}
+.cm-page-sci-fi-shell .nav-menu-item,
+.cm-page-sci-fi-shell .cm-submenu-link{color:var(--sf-nav-text)}
+.cm-page-sci-fi-shell .nav-menu-item:hover,
+.cm-page-sci-fi-shell .nav-menu-item[aria-current="page"],
+.cm-page-sci-fi-shell .cm-submenu-link:hover{background:rgba(86,182,194,.12);color:var(--sf-nav-accent)}
+.cm-page-sci-fi-shell .cm-nav-caret,
+.cm-page-sci-fi-shell .cm-theme-toggle{color:var(--sf-nav-muted)}
+.cm-page-sci-fi-shell .cm-nav-caret:hover,
+.cm-page-sci-fi-shell .cm-theme-toggle:hover{background:rgba(86,182,194,.1);border-color:rgba(86,182,194,.28);color:var(--sf-nav-accent)}
+.cm-page-sci-fi-shell .cm-submenu{background:rgba(33,37,43,.98)!important;border-color:var(--sf-nav-line);box-shadow:0 22px 56px rgba(0,0,0,.38)}
+.cm-page-sci-fi-shell .cm-submenu-title{color:var(--sf-nav-text)}
+.cm-page-sci-fi-shell .cm-submenu-note{color:var(--sf-nav-muted)}
+.cm-page-sci-fi-shell #search-btn{background:rgba(47,52,61,.74);border:1px solid var(--sf-nav-line);border-radius:999px;color:var(--sf-nav-text)}
+.cm-page-sci-fi-shell #search-btn:hover{background:rgba(86,182,194,.12);border-color:rgba(86,182,194,.42);color:var(--sf-nav-accent)}
+.cm-page-sci-fi-shell .search-shortcut-key{background:#21252b;border-color:var(--sf-nav-line);color:var(--sf-nav-muted)}
+.cm-page-sci-fi-shell .nav-menu-item:focus-visible,
+.cm-page-sci-fi-shell #search-btn:focus-visible,
+.cm-page-sci-fi-shell .cm-nav-caret:focus-visible,
+.cm-page-sci-fi-shell .cm-theme-toggle:focus-visible{outline:2px solid #61afef;outline-offset:3px}
+
+@media(max-width:1023px){
+  .cm-page-sci-fi-shell>.head .nav{background:linear-gradient(180deg,var(--sf-nav-top),var(--sf-nav-bottom))!important}
+  .cm-page-sci-fi-shell .nav-menu{background:linear-gradient(180deg,rgba(33,37,43,.99),rgba(40,44,52,.99))!important;border-top:1px solid rgba(86,182,194,.14)}
+  .cm-page-sci-fi-shell .cm-nav-group{border-bottom-color:rgba(92,99,112,.62)}
+  .cm-page-sci-fi-shell .cm-submenu{background:#2f343d!important}
+  .cm-page-sci-fi-shell .nav-btn::before,
+  .cm-page-sci-fi-shell .nav-btn::after{background:#abb2bf}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-cm-theme="dark"] .cm-home-button{transition:none}
+}
