@@ -265,12 +265,15 @@
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
     const pointer = {x: .5, y: .5, tx: .5, ty: .5, inside: false};
-    const colors = ["185,215,255", "222,232,255", "255,244,225", "255,205,168"];
+    const starPalettes = {
+      dark: ["185,215,255", "222,232,255", "255,244,225", "255,205,168"],
+      light: ["30,54,84", "13,102,100", "57,111,159", "83,111,120"]
+    };
     let width = 0, height = 0, stars = [], meteor = null, ripples = [], frame = 0, visible = true, time = 0;
 
     function makeStar() {
       const depth = Math.random();
-      return {x:Math.random(), y:Math.random(), depth, size:.22+depth*1.05, alpha:.12+Math.random()*.42, phase:Math.random()*Math.PI*2, color:colors[Math.floor(Math.random()*colors.length)], bright:Math.random()>.984};
+      return {x:Math.random(), y:Math.random(), depth, size:.22+depth*1.05, alpha:.12+Math.random()*.42, phase:Math.random()*Math.PI*2, tone:Math.floor(Math.random()*4), bright:Math.random()>.984};
     }
     function resize() {
       const dpr = Math.min(devicePixelRatio || 1, 1.5);
@@ -290,46 +293,52 @@
     function draw(staticFrame=false) {
       frame=0; time+=.006;
       ctx.clearRect(0,0,width,height);
-      ctx.globalCompositeOperation="screen";
+      const dark=document.documentElement.dataset.cmTheme!=="light";
+      const colors=starPalettes[dark?"dark":"light"];
+      const tracePrimary=dark?"126,202,198":"13,102,100";
+      const traceSecondary=dark?"97,175,239":"57,111,159";
+      ctx.globalCompositeOperation=dark?"screen":"source-over";
       pointer.x+=(pointer.tx-pointer.x)*.045; pointer.y+=(pointer.ty-pointer.y)*.045;
       const nearStars=[];
-      stars.forEach((star)=>{
+      stars.forEach((star,index)=>{
+        if(!dark&&index%3===0)return;
         const shiftX=(pointer.x-.5)*18*star.depth;
         const shiftY=(pointer.y-.5)*11*star.depth;
         let x=star.x*width-shiftX, y=star.y*height-shiftY;
         const twinkle=staticFrame ? .72 : .68+Math.sin(time*(1.2+star.depth)+star.phase)*.22;
-        const alpha=Math.min(.92,star.alpha*twinkle);
+        const alpha=Math.min(dark?.92:.46,star.alpha*twinkle*(dark?1:.72));
+        const color=colors[star.tone%colors.length];
         if(pointer.inside&&finePointer){
           const px=pointer.x*width,py=pointer.y*height,dx=x-px,dy=y-py,distance=Math.max(18,Math.hypot(dx,dy));
           if(distance<165){const lens=(1-distance/165)*7*star.depth;x+=dx/distance*lens;y+=dy/distance*lens;}
-          if(distance<190&&star.depth>.58)nearStars.push({x:x,y:y,distance:distance,alpha:alpha,color:star.color});
+          if(distance<190&&star.depth>.58)nearStars.push({x:x,y:y,distance:distance,alpha:alpha,color:color});
         }
-        ctx.fillStyle=`rgba(${star.color},${alpha})`;
+        ctx.fillStyle=`rgba(${color},${alpha})`;
         ctx.beginPath();ctx.arc(x,y,star.size,0,Math.PI*2);ctx.fill();
         if(star.bright){
-          ctx.strokeStyle=`rgba(${star.color},${alpha*.28})`;ctx.lineWidth=.45;
+          ctx.strokeStyle=`rgba(${color},${alpha*(dark?.28:.42)})`;ctx.lineWidth=.45;
           ctx.beginPath();ctx.moveTo(x-star.size*5,y);ctx.lineTo(x+star.size*5,y);ctx.moveTo(x,y-star.size*3.2);ctx.lineTo(x,y+star.size*3.2);ctx.stroke();
         }
       });
       if(pointer.inside&&nearStars.length){
         const px=pointer.x*width,py=pointer.y*height;
         nearStars.sort((a,b)=>a.distance-b.distance).slice(0,6).forEach((star,index,list)=>{
-          ctx.strokeStyle=`rgba(126,202,198,${.085*(1-star.distance/190)})`;ctx.lineWidth=.45;
+          ctx.strokeStyle=`rgba(${tracePrimary},${(dark?.085:.13)*(1-star.distance/190)})`;ctx.lineWidth=.45;
           ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(star.x,star.y);ctx.stroke();
-          if(index){const previous=list[index-1];ctx.strokeStyle=`rgba(97,175,239,${.045*(1-star.distance/190)})`;ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(star.x,star.y);ctx.stroke();}
+          if(index){const previous=list[index-1];ctx.strokeStyle=`rgba(${traceSecondary},${(dark?.045:.075)*(1-star.distance/190)})`;ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(star.x,star.y);ctx.stroke();}
         });
       }
       if(!staticFrame && !meteor && Math.random()<.00065) spawnMeteor();
       if(meteor){
         const gradient=ctx.createLinearGradient(meteor.x-90,meteor.y-42,meteor.x,meteor.y);
-        gradient.addColorStop(0,"rgba(160,210,255,0)");gradient.addColorStop(1,`rgba(230,246,255,${meteor.life*.72})`);
+        gradient.addColorStop(0,dark?"rgba(160,210,255,0)":"rgba(57,111,159,0)");gradient.addColorStop(1,dark?`rgba(230,246,255,${meteor.life*.72})`:`rgba(30,84,112,${meteor.life*.42})`);
         ctx.strokeStyle=gradient;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(meteor.x-90,meteor.y-42);ctx.lineTo(meteor.x,meteor.y);ctx.stroke();
         if(!staticFrame){meteor.x+=meteor.vx;meteor.y+=meteor.vy;meteor.life-=.018;if(meteor.life<=0)meteor=null;}
       }
       ripples=ripples.filter((ripple)=>{
         if(!staticFrame){ripple.radius+=2.4;ripple.life-=.018;}
         if(ripple.life<=0)return false;
-        ctx.strokeStyle=`rgba(126,202,198,${ripple.life*.28})`;ctx.lineWidth=.65+ripple.life;
+        ctx.strokeStyle=`rgba(${tracePrimary},${ripple.life*(dark?.28:.18)})`;ctx.lineWidth=.65+ripple.life;
         ctx.beginPath();ctx.arc(ripple.x,ripple.y,ripple.radius,0,Math.PI*2);ctx.stroke();
         return true;
       });
@@ -392,6 +401,7 @@
     else addEventListener("resize",resize,{passive:true});
     if("IntersectionObserver" in window)new IntersectionObserver(([entry])=>{const next=entry.isIntersecting;if(next===visible)return;visible=next;if(!visible){cancelAnimationFrame(frame);frame=0;}else if(!frame&&!reduced)draw();},{rootMargin:"160px"}).observe(wall);
     document.addEventListener("visibilitychange",()=>{cancelAnimationFrame(frame);frame=0;if(!document.hidden&&visible&&!reduced)draw();});
+    document.addEventListener("cm:themechange",()=>{if(reduced)draw(true);});
   }
 
   function initializeSciFiInteractions() {
@@ -633,10 +643,13 @@
   function initializeTheme() {
     const navRight = document.querySelector(".nav-right");
     if (!navRight || document.querySelector(".cm-theme-toggle")) return;
-    const saved = localStorage.getItem("cm-theme");
+    let saved = null;
+    try {
+      const candidate = localStorage.getItem("cm-theme");
+      if (candidate === "light" || candidate === "dark") saved = candidate;
+    } catch (error) {}
     const preferredDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
     const initial = saved || (preferredDark ? "dark" : "light");
-    document.documentElement.dataset.cmTheme = initial;
 
     const button = document.createElement("button");
     button.className = "cm-theme-toggle";
@@ -649,12 +662,19 @@
       button.title = dark ? "浅色模式" : "深色模式";
     }
 
-    render(initial);
+    function applyTheme(theme, persist) {
+      document.documentElement.dataset.cmTheme = theme;
+      render(theme);
+      if (persist) {
+        try { localStorage.setItem("cm-theme", theme); } catch (error) {}
+      }
+      document.dispatchEvent(new CustomEvent("cm:themechange", { detail: { theme: theme } }));
+    }
+
+    applyTheme(initial, false);
     button.addEventListener("click", () => {
       const next = document.documentElement.dataset.cmTheme === "dark" ? "light" : "dark";
-      document.documentElement.dataset.cmTheme = next;
-      localStorage.setItem("cm-theme", next);
-      render(next);
+      applyTheme(next, true);
     });
     navRight.appendChild(button);
   }
