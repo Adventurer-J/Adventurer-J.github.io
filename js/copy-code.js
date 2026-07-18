@@ -904,6 +904,61 @@
     });
   }
 
+  function initializeWorkflowLayout() {
+    const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
+    const isCategory = document.documentElement.classList.contains("cm-page-category") && key === "Software-system";
+    const categoryLink = document.querySelector('.post-nav a[href^="/Software-system"], .post-tags a[href^="/Software-system"]');
+    const isArticle = document.documentElement.classList.contains("cm-page-article") && (document.body.classList.contains("cm-page-workflow-article") || categoryLink);
+    if (!isCategory && !isArticle) return;
+
+    document.body.classList.add(isCategory ? "cm-page-workflow" : "cm-page-workflow-article");
+    if (!document.querySelector('link[href*="/css/workflow.css"]')) {
+      const stylesheet = document.createElement("link");
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = "/css/workflow.css?v=20260718.3";
+      document.head.appendChild(stylesheet);
+    }
+    if (!isCategory) return;
+
+    document.querySelectorAll(".post-list:not(.cm-empty-state)").forEach((list) => {
+      list.classList.add("cm-workflow-archive");
+      Array.from(list.children).forEach((card, index) => {
+        if (!card.classList.contains("post-card") || card.classList.contains("cm-workflow-entry")) return;
+        const titleLink = card.querySelector(".post-title[href]");
+        if (!titleLink) return;
+        const titleParts = titleLink.textContent.trim().split("：");
+        const excerpt = card.querySelector(".post-excerpt")?.textContent.trim() || "打开工作流记录与配置说明。";
+        const date = card.querySelector("time");
+        const tag = card.querySelector(".tag")?.textContent.trim() || "GUIDE";
+
+        const entry = document.createElement("a");
+        entry.className = "post-card cm-workflow-entry";
+        entry.href = titleLink.href;
+
+        const kicker = document.createElement("span");
+        kicker.className = "cm-workflow-entry__kicker";
+        kicker.textContent = `WORKSPACE RECORD / ${String(index + 1).padStart(3, "0")} · GUIDE`;
+        const heading = document.createElement("h2");
+        heading.textContent = titleParts.shift() || titleLink.textContent.trim();
+        const subtitle = document.createElement("strong");
+        subtitle.textContent = titleParts.join("：") || "工作流配置记录";
+        const description = document.createElement("p");
+        description.textContent = excerpt;
+        const meta = document.createElement("span");
+        meta.className = "cm-workflow-entry__meta";
+        const type = document.createElement("b");
+        type.textContent = tag;
+        meta.appendChild(type);
+        if (date) meta.appendChild(date.cloneNode(true));
+        const cta = document.createElement("span");
+        cta.className = "cm-workflow-entry__cta";
+        cta.textContent = "OPEN GUIDE →";
+        entry.append(kicker, heading, subtitle, description, meta, cta);
+        card.replaceWith(entry);
+      });
+    });
+  }
+
 
   function initializeSubpageParticleFields() {
     if (document.querySelector(".cm-home") || document.documentElement.classList.contains("cm-deep-space-active")) return;
@@ -1726,6 +1781,7 @@
     initializeNestedNavigation();
     initializeResearchFilters();
     initializeCategoryPage();
+    initializeWorkflowLayout();
     initializeSciFiDeepSpace();
     initializeSciFiInteractions();
     initializeGlassSurfaces();
