@@ -1,0 +1,298 @@
+/* Automatic editorial layout for standard article pages. */
+
+.cm-editorial-article {
+  --cm-article-accent: var(--cm-v3-accent, #167a7a);
+  --cm-article-measure: 820px;
+  counter-reset: cm-article-section;
+}
+
+.cm-editorial-article .cm-editorial-hero {
+  align-items: flex-start;
+  background:
+    radial-gradient(circle at 86% 14%, color-mix(in srgb, var(--cm-article-accent) 16%, transparent), transparent 34%),
+    linear-gradient(145deg, color-mix(in srgb, var(--cm-surface) 94%, transparent), color-mix(in srgb, var(--cm-surface-2) 76%, transparent)) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: clamp(280px, 42vw, 440px) !important;
+  overflow: hidden;
+  position: relative;
+}
+
+.cm-editorial-article .cm-editorial-hero::before {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--cm-article-accent) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--cm-article-accent) 7%, transparent) 1px, transparent 1px);
+  background-size: 38px 38px;
+  content: "";
+  inset: 0;
+  mask-image: linear-gradient(115deg, transparent 14%, #000 88%);
+  opacity: 0.72;
+  pointer-events: none;
+  position: absolute;
+}
+
+.cm-editorial-article .cm-editorial-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cm-editorial-article .cm-editorial-hero .post-title {
+  color: var(--cm-v3-ink);
+  font-size: clamp(2.65rem, 6.2vw, 5.4rem);
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  margin: 0;
+  max-width: 850px;
+  text-wrap: balance;
+}
+
+.cm-editorial-article .cm-editorial-hero .post-info {
+  align-items: center;
+  color: var(--cm-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font: 700 0.66rem/1.4 "SFMono-Regular", "Fira Code", Consolas, monospace;
+  gap: 10px 16px;
+  letter-spacing: 0.1em;
+  margin-top: 24px;
+  text-transform: uppercase;
+}
+
+.cm-editorial-article .cm-editorial-body {
+  counter-reset: cm-article-section;
+  overflow: hidden;
+}
+
+.cm-editorial-article .cm-editorial-body > :is(p, h2, h3, h4, h5, h6, ul, ol, dl, blockquote, pre, figure, .highlight, .cm-article-table, hr) {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--cm-article-measure);
+}
+
+.cm-editorial-article .cm-editorial-body > p {
+  color: var(--cm-ink);
+  font-size: 1.01rem;
+  line-height: 1.92;
+  margin-bottom: 1.05rem;
+  margin-top: 1.05rem;
+}
+
+.cm-editorial-article .cm-editorial-body > p:first-of-type {
+  color: color-mix(in srgb, var(--cm-ink) 76%, var(--cm-muted));
+  font-size: clamp(1.03rem, 1.8vw, 1.16rem);
+  line-height: 1.88;
+  margin-bottom: 2.2rem;
+}
+
+.cm-editorial-article .cm-editorial-body h2,
+.cm-editorial-article .cm-editorial-body h3,
+.cm-editorial-article .cm-editorial-body h4 {
+  scroll-margin-top: 120px;
+  text-wrap: balance;
+}
+
+.cm-editorial-article .cm-editorial-body > h2 {
+  border-bottom: 1px solid var(--cm-line);
+  color: var(--cm-v3-ink);
+  counter-increment: cm-article-section;
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+  letter-spacing: -0.035em;
+  line-height: 1.24;
+  margin-bottom: 1.25rem;
+  margin-top: 4.2rem;
+  padding-bottom: 0.7rem;
+  position: relative;
+}
+
+.cm-editorial-article .cm-editorial-body > h2::before {
+  color: var(--cm-article-accent);
+  content: "SECTION " counter(cm-article-section, decimal-leading-zero);
+  display: block;
+  font: 760 0.61rem/1.2 "SFMono-Regular", "Fira Code", Consolas, monospace;
+  letter-spacing: 0.14em;
+  margin-bottom: 10px;
+}
+
+.cm-editorial-article .cm-editorial-body > h2::after {
+  background: linear-gradient(90deg, var(--cm-article-accent), transparent);
+  bottom: -1px;
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  width: min(120px, 28%);
+}
+
+.cm-editorial-article .cm-editorial-body > h3 {
+  border: 0;
+  color: var(--cm-v3-ink);
+  font-size: 1.24rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.8rem;
+  margin-top: 2.5rem;
+  padding: 0;
+}
+
+.cm-editorial-article .cm-editorial-body > h3::after {
+  display: none;
+}
+
+.cm-editorial-article .cm-editorial-body :is(ul, ol) {
+  color: var(--cm-ink);
+  line-height: 1.82;
+  padding-left: 1.45rem;
+}
+
+.cm-editorial-article .cm-editorial-body li {
+  margin: 0.42rem 0;
+  padding-left: 0.18rem;
+}
+
+.cm-editorial-article .cm-editorial-body li::marker {
+  color: var(--cm-article-accent);
+  font-weight: 750;
+}
+
+.cm-editorial-article .cm-editorial-body blockquote {
+  background: color-mix(in srgb, var(--cm-article-accent) 7%, var(--cm-surface-2));
+  border: 1px solid color-mix(in srgb, var(--cm-article-accent) 22%, var(--cm-line));
+  border-left: 3px solid var(--cm-article-accent);
+  border-radius: 0 14px 14px 0;
+  box-sizing: border-box;
+  color: var(--cm-muted);
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+  padding: 17px 20px;
+}
+
+.cm-editorial-article .cm-editorial-body blockquote > :first-child {
+  margin-top: 0;
+}
+
+.cm-editorial-article .cm-editorial-body blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.cm-editorial-article .cm-editorial-body :is(pre, figure.highlight, .highlight) {
+  border: 1px solid var(--cm-line);
+  border-radius: 15px;
+  box-shadow: 0 16px 42px rgba(12, 35, 39, 0.1);
+  box-sizing: border-box;
+  margin-bottom: 1.6rem;
+  margin-top: 1.6rem;
+  overflow: auto;
+}
+
+.cm-editorial-article .cm-editorial-body :not(pre) > code {
+  background: color-mix(in srgb, var(--cm-article-accent) 7%, var(--cm-code));
+  border: 1px solid color-mix(in srgb, var(--cm-article-accent) 16%, var(--cm-line));
+  border-radius: 5px;
+  color: var(--cm-article-accent);
+  font-size: 0.88em;
+  padding: 0.12em 0.34em;
+}
+
+.cm-article-table {
+  border: 1px solid var(--cm-line);
+  border-radius: 14px;
+  box-sizing: border-box;
+  margin-bottom: 1.8rem;
+  margin-top: 1.8rem;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.cm-article-table table {
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 0;
+  min-width: 620px;
+  width: 100%;
+}
+
+.cm-article-table :is(th, td) {
+  border-bottom: 1px solid var(--cm-line);
+  padding: 13px 14px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.cm-article-table th {
+  background: color-mix(in srgb, var(--cm-article-accent) 7%, var(--cm-surface-2));
+  color: var(--cm-v3-ink);
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.cm-article-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.cm-article-table tbody tr:hover {
+  background: color-mix(in srgb, var(--cm-article-accent) 4%, transparent);
+}
+
+.cm-editorial-article .cm-editorial-body figure:not(.highlight) {
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.cm-editorial-article .cm-editorial-body img {
+  border-radius: 14px;
+  display: block;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+}
+
+.cm-editorial-article .cm-editorial-body figcaption {
+  color: var(--cm-muted);
+  font: 650 0.68rem/1.6 "SFMono-Regular", "Fira Code", Consolas, monospace;
+  letter-spacing: 0.06em;
+  margin-top: 10px;
+}
+
+.cm-editorial-article .cm-editorial-body hr {
+  background: linear-gradient(90deg, transparent, var(--cm-line), transparent);
+  border: 0;
+  height: 1px;
+  margin-bottom: 2.8rem;
+  margin-top: 2.8rem;
+}
+
+[data-cm-theme="dark"] .cm-editorial-article .cm-editorial-body :is(pre, figure.highlight, .highlight) {
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+}
+
+@media (max-width: 760px) {
+  .cm-editorial-article {
+    --cm-article-measure: 100%;
+  }
+
+  .cm-editorial-article .cm-editorial-hero {
+    min-height: 260px !important;
+  }
+
+  .cm-editorial-article .cm-editorial-hero .post-title {
+    font-size: clamp(2.35rem, 11vw, 3.5rem);
+  }
+
+  .cm-editorial-article .cm-editorial-body > h2 {
+    margin-top: 3.3rem;
+  }
+
+  .cm-article-table {
+    border-left: 0;
+    border-radius: 0;
+    border-right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-article-table tbody tr {
+    transition: none;
+  }
+}

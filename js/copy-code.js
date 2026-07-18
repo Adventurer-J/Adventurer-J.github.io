@@ -1662,9 +1662,44 @@
     addEventListener("scroll", update, {passive:true}); update();
   }
 
+  function initializeArticleEditorialLayout() {
+    const article = document.querySelector("article.post-content");
+    if (!article || article.matches(".cm-tianyan-article, .cm-techdoc-article, .cm-no-auto-editorial")) return;
+
+    const version = "20260718.1";
+    if (!document.querySelector('link[href*="/css/article-editorial.css"]')) {
+      const stylesheet = document.createElement("link");
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = `/css/article-editorial.css?v=${version}`;
+      document.head.appendChild(stylesheet);
+    }
+
+    const head = article.querySelector(".post-content__head");
+    const body = article.querySelector(".post-content__body");
+    article.classList.add("cm-editorial-article");
+    if (head) head.classList.add("cm-editorial-hero");
+    if (!body) return;
+
+    body.classList.add("cm-editorial-body");
+    body.querySelectorAll("table").forEach((table) => {
+      if (table.closest(".cm-article-table")) return;
+      const wrapper = document.createElement("div");
+      wrapper.className = "cm-article-table";
+      wrapper.setAttribute("role", "region");
+      wrapper.setAttribute("aria-label", "可横向滚动的数据表");
+      wrapper.tabIndex = 0;
+      table.before(wrapper);
+      wrapper.appendChild(table);
+    });
+    body.querySelectorAll("img").forEach((image) => {
+      if (!image.hasAttribute("loading")) image.loading = "lazy";
+      if (!image.hasAttribute("decoding")) image.decoding = "async";
+    });
+  }
+
   function initializeArticleComments() {
     if (!document.documentElement.classList.contains("cm-page-article")) return;
-    const version = "20260718.3";
+    const version = "20260718.5";
     if (!document.querySelector('link[href*="/css/comments.css"]')) {
       const stylesheet = document.createElement("link");
       stylesheet.rel = "stylesheet";
@@ -1701,6 +1736,7 @@
     initializeParticles();
     initializeMotion();
     initializeReadingProgress();
+    initializeArticleEditorialLayout();
     initializeArticleComments();
     initializeBackToTop();
   }
