@@ -10,7 +10,8 @@
   var path = location.pathname.replace(/\/+$/, "") + "/";
   var knownThreads = {
     "/Sci-Fi/tianyan/": 19,
-    "/2025/01/16/hello/": 20
+    "/2025/01/16/hello/": 20,
+    "/2026/07/18/markdown-preview-enhanced-computational-math-theme/": 21
   };
 
   function articleTitle() {
