@@ -868,6 +868,53 @@
             </footer>
           </main>
         </div>
+
+        <section class="cm-tianyan-comments cm-glass" id="comments" data-cm-comments
+          data-comments-endpoint="https://api.github.com/repos/Adventurer-J/Adventurer-J.github.io/issues/19/comments?per_page=100"
+          data-comments-issue-url="https://github.com/Adventurer-J/Adventurer-J.github.io/issues/19"
+          aria-labelledby="cm-comments-title">
+          <div class="cm-tianyan-comments-head">
+            <div>
+              <p class="cm-tianyan-comments-kicker">READER TRANSMISSION / 读者回波</p>
+              <h2 id="cm-comments-title">留下你的观测记录</h2>
+              <p>关于故事、数学与物理设定的讨论，会从 GitHub 安全同步到这里。</p>
+            </div>
+            <div class="cm-tianyan-comments-signal" aria-label="评论区状态">
+              <span><i aria-hidden="true"></i><b data-comments-count>--</b> 回波</span>
+              <span>ISSUE / 19</span>
+            </div>
+          </div>
+
+          <div class="cm-tianyan-comments-toolbar">
+            <a class="cm-tianyan-comment-compose" href="https://github.com/Adventurer-J/Adventurer-J.github.io/issues/19#new_comment_field" target="_blank" rel="noopener noreferrer">
+              登录 GitHub 发表评论 <span aria-hidden="true">↗</span>
+            </a>
+            <button class="cm-tianyan-comment-refresh" type="button" data-comments-refresh>
+              <i aria-hidden="true"></i><span>同步最新回波</span>
+            </button>
+            <span class="cm-tianyan-comments-status" data-comments-status aria-live="polite">接近评论区时自动建立中继</span>
+          </div>
+
+          <div class="cm-tianyan-comments-body" data-comments-body aria-live="polite" aria-busy="true">
+            <div class="cm-tianyan-comments-loading" data-comments-loading>
+              <div class="cm-tianyan-comment-wave" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+              <div><strong>正在监听读者回波</strong><span>CONNECTING TO GITHUB ISSUE / 19</span></div>
+            </div>
+            <ol class="cm-tianyan-comments-list" data-comments-list hidden></ol>
+            <div class="cm-tianyan-comments-empty" data-comments-empty hidden>
+              <span aria-hidden="true">∿</span>
+              <div><strong>尚未收到回波</strong><p>成为第一位留下观测记录的读者。</p></div>
+            </div>
+            <div class="cm-tianyan-comments-error" data-comments-error hidden>
+              <span>LINK INTERRUPTED</span>
+              <div><strong>暂时无法读取 GitHub 评论</strong><p data-comments-error-message>请稍后重新同步，或直接进入讨论页。</p></div>
+              <button type="button" data-comments-retry>重新连接</button>
+            </div>
+          </div>
+
+          <p class="cm-tianyan-comments-note">评论公开存储在 GitHub Issue #19。发表需要 GitHub 账号；返回本页后会自动同步，不会在网页中保存登录令牌。</p>
+          <noscript><p class="cm-tianyan-comments-noscript">启用 JavaScript 后可在此读取评论；也可以直接前往 <a href="https://github.com/Adventurer-J/Adventurer-J.github.io/issues/19">GitHub 讨论页</a>。</p></noscript>
+        </section>
       </article>
     </div>
 
@@ -892,5 +939,6 @@
     <script>searchInitialize("/search.json")</script>
     <script src="/js/copy-code.js"></script>
     <script src="/js/tianyan.js"></script>
+    <script src="/js/comments.js"></script>
   </body>
 </html>
