@@ -1,0 +1,262 @@
+:root {
+  --wf-accent: #347d68;
+  --wf-blue: #39709b;
+  --wf-gold: #9a6c2f;
+  --wf-line: color-mix(in srgb, var(--wf-accent) 24%, var(--cm-line));
+  --wf-surface: color-mix(in srgb, var(--cm-surface) 92%, transparent);
+  --wf-shadow: 0 28px 82px rgba(35, 62, 67, 0.14);
+}
+
+html[data-cm-theme="dark"] {
+  --wf-accent: #56b6c2;
+  --wf-blue: #61afef;
+  --wf-gold: #e5c07b;
+  --wf-line: rgba(92, 99, 112, 0.68);
+  --wf-surface: rgba(47, 52, 61, 0.84);
+  --wf-shadow: 0 30px 88px rgba(18, 20, 24, 0.38);
+}
+
+body.cm-page-workflow,
+body.cm-page-workflow-article {
+  background:
+    radial-gradient(circle at 82% 6%, color-mix(in srgb, var(--wf-blue) 9%, transparent), transparent 30rem),
+    linear-gradient(color-mix(in srgb, var(--wf-blue) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--wf-blue) 4%, transparent) 1px, transparent 1px),
+    var(--cm-bg);
+  background-size: auto, 64px 64px, 64px 64px, auto;
+}
+
+body.cm-page-workflow .body,
+body.cm-page-workflow-article .body {
+  max-width: none;
+  overflow: clip;
+  width: 100%;
+}
+
+/* The archive follows the same full-width record pattern as the science-fiction shelf. */
+.cm-page-workflow .post-list.cm-workflow-archive {
+  display: block !important;
+  margin: 34px auto 64px !important;
+  max-width: 1200px !important;
+  padding: 0 20px !important;
+}
+
+.cm-workflow-entry.post-card {
+  background:
+    radial-gradient(520px circle at var(--mx, 82%) var(--my, 20%), color-mix(in srgb, var(--wf-accent) 16%, transparent), transparent 68%),
+    linear-gradient(145deg, color-mix(in srgb, var(--cm-surface) 96%, transparent), color-mix(in srgb, var(--cm-surface-2) 78%, transparent));
+  border: 1px solid var(--wf-line) !important;
+  border-radius: 26px;
+  box-shadow: var(--wf-shadow) !important;
+  box-sizing: border-box;
+  color: var(--cm-v3-ink) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin: 0 !important;
+  min-height: 330px;
+  overflow: hidden;
+  padding: clamp(30px, 5.2vw, 62px) !important;
+  position: relative;
+  text-decoration: none;
+  transition: border-color 0.24s ease, box-shadow 0.24s ease, transform 0.24s cubic-bezier(.2, .8, .2, 1);
+}
+
+html[data-cm-theme="dark"] .cm-workflow-entry.post-card {
+  background:
+    radial-gradient(520px circle at var(--mx, 82%) var(--my, 20%), rgba(86, 182, 194, 0.14), transparent 68%),
+    linear-gradient(145deg, rgba(47, 52, 61, 0.96), rgba(33, 37, 43, 0.92));
+}
+
+.cm-workflow-entry.post-card::before {
+  background:
+    linear-gradient(90deg, var(--wf-accent), transparent 72%),
+    repeating-linear-gradient(90deg, transparent 0 31px, color-mix(in srgb, var(--wf-blue) 12%, transparent) 32px);
+  bottom: 0;
+  content: "";
+  height: 2px;
+  left: 0;
+  opacity: 0.85;
+  pointer-events: none;
+  position: absolute;
+  width: 78%;
+}
+
+.cm-workflow-entry.post-card::after {
+  background:
+    linear-gradient(color-mix(in srgb, var(--wf-blue) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--wf-blue) 7%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  content: "";
+  inset: 0 0 0 54%;
+  mask-image: linear-gradient(90deg, transparent, #000);
+  opacity: 0.65;
+  pointer-events: none;
+  position: absolute;
+}
+
+.cm-workflow-entry.post-card:hover {
+  border-color: color-mix(in srgb, var(--wf-accent) 64%, var(--wf-line)) !important;
+  box-shadow: 0 36px 96px color-mix(in srgb, var(--wf-accent) 18%, transparent) !important;
+  transform: translateY(-5px);
+}
+
+.cm-workflow-entry > * {
+  grid-column: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.cm-workflow-entry__kicker {
+  color: var(--wf-gold);
+  font: 750 0.62rem/1.2 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.18em;
+}
+
+.cm-workflow-entry h2 {
+  color: var(--cm-v3-ink);
+  font-family: sourceHanSerif, "Iowan Old Style", serif;
+  font-size: clamp(2.35rem, 5.8vw, 4.65rem);
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  margin: auto 0 12px;
+  max-width: 880px;
+  text-wrap: balance;
+}
+
+.cm-workflow-entry > strong {
+  color: var(--wf-accent);
+  font-size: clamp(1.05rem, 2vw, 1.36rem);
+  letter-spacing: 0.02em;
+  line-height: 1.45;
+}
+
+.cm-workflow-entry > p {
+  color: var(--cm-muted);
+  font-size: clamp(0.88rem, 1.55vw, 1.05rem);
+  line-height: 1.75;
+  margin: 17px 0 0;
+  max-width: 700px;
+}
+
+.cm-workflow-entry code {
+  color: var(--wf-accent);
+  font-size: 0.92em;
+}
+
+.cm-workflow-entry__meta {
+  align-items: center;
+  color: var(--cm-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font: 650 0.58rem/1.2 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  gap: 13px;
+  letter-spacing: 0.1em;
+  margin-top: 25px;
+  text-transform: uppercase;
+}
+
+.cm-workflow-entry__meta b {
+  color: var(--wf-accent);
+}
+
+.cm-workflow-entry__cta {
+  align-self: end;
+  bottom: clamp(30px, 5.2vw, 62px);
+  color: var(--wf-accent);
+  font: 750 0.64rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  grid-column: 2;
+  letter-spacing: 0.13em;
+  position: absolute;
+  right: clamp(30px, 5.2vw, 62px);
+}
+
+/* Article shell: wider hero, focused reading surface, and stable content columns. */
+.cm-page-workflow-article .cm-techdoc-article.post-content {
+  max-width: none;
+  padding: 42px 24px 92px;
+}
+
+.cm-page-workflow-article .cm-techdoc-article .post-inner {
+  max-width: 1360px;
+}
+
+.cm-page-workflow-article .cm-techdoc-hero.post-content__head {
+  border: 1px solid var(--wf-line) !important;
+  border-radius: 30px !important;
+  box-shadow: var(--wf-shadow) !important;
+  max-width: 1360px !important;
+  min-height: 480px;
+  padding: clamp(48px, 6.5vw, 88px) !important;
+}
+
+.cm-page-workflow-article .cm-techdoc-article .post-content__body {
+  background: var(--wf-surface) !important;
+  border: 1px solid var(--wf-line) !important;
+  border-radius: 26px !important;
+  box-shadow: var(--wf-shadow) !important;
+  margin: 28px auto 0 !important;
+  max-width: 1080px;
+  overflow: hidden;
+  padding: clamp(34px, 5.6vw, 72px) !important;
+}
+
+.cm-page-workflow-article .post__foot {
+  max-width: 1080px;
+}
+
+@media (max-width: 760px) {
+  .cm-workflow-entry.post-card {
+    min-height: 380px;
+  }
+
+  .cm-workflow-entry__cta {
+    bottom: 28px;
+    grid-column: 1;
+    left: 30px;
+    right: auto;
+  }
+
+  .cm-workflow-entry__meta {
+    margin-bottom: 42px;
+  }
+
+  .cm-page-workflow-article .cm-techdoc-article.post-content {
+    padding: 22px 12px 58px;
+  }
+
+  .cm-page-workflow-article .cm-techdoc-hero.post-content__head {
+    border-radius: 22px !important;
+    min-height: 420px;
+    padding: 42px 26px !important;
+  }
+
+  .cm-page-workflow-article .cm-techdoc-article .post-content__body {
+    border-radius: 20px !important;
+    padding: 30px 20px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .cm-page-workflow .post-list.cm-workflow-archive {
+    padding: 0 10px !important;
+  }
+
+  .cm-workflow-entry.post-card {
+    border-radius: 19px;
+    padding: 28px 22px 30px !important;
+  }
+
+  .cm-workflow-entry h2 {
+    font-size: 2.35rem;
+  }
+
+  .cm-workflow-entry__cta {
+    left: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-workflow-entry.post-card {
+    transition: none;
+  }
+}

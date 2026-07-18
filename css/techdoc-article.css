@@ -262,9 +262,15 @@
   display: flex;
   font-size: 0.7rem;
   font-weight: 800;
-  grid-row: 1 / span 3;
+  grid-column: 1;
+  grid-row: 1;
   height: 42px;
   justify-content: center;
+}
+
+.cm-techdoc-step > :not(.cm-techdoc-step__index) {
+  grid-column: 2;
+  min-width: 0;
 }
 
 .cm-techdoc-step__index::before {
@@ -292,6 +298,8 @@
 .cm-techdoc-step pre {
   grid-column: 2;
   margin-bottom: 2px !important;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .cm-techdoc-grid {
