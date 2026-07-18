@@ -31,7 +31,8 @@
       @font-face { font-family: sourceHanSerif; src: url(/font/bold.ttf); font-weight: bold; font-display: swap; }
     </style>
     <link rel="stylesheet" href="/css/layout.css">
-    <link rel="stylesheet" href="/css/tianyan.css">
+    <link rel="stylesheet" href="/css/tianyan.css?v=20260718.3">
+    <link rel="stylesheet" href="/css/comments.css?v=20260718.3">
   </head>
   <body class="cm-page-article cm-page-tianyan">
     <div id="search-mask" style="display:none">
@@ -869,7 +870,7 @@
           </main>
         </div>
 
-        <section class="cm-tianyan-comments cm-glass" id="comments" data-cm-comments
+        <section class="cm-reader-comments cm-tianyan-comments cm-glass" id="comments" data-cm-comments
           data-comments-endpoint="https://api.github.com/repos/Adventurer-J/Adventurer-J.github.io/issues/19/comments?per_page=100"
           data-comments-issue-url="https://github.com/Adventurer-J/Adventurer-J.github.io/issues/19"
           aria-labelledby="cm-comments-title">
@@ -881,7 +882,7 @@
             </div>
             <div class="cm-tianyan-comments-signal" aria-label="评论区状态">
               <span><i aria-hidden="true"></i><b data-comments-count>--</b> 回波</span>
-              <span>ISSUE / 19</span>
+              <span data-comments-thread>ISSUE / 19</span>
             </div>
           </div>
 
@@ -937,8 +938,8 @@
     <script id="MathJax-script" async src="https://www.unpkg.com/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
     <script src="/js/search.js"></script>
     <script>searchInitialize("/search.json")</script>
-    <script src="/js/copy-code.js"></script>
-    <script src="/js/tianyan.js"></script>
-    <script src="/js/comments.js"></script>
+    <script src="/js/copy-code.js?v=20260718.3"></script>
+    <script src="/js/tianyan.js?v=20260718.2"></script>
+    <script src="/js/comments.js?v=20260718.3"></script>
   </body>
 </html>

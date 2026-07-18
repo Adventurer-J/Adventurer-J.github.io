@@ -1662,6 +1662,22 @@
     addEventListener("scroll", update, {passive:true}); update();
   }
 
+  function initializeArticleComments() {
+    if (!document.documentElement.classList.contains("cm-page-article")) return;
+    const version = "20260718.3";
+    if (!document.querySelector('link[href*="/css/comments.css"]')) {
+      const stylesheet = document.createElement("link");
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = `/css/comments.css?v=${version}`;
+      document.head.appendChild(stylesheet);
+    }
+    if (window.__cmReaderCommentsInitialized || document.querySelector('script[src*="/js/comments.js"]')) return;
+    const script = document.createElement("script");
+    script.src = `/js/comments.js?v=${version}`;
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+
   function initialize() {
     document.documentElement.classList.add(`cm-page-${document.querySelector(".cm-home") ? "home" : document.querySelector(".cm-hub") ? "research" : document.querySelector(".post-content") ? "article" : document.querySelector(".wall-category") ? "category" : "default"}`);
     initializeLoadingExperience();
@@ -1685,6 +1701,7 @@
     initializeParticles();
     initializeMotion();
     initializeReadingProgress();
+    initializeArticleComments();
     initializeBackToTop();
   }
 
