@@ -28,6 +28,7 @@ body.cm-page-workflow-article {
 
 body.cm-page-workflow .body,
 body.cm-page-workflow-article .body {
+  box-sizing: border-box;
   max-width: none;
   overflow: clip;
   width: 100%;
