@@ -235,20 +235,21 @@ html.cm-page-category:not(.cm-deep-space-active) .wall-category {
   background:
     radial-gradient(circle at 76% 36%, var(--sp-accent-soft), transparent 28%),
     linear-gradient(120deg, color-mix(in srgb, var(--sp-paper) 58%, transparent), transparent 58%),
-    var(--sp-bg);
+    var(--sp-bg) !important;
   border: 0;
   border-bottom: 1px solid var(--sp-line);
-  border-radius: 0;
+  border-radius: 0 !important;
   box-shadow: none;
   display: flex;
-  height: auto;
+  height: auto !important;
   isolation: isolate;
-  margin: 0;
-  min-height: min(720px, calc(100svh - 24px));
+  margin: 0 !important;
+  max-width: none !important;
+  min-height: min(780px, calc(100svh - 24px)) !important;
   overflow: hidden;
-  padding: clamp(150px, 18vh, 210px) clamp(24px, 5vw, 82px) 96px;
+  padding: clamp(148px, 17vh, 196px) clamp(24px, 5vw, 82px) 82px !important;
   position: relative;
-  width: 100%;
+  width: 100% !important;
 }
 
 html.cm-page-category:not(.cm-deep-space-active) .wall-category::before {
@@ -287,6 +288,7 @@ html.cm-page-category:not(.cm-deep-space-active) .wall-main {
   margin: 0 auto;
   max-width: 1480px;
   min-height: 360px;
+  padding: 0 !important;
   position: relative;
   width: 100%;
   z-index: 2;
@@ -294,12 +296,42 @@ html.cm-page-category:not(.cm-deep-space-active) .wall-main {
 
 html.cm-page-category:not(.cm-deep-space-active) .wall-main::before {
   color: var(--sp-accent);
-  content: "FIELD / OPEN INDEX";
+  content: "";
+  display: none;
   font: 700 0.59rem/1.4 ui-monospace, "SFMono-Regular", Consolas, monospace;
   left: 0;
   letter-spacing: 0.16em;
   position: absolute;
   top: 0;
+}
+
+html.cm-page-category:not(.cm-deep-space-active) .cm-category-kicker {
+  color: var(--sp-accent);
+  font: 700 0.59rem/1.4 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.16em;
+  margin: 0 0 clamp(34px, 4vw, 52px);
+  position: relative;
+  z-index: 3;
+}
+
+html.cm-page-category:not(.cm-deep-space-active) .cm-category-grid {
+  gap: 12px;
+  margin-top: clamp(28px, 4vw, 48px);
+  position: relative;
+  z-index: 3;
+}
+
+html.cm-page-category:not(.cm-deep-space-active) .cm-category-card {
+  background: color-mix(in srgb, var(--sp-paper) 90%, transparent);
+  border: 1px solid var(--sp-line);
+  border-radius: 22px;
+  box-shadow: 0 18px 52px color-mix(in srgb, var(--sp-accent) 7%, transparent);
+  min-height: 154px;
+}
+
+html.cm-page-category:not(.cm-deep-space-active) .cm-category-card:hover {
+  border-color: color-mix(in srgb, var(--sp-accent) 60%, transparent);
+  transform: translateY(-5px);
 }
 
 html.cm-page-category:not(.cm-deep-space-active) .wall-main::after {
@@ -465,8 +497,8 @@ html.cm-page-category:not(.cm-deep-space-active) .cm-home-footer-links a:hover {
 
 @media (max-width: 820px) {
   html.cm-page-category:not(.cm-deep-space-active) .wall-category {
-    min-height: 620px;
-    padding: 136px 20px 72px;
+    min-height: 620px !important;
+    padding: 136px 20px 72px !important;
   }
 
   html.cm-page-category:not(.cm-deep-space-active) .wall-category::after {
