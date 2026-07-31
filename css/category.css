@@ -240,6 +240,7 @@ html.cm-page-category:not(.cm-deep-space-active) .wall-category {
   border-bottom: 1px solid var(--sp-line);
   border-radius: 0 !important;
   box-shadow: none;
+  box-sizing: border-box;
   display: flex;
   height: auto !important;
   isolation: isolate;
