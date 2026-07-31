@@ -3454,8 +3454,8 @@ html.cm-page-research .cm-breadcrumb {
 html.cm-page-research .cm-hero {
   background:
     radial-gradient(circle at 78% 20%, rgba(199, 130, 88, 0.28), transparent 30%),
-    linear-gradient(140deg, #171a18, #090b0a);
-  border: 0;
+    linear-gradient(140deg, #171a18, #090b0a) !important;
+  border: 0 !important;
   border-radius: 36px;
   box-shadow: none;
   color: #f1f1eb;
