@@ -1,9 +1,10 @@
 [
-  {"title":"Open Frame · 首页","content":"一个可以承载作品、故事、工具与日常的开放式主页模板。","url":"/"},
-  {"title":"选择模板","content":"个人名片、产品故事、作品陈列、故事与记录。","url":"/#templates"},
-  {"title":"页面原则","content":"清晰、探索与呼吸感。","url":"/#principles"},
-  {"title":"内容模块","content":"开场、作品、故事、工具、途中与联系。","url":"/#modules"},
-  {"title":"实时风格实验室","content":"Ember、Cobalt 与 Signal 三种页面气质。","url":"/#studio"},
-  {"title":"科幻故事","content":"想象、写作与长内容。","url":"/Sci-Fi/"},
-  {"title":"在路上","content":"地点、片段与生活记录。","url":"/Miles%20and%20Memories/"}
+  {"title":"Open Digital Garden · 首页","content":"方法、工具、故事、科幻与沿途记录，在一个持续生长的数字空间中相遇。","url":"/"},
+  {"title":"数值方法","content":"数值方法与相关笔记。","url":"/Numerical-method/"},
+  {"title":"微分方程","content":"微分方程主题内容。","url":"/Differential%20equation/"},
+  {"title":"算法","content":"算法、解题思路与实践记录。","url":"/Algorithm/"},
+  {"title":"操作系统","content":"系统、工具与使用笔记。","url":"/Software-system/"},
+  {"title":"科幻","content":"科幻想象、原创故事与长篇阅读。","url":"/Sci-Fi/"},
+  {"title":"天衍","content":"原创科幻故事。","url":"/Sci-Fi/tianyan/"},
+  {"title":"在路上","content":"地点、片段与沿途记录。","url":"/Miles%20and%20Memories/"}
 ]
