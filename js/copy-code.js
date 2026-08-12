@@ -48,7 +48,7 @@
   }
 
   function initializeSymbolField() {
-    if (document.documentElement.classList.contains("cm-deep-space-active") || document.querySelector(".cm-symbol-field")) return;
+    if (document.querySelector(".sf-page") || document.documentElement.classList.contains("cm-deep-space-active") || document.querySelector(".cm-symbol-field")) return;
     const canvas = document.createElement("canvas");
     canvas.className = "cm-symbol-field";
     canvas.setAttribute("aria-hidden", "true");
@@ -924,7 +924,7 @@
     if (document.documentElement.classList.contains("cm-page-research")) {
       target = document.querySelector(".cm-hub .cm-hero");
       profile = "signal";
-    } else if (document.documentElement.classList.contains("cm-page-category")) {
+    } else if (document.documentElement.classList.contains("cm-page-category") && key !== "Sci-Fi") {
       target = document.querySelector(".wall-category:not(.cm-sci-fi-stage)");
       profile = categoryProfiles[key] || "mesh";
     } else if (document.documentElement.classList.contains("cm-page-article")) {
