@@ -67,8 +67,8 @@
           href='/css/layout.css' />
     
     
-  <link rel="stylesheet" type="text/css" href="/css/category.css?v=20260812.1" />
-  <link rel="stylesheet" type="text/css" href="/css/sci-fi-modern.css?v=20260812.2" />
+  <link rel="stylesheet" type="text/css" href="/css/category.css?v=20260813.2" />
+  <link rel="stylesheet" type="text/css" href="/css/sci-fi-modern.css?v=20260813.3" />
 
   <meta name="generator" content="Hexo 7.3.0"></head>
   <body class="sf-sci-fi-modern">
@@ -161,6 +161,10 @@
     </div>
     <div class="body sf-page">
       <main class="wall wall-category sf-hero" aria-labelledby="sf-page-title">
+        <div class="sf-cyber-backdrop" data-sf-spine-layer aria-hidden="true">
+          <canvas class="sf-spine-canvas" data-sf-cyber-spine data-sf-variant="landing"></canvas>
+          <div class="sf-spine-depth"></div>
+        </div>
         <div class="sf-hero-grid">
           <div class="wall-main sf-hero-copy">
             <p class="cm-category-kicker">SCIENCE FICTION / SPECULATIVE ARCHIVE</p>
@@ -183,19 +187,17 @@
             </div>
           </div>
 
-          <section class="sf-spine-stage" aria-label="交互式赛博脊虫公式引擎">
-            <canvas id="sf-cyber-spine" class="sf-spine-canvas" aria-hidden="true"></canvas>
-            <div class="sf-spine-scan" aria-hidden="true"></div>
-            <div class="sf-spine-readout"><span>CYBER SPINE / SYM-07</span><b><i></i> SYNTHESIZING</b></div>
+          <aside class="sf-spine-console" aria-label="赛博脊虫参数方程控制台">
+            <div class="sf-spine-readout"><span>PARAMETRIC ORGANISM / γ(s,t)</span><b><i></i> LIVE</b></div>
             <div class="sf-formula-output" aria-live="polite">
-              <small>GENERATED FORMULA</small>
-              <strong data-sf-formula>∫ Ω e<sup>−iωt</sup> · ∇ψ dx</strong>
+              <small>ACTIVE BACKBONE EQUATION</small>
+              <strong data-sf-formula>γ(s,t) = Rθ[L(½−s), A sin(κs−ωt)e<sup>−μs</sup>]</strong>
             </div>
             <div class="sf-spine-caption">
-              <span>MOVE TO STEER THE SPINE<br><small>符号将沿脊柱实时重组</small></span>
-              <button type="button" data-sf-generate>生成新公式</button>
+              <span>82 个骨节直接采样自曲线<br><small>移动光标可改变方向与相位</small></span>
+              <button type="button" data-sf-generate>切换方程</button>
             </div>
-          </section>
+          </aside>
         </div>
       </main>
 
@@ -214,9 +216,10 @@
             <strong>进入故事 <i>↗</i></strong>
           </div>
           <div class="sf-feature-visual" aria-hidden="true">
-            <div class="sf-feature-planet"><i></i><i></i><i></i></div>
-            <span class="sf-feature-star sf-feature-star--a">✦</span>
-            <span class="sf-feature-star sf-feature-star--b">✦</span>
+            <div class="sf-feature-schematic">
+              <span>2274</span>
+              <i></i><i></i><i></i>
+            </div>
             <div class="sf-feature-coordinates">IBH-2274-01<br>RA 17h 45m 40.04s<br>DEC −29° 00′ 28.1″</div>
           </div>
         </a>
@@ -254,7 +257,7 @@
     
     <script src="/js/quote-library.js"></script>
     <script src="/js/copy-code.js?v=20260812.4"></script>
-    <script src="/js/sci-fi-modern.js?v=20260812.2"></script>
+    <script src="/js/sci-fi-modern.js?v=20260813.3"></script>
   
 
   </body>

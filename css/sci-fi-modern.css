@@ -36,13 +36,13 @@ html.cm-page-category .sf-page {
 
 html.cm-page-category .sf-page .sf-hero {
   align-items: center;
-  background:
-    radial-gradient(circle at 78% 40%, color-mix(in srgb, var(--sf-accent) 18%, transparent), transparent 30%),
-    linear-gradient(118deg, color-mix(in srgb, var(--sf-paper) 64%, transparent), transparent 58%),
-    var(--sf-bg) !important;
+  background: transparent !important;
   display: flex;
+  isolation: isolate;
   min-height: max(820px, calc(100svh - 24px)) !important;
+  overflow: hidden;
   padding: clamp(142px, 15vh, 184px) clamp(20px, 4.8vw, 76px) 74px !important;
+  position: relative;
 }
 
 html.cm-page-category .sf-page .sf-hero::before {
@@ -55,20 +55,19 @@ html.cm-page-category .sf-page .sf-hero::before {
 }
 
 html.cm-page-category .sf-page .sf-hero::after {
-  border: 1px solid color-mix(in srgb, var(--sf-accent) 30%, transparent);
-  border-radius: 50%;
-  box-shadow: 0 0 0 90px color-mix(in srgb, var(--sf-accent) 5%, transparent);
-  height: min(42vw, 620px);
-  right: -18vw;
-  top: 12%;
-  width: min(42vw, 620px);
+  background: linear-gradient(118deg, transparent 42%, color-mix(in srgb, var(--sf-accent) 8%, transparent) 42.2% 47%, transparent 47.2%);
+  border: 0;
+  height: 100%;
+  inset: 0;
+  opacity: 0.8;
+  width: 100%;
 }
 
 .sf-hero-grid {
   align-items: center;
   display: grid;
   gap: clamp(42px, 6vw, 100px);
-  grid-template-columns: minmax(0, 1.06fr) minmax(380px, 0.94fr);
+  grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.72fr);
   margin: 0 auto;
   max-width: 1540px;
   position: relative;
@@ -212,80 +211,70 @@ html.cm-page-category .sf-page .sf-sector:hover {
   top: 20px;
 }
 
-.sf-spine-stage {
-  aspect-ratio: 1 / 1;
+.sf-cyber-backdrop {
   background:
-    radial-gradient(circle at 54% 46%, rgba(94, 170, 164, 0.1), transparent 30%),
-    radial-gradient(circle at 50% 50%, #161412 0, #0c0d0c 56%, #080a09 100%);
-  border: 1px solid color-mix(in srgb, var(--sf-accent) 30%, transparent);
-  border-radius: clamp(28px, 3vw, 46px);
-  box-shadow: 0 36px 110px rgba(12, 10, 9, 0.22);
-  cursor: none;
-  isolation: isolate;
-  min-height: 420px;
-  overflow: hidden;
-  position: relative;
-}
-
-.sf-spine-stage::before {
-  background-image:
-    linear-gradient(rgba(233, 231, 223, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(233, 231, 223, 0.06) 1px, transparent 1px);
-  background-size: 48px 48px;
-  content: "";
+    radial-gradient(ellipse at 74% 48%, color-mix(in srgb, #6eb9b3 13%, transparent), transparent 33%),
+    radial-gradient(ellipse at 78% 46%, color-mix(in srgb, var(--sf-accent) 20%, transparent), transparent 48%),
+    linear-gradient(90deg, var(--sf-bg) 0 26%, color-mix(in srgb, var(--sf-bg) 90%, transparent) 48%, color-mix(in srgb, var(--sf-paper) 42%, transparent));
   inset: 0;
-  mask-image: radial-gradient(circle, transparent 22%, #000 86%);
+  overflow: hidden;
   pointer-events: none;
   position: absolute;
   z-index: 0;
 }
 
-.sf-spine-stage::after {
-  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 4px);
+.sf-cyber-backdrop::before {
+  background:
+    linear-gradient(rgba(23, 24, 22, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 24, 22, 0.045) 1px, transparent 1px);
+  background-size: 62px 62px;
   content: "";
   inset: 0;
-  pointer-events: none;
+  mask-image: linear-gradient(90deg, transparent 18%, #000 54%, #000 88%, transparent);
   position: absolute;
-  z-index: 4;
+}
+
+.sf-spine-depth {
+  background:
+    linear-gradient(90deg, var(--sf-bg) 0, color-mix(in srgb, var(--sf-bg) 94%, transparent) 30%, transparent 61%),
+    linear-gradient(0deg, var(--sf-bg), transparent 18% 82%, var(--sf-bg));
+  inset: 0;
+  position: absolute;
+  z-index: 3;
 }
 
 .sf-spine-canvas {
   height: 100%;
   inset: 0;
   max-width: none;
+  opacity: 0.94;
   pointer-events: none;
   position: absolute;
   width: 100%;
   z-index: 2;
 }
 
-.sf-spine-scan {
-  background: linear-gradient(90deg, transparent, rgba(94, 170, 164, 0.1), transparent);
-  bottom: 0;
-  left: -22%;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  transform: skewX(-14deg);
-  width: 24%;
-  z-index: 1;
-}
-
-.sf-spine-stage.is-generating .sf-spine-scan {
-  animation: sf-spine-scan 720ms cubic-bezier(.2,.7,.2,1);
+.sf-spine-console {
+  align-self: end;
+  backdrop-filter: blur(18px);
+  background: color-mix(in srgb, var(--sf-paper) 54%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--sf-accent) 38%, var(--sf-line));
+  border-top: 1px solid color-mix(in srgb, var(--sf-accent) 38%, var(--sf-line));
+  display: grid;
+  gap: 24px;
+  margin-bottom: 32px;
+  padding: 22px 0;
+  position: relative;
+  width: min(100%, 470px);
+  z-index: 5;
 }
 
 .sf-spine-readout {
   align-items: center;
-  color: rgba(244, 241, 233, 0.52);
+  color: var(--sf-muted);
   display: flex;
   font-size: 0.5rem;
   justify-content: space-between;
-  left: 28px;
-  position: absolute;
-  right: 28px;
-  top: 24px;
-  z-index: 5;
 }
 
 .sf-spine-readout b {
@@ -305,16 +294,12 @@ html.cm-page-category .sf-page .sf-sector:hover {
 }
 
 .sf-formula-output {
-  color: rgba(244, 241, 233, 0.88);
-  left: 28px;
-  max-width: calc(100% - 56px);
-  position: absolute;
-  top: 76px;
-  z-index: 5;
+  color: var(--sf-ink);
+  min-width: 0;
 }
 
 .sf-formula-output small {
-  color: rgba(120, 192, 185, 0.72);
+  color: color-mix(in srgb, #468d88 78%, var(--sf-muted));
   display: block;
   font: 700 0.48rem/1.2 ui-monospace, monospace;
   letter-spacing: 0.16em;
@@ -323,41 +308,36 @@ html.cm-page-category .sf-page .sf-sector:hover {
 
 .sf-formula-output strong {
   display: block;
-  font: 400 clamp(1rem, 1.8vw, 1.42rem)/1.35 Georgia, "Times New Roman", serif;
+  font: 400 clamp(0.95rem, 1.35vw, 1.22rem)/1.5 Georgia, "Times New Roman", serif;
   letter-spacing: 0.02em;
   min-height: 2em;
   text-shadow: 0 0 24px rgba(120, 192, 185, 0.14);
   transition: opacity 160ms ease, transform 160ms ease;
 }
 
-.sf-spine-stage.is-generating .sf-formula-output strong {
+.sf-spine-console.is-generating .sf-formula-output strong {
   opacity: 0;
   transform: translateY(-7px);
 }
 
 .sf-spine-caption {
   align-items: end;
-  bottom: 24px;
-  color: rgba(244, 241, 233, 0.74);
+  color: var(--sf-muted);
   display: flex;
   font-size: 0.5rem;
   justify-content: space-between;
-  left: 28px;
   line-height: 1.7;
-  position: absolute;
-  right: 28px;
-  z-index: 5;
 }
 
 .sf-spine-caption small {
-  color: rgba(244, 241, 233, 0.4);
+  color: color-mix(in srgb, var(--sf-muted) 72%, transparent);
   font-size: 0.5rem;
   letter-spacing: 0.04em;
 }
 
 .sf-spine-caption button {
-  background: rgba(244, 241, 233, 0.08);
-  border: 1px solid rgba(120, 192, 185, 0.46);
+  background: color-mix(in srgb, var(--sf-paper) 78%, transparent);
+  border: 1px solid color-mix(in srgb, #5da8a2 52%, var(--sf-line));
   border-radius: 999px;
   color: #8fcac4;
   cursor: pointer;
@@ -368,19 +348,14 @@ html.cm-page-category .sf-page .sf-sector:hover {
 
 .sf-spine-caption button:hover,
 .sf-spine-caption button:focus-visible {
-  background: rgba(120, 192, 185, 0.13);
+  background: color-mix(in srgb, #71b8b2 16%, var(--sf-paper));
   border-color: #8fcac4;
   outline: none;
   transform: translateY(-2px);
 }
 
-.sf-spine-stage.is-generating {
-  box-shadow: 0 36px 120px rgba(12, 10, 9, 0.3), 0 0 0 1px rgba(120, 192, 185, 0.46);
-}
-
-@keyframes sf-spine-scan {
-  from { left: -24%; }
-  to { left: 118%; }
+.sf-spine-console.is-generating {
+  border-color: #73b9b3;
 }
 
 .sf-archive {
@@ -424,7 +399,7 @@ html.cm-page-category .sf-page .sf-sector:hover {
 
 .sf-feature {
   background:
-    radial-gradient(circle at 76% 48%, rgba(189, 127, 114, 0.19), transparent 30%),
+    linear-gradient(116deg, transparent 58%, rgba(189, 127, 114, 0.12) 58.2% 64%, transparent 64.2%),
     linear-gradient(135deg, #151817, #080a09);
   border: 1px solid rgba(239, 239, 232, 0.12);
   border-radius: clamp(28px, 4vw, 52px);
@@ -526,42 +501,53 @@ html.cm-page-category .sf-page .sf-sector:hover {
   position: relative;
 }
 
-.sf-feature-planet {
-  background: radial-gradient(circle at 38% 34%, #3b312d 0, #161513 42%, #050606 70%);
-  border: 1px solid rgba(226, 165, 141, 0.32);
-  border-radius: 50%;
-  box-shadow: -28px -12px 90px rgba(226, 165, 141, 0.1), 60px 36px 130px rgba(0, 0, 0, 0.72);
-  height: min(31vw, 470px);
+.sf-feature-schematic {
+  border-bottom: 1px solid rgba(226, 165, 141, 0.32);
+  border-top: 1px solid rgba(226, 165, 141, 0.32);
+  height: min(23vw, 330px);
   left: 50%;
   position: absolute;
-  top: 48%;
-  transform: translate(-50%, -50%);
-  width: min(31vw, 470px);
+  top: 47%;
+  transform: translate(-50%, -50%) rotate(-7deg);
+  width: min(38vw, 610px);
 }
 
-.sf-feature-planet::before,
-.sf-feature-planet::after,
-.sf-feature-planet i {
-  border: 1px solid rgba(226, 165, 141, 0.22);
-  border-radius: 50%;
+.sf-feature-schematic::before,
+.sf-feature-schematic::after {
+  background: rgba(112, 190, 183, 0.28);
   content: "";
-  inset: -18%;
+  height: 1px;
+  left: -8%;
   position: absolute;
-  transform: rotate(-18deg) scaleY(0.36);
+  top: 50%;
+  transform: rotate(23deg);
+  width: 116%;
 }
 
-.sf-feature-planet::after { inset: -42%; transform: rotate(32deg) scaleY(0.22); }
-.sf-feature-planet i:nth-child(1) { inset: -66%; transform: rotate(68deg) scaleY(0.15); }
-.sf-feature-planet i:nth-child(2), .sf-feature-planet i:nth-child(3) { display: none; }
+.sf-feature-schematic::after { transform: rotate(-19deg); }
 
-.sf-feature-star {
-  color: var(--sf-accent-bright);
-  font-size: 1rem;
+.sf-feature-schematic > span {
+  color: transparent;
+  font: 700 clamp(6rem, 12vw, 12rem)/1 ui-monospace, monospace;
+  left: 50%;
+  letter-spacing: -0.1em;
   position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-text-stroke: 1px rgba(226, 165, 141, 0.34);
 }
 
-.sf-feature-star--a { left: 18%; top: 20%; }
-.sf-feature-star--b { bottom: 25%; right: 12%; }
+.sf-feature-schematic i {
+  background: var(--sf-accent-bright);
+  box-shadow: 0 0 20px rgba(226, 165, 141, 0.42);
+  height: 5px;
+  position: absolute;
+  width: 5px;
+}
+
+.sf-feature-schematic i:nth-child(1) { left: 7%; top: -3px; }
+.sf-feature-schematic i:nth-child(2) { right: 18%; top: -3px; }
+.sf-feature-schematic i:nth-child(3) { bottom: -3px; left: 48%; }
 
 .sf-feature-coordinates {
   bottom: 48px;
@@ -627,10 +613,10 @@ html.cm-page-category .sf-page .sf-sector:hover {
 
 @media (max-width: 1040px) {
   .sf-hero-grid { grid-template-columns: 1fr; }
-  .sf-spine-stage { aspect-ratio: 16 / 11; min-height: 400px; }
+  .sf-spine-console { margin: 0 0 8px auto; width: min(100%, 520px); }
   .sf-feature { grid-template-columns: 1fr; }
   .sf-feature-visual { min-height: 520px; }
-  .sf-feature-planet { height: min(58vw, 470px); width: min(58vw, 470px); }
+  .sf-feature-schematic { height: min(38vw, 330px); width: min(72vw, 610px); }
 }
 
 @media (max-width: 720px) {
@@ -646,10 +632,7 @@ html.cm-page-category .sf-page .sf-sector:hover {
   .sf-transmission-strip > span:last-child { border-left: 0; border-top: 1px solid var(--sf-line); grid-column: 1 / -1; }
   html.cm-page-category .sf-page .sf-sector-grid { grid-template-columns: 1fr; }
   html.cm-page-category .sf-page .sf-sector { min-height: 122px; }
-  .sf-spine-stage { aspect-ratio: 1 / 1; border-radius: 26px; min-height: 320px; }
-  .sf-spine-readout { left: 20px; right: 20px; top: 20px; }
-  .sf-formula-output { left: 20px; max-width: calc(100% - 40px); top: 64px; }
-  .sf-spine-caption { bottom: 20px; left: 20px; right: 20px; }
+  .sf-spine-console { margin-top: 118px; padding: 18px 0; }
   .sf-spine-caption > span { display: none; }
   .sf-spine-caption button { margin-left: auto; }
   .sf-section-head, .sf-signal { grid-template-columns: 1fr; }
@@ -660,7 +643,7 @@ html.cm-page-category .sf-page .sf-sector:hover {
   .sf-feature-copy h3 { font-size: clamp(4.8rem, 24vw, 7rem); margin-top: 44px; }
   .sf-feature-copy > strong { margin-top: 48px; }
   .sf-feature-visual { min-height: 390px; }
-  .sf-feature-planet { height: 66vw; width: 66vw; }
+  .sf-feature-schematic { height: 46vw; width: 82vw; }
   .sf-feature-coordinates { bottom: 26px; right: 26px; }
   .sf-signal { gap: 50px; padding: 88px 20px; }
   .sf-quote-console { border-radius: 20px; padding: 26px 22px; }
@@ -673,5 +656,5 @@ html.cm-page-category .sf-page .sf-sector:hover {
 }
 
 @media (forced-colors: active) {
-  .sf-spine-stage, .sf-feature, .sf-quote-console { border: 1px solid CanvasText; }
+  .sf-spine-console, .sf-feature, .sf-quote-console { border: 1px solid CanvasText; }
 }
