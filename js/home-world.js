@@ -253,7 +253,25 @@
     const openButton = $("#command-open");
     const input = $("#command-input");
     const results = $("#command-results");
-    if (!dialog || !openButton || !input || !results || typeof dialog.showModal !== "function") return;
+    if (!dialog || !openButton || !input || !results) return;
+    const nativeDialog = typeof dialog.showModal === "function";
+    const isOpen = () => nativeDialog ? dialog.open : dialog.hasAttribute("open");
+    const closeDialog = () => {
+      if (nativeDialog) dialog.close();
+      else {
+        dialog.removeAttribute("open");
+        dialog.removeAttribute("aria-modal");
+        document.body.style.overflow = "";
+      }
+    };
+    const showDialog = () => {
+      if (nativeDialog) dialog.showModal();
+      else {
+        dialog.setAttribute("open", "");
+        dialog.setAttribute("aria-modal", "true");
+        document.body.style.overflow = "hidden";
+      }
+    };
 
     const entries = [
       { key: "01", title: "回到开场", note: "首页与主张", href: "#top", terms: "首页 开场 hero top" },
@@ -290,7 +308,7 @@
     };
 
     const go = (entry) => {
-      dialog.close();
+      closeDialog();
       if (/^https?:/.test(entry.href)) window.open(entry.href, "_blank", "noopener");
       else window.location.href = entry.href;
     };
@@ -300,12 +318,16 @@
       selected = 0;
       input.value = "";
       render();
-      dialog.showModal();
+      showDialog();
       requestAnimationFrame(() => input.focus());
     };
 
     openButton.addEventListener("click", open);
-    dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener("click", (event) => { if (event.target === dialog) closeDialog(); });
+    $("form", dialog)?.addEventListener("submit", (event) => {
+      if (!nativeDialog) event.preventDefault();
+      closeDialog();
+    });
     input.addEventListener("input", () => {
       const query = input.value.trim().toLowerCase();
       visible = entries.filter((entry) => `${entry.title} ${entry.note} ${entry.terms}`.toLowerCase().includes(query));
@@ -321,9 +343,9 @@
     window.addEventListener("keydown", (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        dialog.open ? dialog.close() : open();
+        isOpen() ? closeDialog() : open();
       }
-      if (event.key === "/" && !dialog.open && !/input|textarea/i.test(document.activeElement?.tagName || "")) {
+      if (event.key === "/" && !isOpen() && !/input|textarea/i.test(document.activeElement?.tagName || "")) {
         event.preventDefault();
         open();
       }
