@@ -1,1 +1,9 @@
-[{"title":"hello","url":"/2025/01/16/hello/"},{"title":"天衍","url":"/Sci-Fi/tianyan/","content":"原创硬科幻中篇。十四点二毫米的测距残差、孤立黑洞 IBH-2274-01、方舟 H-0317、数学家林弦与人工智能天衍。署名 gpt 5.6 sol。"},{"title":"Markdown Preview Enhanced：科研报告样式配置指南","url":"/2026/07/18/markdown-preview-enhanced-computational-math-theme/","content":"在 VS Code 的 Markdown Preview Enhanced 中配置工作区 style.less，统一公式、三线表、代码块、定理环境、图片与 PDF 输出。分类：CSS。"}]
+[
+  {"title":"Open Frame · 首页","content":"一个可以承载作品、故事、工具与日常的开放式主页模板。","url":"/"},
+  {"title":"选择模板","content":"个人名片、产品故事、作品陈列、故事与记录。","url":"/#templates"},
+  {"title":"页面原则","content":"清晰、探索与呼吸感。","url":"/#principles"},
+  {"title":"内容模块","content":"开场、作品、故事、工具、途中与联系。","url":"/#modules"},
+  {"title":"实时风格实验室","content":"Ember、Cobalt 与 Signal 三种页面气质。","url":"/#studio"},
+  {"title":"科幻故事","content":"想象、写作与长内容。","url":"/Sci-Fi/"},
+  {"title":"在路上","content":"地点、片段与生活记录。","url":"/Miles%20and%20Memories/"}
+]
