@@ -833,6 +833,7 @@
     "Differential equation": "EQUATIONS / 微分方程",
     "Algorithm": "ALGORITHMS / 思路与实践",
     "Software-system": "SYSTEMS / 系统与工具",
+    "Sci-Fi": "SCIENCE FICTION / 科幻",
     "Miles and Memories": "FIELD NOTES / 行路札记"
   });
 
@@ -847,7 +848,6 @@
 
   function initializeCategoryPage() {
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
-    if (key === "Sci-Fi") return;
     const items = categoryMap[key];
     if (categoryAccent[key]) document.documentElement.style.setProperty("--cm-section-accent", categoryAccent[key]);
     const wall = document.querySelector(".wall-category");
@@ -896,6 +896,7 @@
       "Differential equation": "flow",
       "Algorithm": "signal",
       "Software-system": "signal",
+      "Sci-Fi": "signal",
       "Miles and Memories": "waypoint"
     };
     let target = null;
@@ -903,7 +904,7 @@
     if (document.documentElement.classList.contains("cm-page-research")) {
       target = document.querySelector(".cm-hub .cm-hero");
       profile = "signal";
-    } else if (document.documentElement.classList.contains("cm-page-category") && key !== "Sci-Fi") {
+    } else if (document.documentElement.classList.contains("cm-page-category")) {
       target = document.querySelector(".wall-category:not(.cm-sci-fi-stage)");
       profile = categoryProfiles[key] || "mesh";
     } else if (document.documentElement.classList.contains("cm-page-article")) {
@@ -1704,8 +1705,6 @@
     initializeNestedNavigation();
     initializeResearchFilters();
     initializeCategoryPage();
-    initializeSciFiDeepSpace();
-    initializeSciFiInteractions();
     initializeGlassSurfaces();
     initializeImageStretch();
     initializeParallax();
