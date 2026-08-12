@@ -397,7 +397,7 @@ html[data-cm-theme="dark"] .cm-subpage-modern .post-content__head {
   width: min(1348px, calc(100% - 48px)) !important;
 }
 
-.cm-subpage-story .cm-tianyan-hero {
+.cm-subpage-story .cm-tianyan-hero.post-content__head {
   background-color: var(--sp-night) !important;
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
@@ -658,7 +658,7 @@ html[data-cm-theme="dark"] .cm-subpage-modern .post-content__head {
   .cm-subpage-welcome .cm-welcome-article .post-content__head,
   .cm-subpage-guide .cm-techdoc-hero,
   .cm-subpage-archive .cm-blog-hero,
-  .cm-subpage-story .cm-tianyan-hero {
+  .cm-subpage-story .cm-tianyan-hero.post-content__head {
     min-height: 520px !important;
     padding: 38px 24px !important;
   }
