@@ -48,7 +48,7 @@
   }
 
   function initializeSymbolField() {
-    if (document.querySelector(".sf-page") || document.documentElement.classList.contains("cm-deep-space-active") || document.querySelector(".cm-symbol-field")) return;
+    if (document.querySelector(".sf-page") || document.body.classList.contains("cm-subpage-source") || document.documentElement.classList.contains("cm-deep-space-active") || document.querySelector(".cm-symbol-field")) return;
     const canvas = document.createElement("canvas");
     canvas.className = "cm-symbol-field";
     canvas.setAttribute("aria-hidden", "true");
@@ -904,7 +904,7 @@
 
 
   function initializeSubpageParticleFields() {
-    if (document.querySelector(".cm-home") || document.documentElement.classList.contains("cm-deep-space-active")) return;
+    if (document.querySelector(".cm-home") || document.body.classList.contains("cm-subpage-source") || document.documentElement.classList.contains("cm-deep-space-active")) return;
     const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
     const forcedColorsQuery = matchMedia("(forced-colors: active)");
     if (reducedQuery.matches || forcedColorsQuery.matches) return;

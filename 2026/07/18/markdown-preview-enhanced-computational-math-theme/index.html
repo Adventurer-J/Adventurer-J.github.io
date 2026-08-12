@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown Preview Enhanced：科研报告样式配置指南</title>
-    <meta name="description" content="在 VS Code 的 Markdown Preview Enhanced 中安装 compute-math-report-compact.less，配置适合科研报告的紧凑公式、表格、代码与 PDF 样式。">
-    <meta name="keywords" content="Markdown Preview Enhanced, VS Code, CSS, Less, Markdown, 科研报告, 数值分析, PDF">
+    <title>Markdown Preview Enhanced：阅读样式配置指南</title>
+    <meta name="description" content="在 VS Code 的 Markdown Preview Enhanced 中配置适合长文、知识笔记与项目文档的清晰阅读样式。">
+    <meta name="keywords" content="Markdown Preview Enhanced, VS Code, CSS, Less, Markdown, 阅读主题, PDF">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
@@ -27,8 +27,9 @@
     <link rel="stylesheet" href="/css/techdoc-article.css?v=20260718.1">
     <link rel="stylesheet" href="/css/workflow.css?v=20260718.3">
     <link rel="stylesheet" href="/css/comments.css?v=20260718.4">
+    <link rel="stylesheet" href="/css/subpage-modern.css?v=20260812.1">
   </head>
-  <body class="cm-page-workflow-article">
+  <body class="cm-page-workflow-article cm-subpage-source cm-subpage-source--guide">
     <div id="search-mask" style="display:none">
       <div class="search-main" id="search-main" role="dialog" aria-modal="true" aria-label="搜索文章">
         <div class="search__head">
@@ -77,10 +78,10 @@
       <article class="post-content cm-techdoc-article">
         <div class="post-inner">
           <header class="post-content__head cm-techdoc-hero">
-            <p class="cm-techdoc-kicker">WORKFLOW / CSS / MPE</p>
+            <p class="cm-techdoc-kicker">GUIDE / CSS / MPE</p>
             <p class="cm-techdoc-product">Markdown Preview Enhanced</p>
-            <h1 class="post-title">科研报告样式配置指南</h1>
-            <p class="cm-techdoc-lede">用一份工作区级 <code>style.less</code>，统一公式、三线表、代码块、定理环境、图片与 PDF 输出，让 Markdown 更接近紧凑的技术报告。</p>
+            <h1 class="post-title">阅读样式配置指南</h1>
+            <p class="cm-techdoc-lede">用一份工作区级 <code>style.less</code>，统一标题、表格、代码块、提示区、图片与 PDF 输出，让 Markdown 长文更清晰、更耐读。</p>
             <div class="cm-techdoc-meta">
               <time datetime="2026-07-18">2026-07-18</time>
               <span aria-hidden="true">/</span>
@@ -93,7 +94,7 @@
             <aside class="cm-techdoc-summary" aria-label="配置摘要">
               <div><span>Target</span><strong>Markdown Preview Enhanced</strong></div>
               <div><span>Config</span><strong>工作区 style.less</strong></div>
-              <div><span>Profile</span><strong>科研技术报告</strong></div>
+              <div><span>Profile</span><strong>长文与知识笔记</strong></div>
             </aside>
 
             <h2 id="先确认适用范围">先确认适用范围</h2>
@@ -103,8 +104,8 @@
             <div class="cm-techdoc-file">
               <span class="cm-techdoc-file__icon" aria-hidden="true">LESS</span>
               <div>
-                <strong class="cm-techdoc-file__name">compute-math-report-compact.less</strong>
-                <span class="cm-techdoc-file__type">MPE workspace theme · 10 KB</span>
+                <strong class="cm-techdoc-file__name">markdown-reading-compact.less</strong>
+                <span class="cm-techdoc-file__type">MPE reading theme · 10 KB</span>
               </div>
               <a class="cm-techdoc-download" href="/downloads/compute-math-report-compact.less" download>下载配置 <span aria-hidden="true">↓</span></a>
             </div>
@@ -139,18 +140,18 @@
             <div class="cm-techdoc-grid">
               <section class="cm-techdoc-card">
                 <span>01 / TYPOGRAPHY</span>
-                <h3>紧凑的论文式层级</h3>
-                <p>正文采用中英文字体回退链，标题使用无衬线字体；收紧段落与标题间距，适合长篇数值实验记录。</p>
+                <h3>清晰的长文层级</h3>
+                <p>正文采用中英文字体回退链，标题使用无衬线字体；控制段落与标题间距，适合笔记、教程和项目说明。</p>
               </section>
               <section class="cm-techdoc-card">
-                <span>02 / EQUATIONS</span>
-                <h3>公式基线与间距修复</h3>
-                <p>覆盖 KaTeX、MathJax 与 <code>mjx-container</code>，清除行内公式误套代码框的问题，并压缩独立公式上下留白。</p>
+                <span>02 / DETAILS</span>
+                <h3>特殊内容兼容</h3>
+                <p>兼容 KaTeX、MathJax 与 <code>mjx-container</code>，避免行内特殊内容误套代码框，并保持稳定的上下留白。</p>
               </section>
               <section class="cm-techdoc-card">
                 <span>03 / TABLES</span>
-                <h3>数值结果三线表</h3>
-                <p>表格整体居中、数字等宽，保留表头与上下边线，弱化内部网格，适合误差、收敛阶和耗时对比。</p>
+                <h3>清楚的比较表</h3>
+                <p>表格整体居中、数字等宽，保留表头与上下边线，弱化内部网格，适合选项、状态和版本对比。</p>
               </section>
               <section class="cm-techdoc-card">
                 <span>04 / CODE</span>
@@ -159,51 +160,53 @@
               </section>
               <section class="cm-techdoc-card">
                 <span>05 / STRUCTURE</span>
-                <h3>摘要与定理环境</h3>
-                <p>内置摘要、定义、定理、引理、命题、推论、证明、注和警告等可复用结构。</p>
+                <h3>摘要与提示环境</h3>
+                <p>内置摘要、定义、备注和警告等可复用结构，帮助长文快速区分关键信息。</p>
               </section>
               <section class="cm-techdoc-card">
                 <span>06 / OUTPUT</span>
                 <h3>打印与 PDF</h3>
-                <p>打印时切换为黑白文字、缩小字号，并尽量避免公式、表格、图和定理环境跨页断裂。</p>
+                <p>打印时切换为黑白文字、缩小字号，并尽量避免代码块、表格、图片和提示区跨页断裂。</p>
               </section>
             </div>
 
-            <h2 id="公式与表格为何更适合计算报告">公式与表格为何更适合计算报告</h2>
-            <p>科研文档的视觉密度通常由公式和结果表决定。主题没有给公式添加卡片背景，而是保留论文式白底，并将独立公式的上下间距收紧为：</p>
-            <pre><code>.katex-display,
-.MathJax_Display,
-.mathjax-exps,
-mjx-container[display="true"] {
-  margin: 0.34rem 0 0.46rem !important;
+            <h2 id="让长文保持稳定节奏">让长文保持稳定节奏</h2>
+            <p>长篇内容最容易被过密的标题、表格和代码打断。主题通过一致的段落间距与容器宽度建立阅读节奏，并为宽表提供横向滚动而不是强行压缩字号。</p>
+            <pre><code>.markdown-preview.markdown-preview {
+  max-width: 960px;
+  line-height: 1.78;
+}
+
+table {
+  min-width: 72%;
+  font-variant-numeric: tabular-nums;
 }</code></pre>
-            <p>表格默认居中，最小宽度为正文的 72%，并启用 <code>font-variant-numeric: tabular-nums</code>，让相同位数的数据列更容易纵向比较。下面这类结果表尤其适合：</p>
-            <pre><code>| N | Time (s) | errlinf_rel | errl2_rel | errh1_rel | errh2_rel |
-|---:|---:|---:|---:|---:|---:|
-| 32 | 0.18 | 2.31e-4 | 8.42e-5 | 1.73e-3 | 2.90e-2 |
-| 64 | 0.71 | 5.78e-5 | 2.11e-5 | 8.66e-4 | 1.45e-2 |</code></pre>
+            <p>表格默认居中并使用等宽数字，适合比较版本、状态和完成时间：</p>
+            <pre><code>| Version | Status | Updated |
+|:--|:--|--:|
+| 1.0 | Stable | 2026-07-18 |
+| 1.1 | Preview | 2026-08-12 |</code></pre>
 
-            <h2 id="使用摘要和定理环境">使用摘要和定理环境</h2>
-            <p>MPE 允许在 Markdown 中保留 HTML。给内容添加主题已经定义的类名，就能得到结构化的技术文档块：</p>
+            <h2 id="使用摘要和提示环境">使用摘要和提示环境</h2>
+            <p>MPE 允许在 Markdown 中保留 HTML。给内容添加主题已经定义的类名，就能得到结构清楚的信息块：</p>
             <pre><code>&lt;div class="abstract"&gt;
-本文比较两类离散方法的误差、收敛阶与计算成本。
+这篇笔记说明目标、关键步骤与最终结果。
 &lt;/div&gt;
 
-&lt;div class="theorem"&gt;
-在给定正则性条件下，离散解满足相应的误差估计。
+&lt;div class="remark"&gt;
+这里补充一个不会打断正文的实现细节。
 &lt;/div&gt;
 
-&lt;div class="proof"&gt;
-由稳定性、一致性与三角不等式可得结论。
+&lt;div class="warning"&gt;
+修改配置前先备份现有 style.less。
 &lt;/div&gt;</code></pre>
             <table>
               <thead><tr><th>类名</th><th>显示标签</th><th>适用内容</th></tr></thead>
               <tbody>
-                <tr><td><code>.abstract</code></td><td>摘要</td><td>问题、方法与主要结论</td></tr>
-                <tr><td><code>.definition</code></td><td>定义</td><td>符号、空间与算子</td></tr>
-                <tr><td><code>.theorem</code> / <code>.lemma</code></td><td>定理 / 引理</td><td>理论结论与辅助结果</td></tr>
-                <tr><td><code>.proof</code></td><td>证明</td><td>推导过程，末尾自动显示证毕符号</td></tr>
-                <tr><td><code>.remark</code> / <code>.warning</code></td><td>注 / 注意</td><td>实现细节、边界条件与风险提示</td></tr>
+                <tr><td><code>.abstract</code></td><td>摘要</td><td>目标、范围与最终结果</td></tr>
+                <tr><td><code>.definition</code></td><td>定义</td><td>术语与必要背景</td></tr>
+                <tr><td><code>.remark</code></td><td>备注</td><td>实现细节与补充信息</td></tr>
+                <tr><td><code>.warning</code></td><td>注意</td><td>风险、限制与重要提醒</td></tr>
               </tbody>
             </table>
 
@@ -228,7 +231,7 @@ mjx-container[display="true"] {
 }</code></pre>
 
             <h2 id="导出-PDF">导出 PDF</h2>
-            <p>主题中的 <code>@media print</code> 会在导出阶段启用：页面去掉屏幕预览留白，字体切换为黑色，表格改为全宽，并为代码块、表格、图片和定理环境设置避免跨页。最终分页仍受纸张尺寸、浏览器打印引擎和内容高度影响，导出前应检查预览中的分页位置。</p>
+            <p>主题中的 <code>@media print</code> 会在导出阶段启用：页面去掉屏幕预览留白，字体切换为黑色，表格改为全宽，并为代码块、表格、图片和提示区设置避免跨页。最终分页仍受纸张尺寸、浏览器打印引擎和内容高度影响，导出前应检查预览中的分页位置。</p>
 
             <h2 id="常见问题">常见问题</h2>
             <table>
@@ -256,7 +259,7 @@ mjx-container[display="true"] {
         <nav class="post-nav" aria-label="文章导航">
           <a class="post-nav-item-left" href="/Software-system/"><span>返回栏目</span><strong>操作系统</strong></a>
           <div class="vhr"></div>
-          <a class="post-nav-item-right" href="/research/"><span>继续浏览</span><strong>研究地图</strong></a>
+          <a class="post-nav-item-right" href="/blog/"><span>继续浏览</span><strong>随笔档案</strong></a>
         </nav>
       </div>
     </main>
@@ -265,18 +268,19 @@ mjx-container[display="true"] {
       <div class="foot-inner">
         <div class="cm-home-footer-brand">
           <a href="/" aria-label="返回首页"><img alt="站点标志" src="/images/logo.svg" width="44" height="44"></a>
-          <div><strong>Computational Mathematics Workspace</strong><span>Computation · Verification · Imagination</span></div>
+          <div><strong>Ideas, Systems and Sci-Fi</strong><span>Methods · Tools · Stories · Imagination</span></div>
         </div>
         <nav class="cm-home-footer-links" aria-label="页脚导航">
           <a href="/Software-system/">操作系统</a>
-          <a href="/research/">研究地图</a>
+          <a href="/blog/">随笔档案</a>
         </nav>
-        <div class="copyright">© 2026 Computational Mathematics Workspace</div>
+        <div class="copyright">© 2026 Open Digital Garden</div>
       </div>
     </footer>
 
     <script src="/js/search.js"></script>
     <script>searchInitialize("/search.json")</script>
-    <script src="/js/copy-code.js?v=20260718.7"></script>
+    <script src="/js/copy-code.js?v=20260812.4"></script>
+    <script src="/js/subpage-modern.js?v=20260812.1"></script>
   </body>
 </html>
