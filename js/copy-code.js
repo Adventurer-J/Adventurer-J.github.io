@@ -137,6 +137,26 @@
 
 
   function initializeSubpageCleanup() {
+    document.title = document.title.replace(/\s*\|\s*Numerical Algorithms and Sci-Fi\s*$/, " | Open Digital Garden");
+    const footer = document.querySelector(".cm-site-footer");
+    if (footer) {
+      const brandTitle = footer.querySelector(".cm-home-footer-brand strong");
+      const brandNote = footer.querySelector(".cm-home-footer-brand span");
+      const links = footer.querySelector(".cm-home-footer-links");
+      const copyright = footer.querySelector(".copyright");
+      if (brandTitle) brandTitle.textContent = "Ideas, Systems and Sci-Fi";
+      if (brandNote) brandNote.textContent = "Methods · Tools · Stories · Imagination";
+      if (links) {
+        links.replaceChildren();
+        [["科幻", "/Sci-Fi/"], ["在路上", "/Miles%20and%20Memories/"]].forEach(([label, href]) => {
+          const link = document.createElement("a");
+          link.textContent = label;
+          link.href = href;
+          links.appendChild(link);
+        });
+      }
+      if (copyright) copyright.textContent = "© 2026 Open Digital Garden";
+    }
     document.querySelectorAll(".realated__body, .related__body").forEach((body) => {
       if (/DEBUG:|请安装插件/.test(body.textContent)) {
         const section = body.closest(".related-post");
