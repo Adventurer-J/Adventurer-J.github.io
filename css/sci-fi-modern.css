@@ -223,6 +223,18 @@ html.cm-page-category .sf-page .sf-sector:hover {
   z-index: 0;
 }
 
+html.cm-page-category .sf-page .sf-hero > .sf-cyber-backdrop {
+  display: block !important;
+  height: auto !important;
+  inset: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  position: absolute !important;
+  transform: none !important;
+  width: auto !important;
+  z-index: 0 !important;
+}
+
 .sf-cyber-backdrop::before {
   background:
     linear-gradient(rgba(23, 24, 22, 0.045) 1px, transparent 1px),
