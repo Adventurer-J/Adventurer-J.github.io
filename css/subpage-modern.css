@@ -398,13 +398,14 @@ html[data-cm-theme="dark"] .cm-subpage-modern .post-content__head {
 }
 
 .cm-subpage-story .cm-tianyan-hero {
-  background:
+  background-color: var(--sp-night) !important;
+  background-image:
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     radial-gradient(circle at 76% 43%, #000 0 10%, #050605 10.4% 14%, rgba(189, 127, 114, 0.78) 14.4%, rgba(189, 127, 114, 0.12) 17%, transparent 27%),
-    radial-gradient(circle at 78% 38%, rgba(189, 127, 114, 0.16), transparent 38%),
-    var(--sp-night) !important;
-  background-size: 92px 92px, 92px 92px, auto, auto, auto !important;
+    radial-gradient(circle at 78% 38%, rgba(189, 127, 114, 0.16), transparent 38%) !important;
+  background-repeat: repeat, repeat, no-repeat, no-repeat !important;
+  background-size: 92px 92px, 92px 92px, auto, auto !important;
   border-color: rgba(189, 127, 114, 0.32) !important;
   min-height: 720px !important;
   overflow: hidden !important;
@@ -682,12 +683,12 @@ html[data-cm-theme="dark"] .cm-subpage-modern .post-content__head {
   .cm-world-link { min-height: 132px; }
   .cm-subpage-guide .cm-techdoc-hero .post-title { font-size: clamp(3rem, 14vw, 4.6rem) !important; }
   .cm-subpage-story .cm-tianyan-hero {
-    background:
+    background-color: var(--sp-night) !important;
+    background-image:
       linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px),
-      radial-gradient(circle at 76% 25%, #000 0 8%, rgba(189,127,114,.72) 9%, transparent 17%),
-      var(--sp-night) !important;
-    background-size: 68px 68px, 68px 68px, auto, auto !important;
+      radial-gradient(circle at 76% 25%, #000 0 8%, rgba(189,127,114,.72) 9%, transparent 17%) !important;
+    background-size: 68px 68px, 68px 68px, auto !important;
   }
   .cm-subpage-story .cm-tianyan-hero-copy { max-width: 100% !important; }
   .cm-subpage-story .cm-tianyan-hero .post-title { font-size: clamp(6rem, 31vw, 9rem) !important; }
