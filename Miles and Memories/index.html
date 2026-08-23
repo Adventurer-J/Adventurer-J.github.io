@@ -1,20 +1,42 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>在路上 · Miles and Memories</title>
-    <meta
-      name="description"
-      content="万物与我都是荒诞的寂静，这里荒芜寸草不生。——直到背起包，路上什么都有。Open Digital Garden 的旅行相册。"
-    />
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
-    <script type="module" crossorigin src="/Miles and Memories/assets/index-bTbcMDBn.js"></script>
-    <link rel="stylesheet" crossorigin href="/Miles and Memories/assets/index-DrSwm9SK.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>在路上 · Miles and Memories</title>
+  <meta name="description" content="万物与我都是荒诞的寂静，这里荒芜寸草不生。——直到背起包，路上什么都有。Open Digital Garden 的旅行相册。">
+  <meta name="theme-color" content="#e9e7df">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://adventurer-j.github.io/Miles%20and%20Memories/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <script>try{const t=localStorage.getItem('cm-theme');if(t)document.documentElement.dataset.cmTheme=t}catch(e){}</script>
+  <link rel="stylesheet" href="./road.css?v=20260823.1">
+  <script src="./road.js?v=20260823.1" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#road-gallery">跳到旅行相册</a>
+<header class="road-head"><nav class="road-nav" aria-label="主导航">
+  <a class="road-logo" href="/" aria-label="返回首页"><img src="/images/logo.svg" alt="站点标志" width="40" height="40"><span>OPEN DIGITAL GARDEN</span></a>
+  <div class="road-menu">
+    <a href="/Numerical-method">数值方法</a><a href="/Differential%20equation">微分方程</a><a href="/Algorithm">算法</a><a href="/Software-system">操作系统</a><a href="/Sci-Fi">科幻</a><a href="/Miles%20and%20Memories/" aria-current="page">在路上</a>
+  </div>
+</nav></header>
+<main>
+  <section class="road-hero" aria-labelledby="road-title"><div class="road-hero-inner">
+    <p class="road-kicker">MILES AND MEMORIES — 旅行手记</p>
+    <h1 class="road-title" id="road-title"><span class="road-title-icon" aria-hidden="true"></span>在路上</h1>
+    <p class="road-lead">万物与我都是荒诞的寂静，这里荒芜寸草不生。——直到背起包，路上什么都有：垭口的风、夜市的蒸汽、车窗外的田野，和雪山头顶的银河。</p>
+    <div class="road-hero-meta"><span><b id="frame-count">24</b> FRAMES</span><span><b id="series-count">24</b> SERIES</span><span>CLICK ANY FRAME TO READ ITS NOTE ↓</span></div>
+  </div></section>
+  <section class="road-gallery-section" aria-labelledby="gallery-title">
+    <header class="road-section-head"><div><p class="road-kicker">01 · CONTACT SHEET</p><h2 id="gallery-title">沿途切片</h2></div><p class="road-section-note">不是景点清单，而是一些被时间留下来的瞬间。点击照片可以翻阅文字，也可以使用键盘方向键切换。</p></header>
+    <div class="road-wall" id="road-gallery"></div>
+  </section>
+  <figure class="road-quote"><div class="road-quote-inner"><p class="road-kicker">02 · ON THE ROAD</p><blockquote>有些答案不在桌面上。走出去之后，尺度会重新变得真实。</blockquote><figcaption>FIELD NOTE / MILES &amp; MEMORIES</figcaption></div></figure>
+</main>
+<footer class="road-foot"><div class="road-foot-inner"><div class="road-foot-brand"><img src="/images/logo.svg" alt="站点标志" width="44" height="44"><div><strong>Ideas, Systems and Sci-Fi</strong><span>Methods · Tools · Stories · Imagination</span></div></div><nav class="road-foot-links" aria-label="页脚导航"><a href="/">首页</a><a href="/Sci-Fi">科幻</a></nav><div class="road-copyright">© 2026 Open Digital Garden</div></div></footer>
+<dialog class="road-dialog" id="road-dialog" aria-labelledby="dialog-title"><div class="road-dialog-grid"><div class="road-dialog-image"><img id="dialog-image" alt=""></div><div class="road-dialog-body"><span class="road-dialog-eyebrow" id="dialog-category"></span><h3 id="dialog-title"></h3><p id="dialog-text"></p><div class="road-dialog-meta"><span><b>文件</b><span id="dialog-file"></span></span><span><b>编号</b><span id="dialog-index"></span></span></div><div class="road-dialog-actions"><button type="button" id="dialog-prev" aria-label="上一张">← PREV</button><button type="button" id="dialog-next" aria-label="下一张">NEXT →</button><button type="button" id="dialog-close">关闭 ×</button></div></div></div></dialog>
+<noscript>此页面需要 JavaScript 才能显示旅行相册。</noscript>
+</body></html>
