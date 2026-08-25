@@ -3,14 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Open Digital Garden</title>
-  <meta name="description" content="方法、工具、故事、科幻与沿途记录，在一个持续生长的数字空间中相遇。">
-  <meta name="keywords" content="数字花园, 知识整理, 技术笔记, 科幻, 旅行记录">
+  <title>Computational Mathematics Workspace</title>
+  <meta name="description" content="面向计算数学科研者的开放平台，连接数学模型、离散方法、算法求解、科学计算与可复现实验。">
+  <meta name="keywords" content="计算数学, 数值分析, 微分方程, 科学计算, 数值算法">
+  <meta property="og:title" content="Computational Mathematics Workspace">
+  <meta property="og:description" content="连接模型、离散、求解、验证与复现的计算数学科研平台。">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="stylesheet" href="/css/layout.css">
-  <link rel="stylesheet" href="/css/home-world.css?v=20260812.1">
+  <link rel="stylesheet" href="/css/home-world.css?v=20260731.2">
   <script>
     try {
       const savedTheme = localStorage.getItem("cm-theme");
@@ -49,11 +53,11 @@
         </div>
         <nav class="nav-menu" aria-label="主导航">
           <a class="nav-menu-item" href="/Numerical-method">数值方法</a>
-          <a class="nav-menu-item" href="/Differential%20equation">微分方程</a>
+          <a class="nav-menu-item" href="/differential-equation/">微分方程</a>
           <a class="nav-menu-item" href="/Algorithm">算法</a>
           <a class="nav-menu-item" href="/Software-system">操作系统</a>
           <a class="nav-menu-item" href="/Sci-Fi">科幻</a>
-          <a class="nav-menu-item" href="/Miles%20and%20Memories">在路上</a>
+          <a class="nav-menu-item" href="/miles-and-memories/">在路上</a>
         </nav>
       </div>
       <label class="nav-btn" for="navBtn" aria-label="展开导航"></label>
@@ -65,12 +69,12 @@
       <canvas id="world-surface" class="cm-particle-canvas world-surface" aria-hidden="true"></canvas>
       <div class="world-hero-inner">
         <div class="world-hero-copy">
-          <div class="world-eyebrow"><span></span> AN OPEN DIGITAL GARDEN</div>
+          <div class="world-eyebrow"><span></span> AN OPEN DIGITAL WORKSPACE</div>
           <h1 id="world-title">Ideas become<br><em>visible worlds.</em></h1>
-          <p class="world-hero-lead">方法、工具、故事与想象，在同一个可探索的空间中相遇。</p>
+          <p class="world-hero-lead">结构、过程与想象，在同一个可探索的空间中相遇。</p>
           <div class="world-actions">
-            <a class="world-button world-button--solid" href="#knowledge-atlas">浏览全部栏目 <span>↗</span></a>
-            <a class="world-button" href="/Sci-Fi">进入科幻世界 <span>→</span></a>
+            <a class="world-button world-button--solid" href="/research/">进入研究空间 <span>↗</span></a>
+            <a class="world-button" href="/Numerical-method">浏览数值方法 <span>→</span></a>
           </div>
         </div>
 
@@ -89,30 +93,30 @@
         <span>INTERACTIVE SURFACE / MOVE TO EXPLORE</span>
         <strong>FORM / MOTION / SPACE</strong>
       </div>
-      <a class="world-scroll" href="#connected-worlds" aria-label="向下浏览内容入口"><span></span> SCROLL TO EXPLORE</a>
+      <a class="world-scroll" href="#research-worlds" aria-label="向下浏览研究方向"><span></span> SCROLL TO EXPLORE</a>
     </section>
 
-    <section class="world-manifesto" aria-label="页面理念">
+    <section class="world-manifesto" aria-label="研究理念">
       <div class="world-manifesto-index">00</div>
       <div class="world-manifesto-copy">
-        <span>OPEN POSITION</span>
-        <p>不限定一种身份，也不预设唯一答案；让<strong>结构、层次与节奏</strong>共同形成体验。</p>
+        <span>RESEARCH POSITION</span>
+        <p>不是把内容装进页面，而是让<strong>结构、层次与节奏</strong>共同形成体验。</p>
       </div>
-      <figure class="world-daily-quote">
-        <blockquote>把好奇心留下，也给下一次出发留一个入口。</blockquote>
-        <figcaption><span>OPEN / 001</span><cite>Digital Garden Note</cite></figcaption>
+      <figure class="world-daily-quote" data-cm-quote-rotator data-cm-quote-kind="math" aria-live="off">
+        <blockquote data-cm-rotating-quote>计算的目的，是洞察，而非数字。</blockquote>
+        <figcaption><span data-cm-quote-index>001 / 100</span><cite data-cm-quote-source>Richard W. Hamming</cite></figcaption>
       </figure>
     </section>
 
-    <section id="connected-worlds" class="world-section world-portals" aria-labelledby="connected-worlds-title">
+    <section id="research-worlds" class="world-section world-research" aria-labelledby="research-worlds-title">
       <header class="world-section-head">
-        <div><span>01 · CONNECTED WORLDS</span><h2 id="connected-worlds-title">每个入口，<br>都是不同的观看方式。</h2></div>
-        <p>从方法与表达，到变化与工具，用统一的视觉语言连接不同内容。</p>
+        <div><span>01 · CONNECTED WORLDS</span><h2 id="research-worlds-title">每个入口，<br>都是不同的观看方式。</h2></div>
+        <p>从抽象结构到动态系统，用统一的视觉语言连接不同内容。</p>
       </header>
 
       <div class="world-project-grid">
-        <a class="world-project world-project--ma" href="/Numerical-method" data-world-tilt>
-          <div class="world-project-top"><span>IDEAS &amp; STRUCTURE</span><b>01</b></div>
+        <a class="world-project world-project--ma" href="/research/#equations" data-world-tilt>
+          <div class="world-project-top"><span>STRUCTURE &amp; FORM</span><b>01</b></div>
           <div class="world-project-visual world-ma-visual" aria-hidden="true">
             <svg viewBox="0 0 760 390" role="img">
               <defs><radialGradient id="maGlow"><stop offset="0" stop-color="#d89b6b" stop-opacity=".78"/><stop offset="1" stop-color="#d89b6b" stop-opacity="0"/></radialGradient></defs>
@@ -131,56 +135,72 @@
             </svg>
             <div class="world-equation">FIELD / 01</div>
           </div>
-          <div class="world-project-copy"><h3>Ideas<br>&amp; Structure</h3><p>把零散想法组织成可以继续探索的清晰结构。</p><span>EXPLORE WORLD ↗</span></div>
+          <div class="world-project-copy"><h3>Mathematical<br>Models</h3><p>从问题、方程、假设与边界条件出发，明确计算对象。</p><span>EXPLORE MODELS ↗</span></div>
         </a>
 
-        <a class="world-project world-project--spectral" href="/Algorithm" data-world-tilt>
-          <div class="world-project-top"><span>METHODS &amp; EXPRESSION</span><b>02</b></div>
+        <a class="world-project world-project--spectral" href="/research/#discretization" data-world-tilt>
+          <div class="world-project-top"><span>REPRESENTATION</span><b>02</b></div>
           <div class="world-project-visual world-spectral-visual" aria-hidden="true">
             <div class="world-spectral-orbit"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
             <div class="world-equation">POINTS / FIELD</div>
           </div>
-          <div class="world-project-copy"><h3>Methods</h3><p>把复杂问题拆开、排序，再变成可操作的步骤。</p><span>EXPLORE WORLD →</span></div>
+          <div class="world-project-copy"><h3>Discretization<br>&amp; Approximation</h3><p>比较差分、有限元、谱方法及其他离散与逼近框架。</p><span>EXPLORE METHODS →</span></div>
         </a>
 
-        <a class="world-project world-project--nonsmooth" href="/Differential%20equation" data-world-tilt>
+        <a class="world-project world-project--nonsmooth" href="/research/#solvers" data-world-tilt>
           <div class="world-project-top"><span>CHANGE &amp; MOTION</span><b>03</b></div>
           <div class="world-project-visual world-jump-visual" aria-hidden="true">
             <svg viewBox="0 0 520 280"><path class="world-jump-grid" d="M20 56H500M20 112H500M20 168H500M20 224H500M100 20V260M180 20V260M260 20V260M340 20V260M420 20V260"/><path class="world-jump-curve" d="M20 220 C95 218 144 202 192 174 C224 155 240 142 255 139 L263 63 C306 69 347 87 383 113 C423 141 455 158 500 162"/></svg>
             <div class="world-equation">MOTION / PATH</div>
           </div>
-          <div class="world-project-copy"><h3>Motion</h3><p>沿时间、尺度与状态，观察变化发生的方式。</p><span>EXPLORE WORLD →</span></div>
+          <div class="world-project-copy"><h3>Algorithms<br>&amp; Solvers</h3><p>线性、非线性、优化与特征值计算。</p><span>EXPLORE SOLVERS →</span></div>
         </a>
 
-        <a class="world-project world-project--agent" href="/Software-system" data-world-tilt>
+        <a class="world-project world-project--agent" href="/research/#verification" data-world-tilt>
           <div class="world-project-top"><span>SYSTEMS &amp; TOOLS</span><b>04</b></div>
           <div class="world-project-visual world-agent-visual" aria-hidden="true">
             <div class="world-agent-node world-agent-node--a">INPUT</div><div class="world-agent-node world-agent-node--b">PLAN</div><div class="world-agent-node world-agent-node--c">BUILD</div><div class="world-agent-node world-agent-node--d">CHECK</div>
             <svg viewBox="0 0 520 280"><path d="M104 140 C150 66 203 64 257 114 S370 197 425 116"/><path d="M104 140 C163 204 210 207 267 166 S369 75 425 116"/></svg>
           </div>
-          <div class="world-project-copy"><h3>Systems</h3><p>理解工具如何协作，也让日常使用变得更顺手。</p><span>EXPLORE WORLD →</span></div>
+          <div class="world-project-copy"><h3>Verification<br>&amp; Reproduction</h3><p>误差、收敛率、基准、日志与结果追溯。</p><span>EXPLORE VERIFICATION →</span></div>
         </a>
       </div>
     </section>
 
-    <section id="knowledge-atlas" class="world-section world-atlas" aria-labelledby="world-atlas-title">
+    <section class="world-loop" aria-labelledby="world-loop-title">
+      <div class="world-loop-intro">
+        <span>02 · CREATIVE LOOP</span>
+        <h2 id="world-loop-title">From an idea<br>to a world.</h2>
+        <p>清晰的过程，让每一次探索都能继续向前。</p>
+        <a href="/research/#workflow">查看完整路径 ↗</a>
+      </div>
+      <ol class="world-loop-steps">
+        <li><b>01</b><div><strong>Formulate</strong><span>明确模型、尺度与边界</span></div><em>state the problem</em></li>
+        <li><b>02</b><div><strong>Discretize</strong><span>选择结构保持的离散</span></div><em>represent the field</em></li>
+        <li><b>03</b><div><strong>Solve</strong><span>设计稳定高效的求解器</span></div><em>compute the answer</em></li>
+        <li><b>04</b><div><strong>Verify</strong><span>用误差与基准检验结果</span></div><em>test the claim</em></li>
+        <li><b>05</b><div><strong>Reproduce</strong><span>保存配置、日志与版本</span></div><em>make it repeatable</em></li>
+      </ol>
+    </section>
+
+    <section class="world-section world-atlas" aria-labelledby="world-atlas-title">
       <header class="world-section-head world-section-head--compact">
-        <div><span>02 · KNOWLEDGE ATLAS</span><h2 id="world-atlas-title">进入知识地图</h2></div>
-        <p>方法、方程、算法、系统，也包括科幻想象与沿途记录。</p>
+        <div><span>03 · KNOWLEDGE ATLAS</span><h2 id="world-atlas-title">进入知识地图</h2></div>
+        <p>方法、方程、算法、系统，也包括对未来的想象与沿途记录。</p>
       </header>
       <nav class="world-atlas-grid" aria-label="全部栏目">
         <a href="/Numerical-method"><b>01</b><div><strong>数值方法</strong><span>Numerical Methods</span></div><i>↗</i></a>
-        <a href="/Differential%20equation"><b>02</b><div><strong>微分方程</strong><span>Differential Equations</span></div><i>↗</i></a>
+        <a href="/differential-equation/"><b>02</b><div><strong>微分方程</strong><span>Differential Equations</span></div><i>↗</i></a>
         <a href="/Algorithm"><b>03</b><div><strong>算法</strong><span>Algorithms &amp; Solvers</span></div><i>↗</i></a>
         <a href="/Software-system"><b>04</b><div><strong>操作系统</strong><span>Systems &amp; Tools</span></div><i>↗</i></a>
         <a href="/Sci-Fi"><b>05</b><div><strong>科幻</strong><span>Science Fiction</span></div><i>↗</i></a>
-        <a href="/Miles%20and%20Memories"><b>06</b><div><strong>在路上</strong><span>Miles &amp; Memories</span></div><i>↗</i></a>
+        <a href="/miles-and-memories/"><b>06</b><div><strong>在路上</strong><span>Miles &amp; Memories</span></div><i>↗</i></a>
       </nav>
     </section>
 
     <section class="world-future" data-cm-quote-rotator data-cm-quote-kind="scifi" aria-live="off">
       <div class="world-future-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div class="world-future-label"><b>03</b><span>IMAGINATION OPENS ANOTHER WORLD</span></div>
+      <div class="world-future-label"><b>04</b><span>IMAGINATION OPENS ANOTHER WORLD</span></div>
       <blockquote data-cm-rotating-quote>弱小和无知不是生存的障碍，傲慢才是。</blockquote>
       <div class="world-future-meta"><cite data-cm-quote-source>刘慈欣 · 《死神永生》</cite><span data-cm-quote-index>001 / 100</span></div>
       <a href="/Sci-Fi">进入科幻世界 ↗</a>
@@ -191,20 +211,20 @@
     <div class="foot-inner">
       <div class="cm-home-footer-brand">
         <img alt="站点标志" src="/images/logo.svg" width="44" height="44">
-        <div><strong>Ideas, Systems and Sci-Fi</strong><span>Methods · Tools · Stories · Imagination</span></div>
+        <div><strong>Numerical Algorithms and Sci-Fi</strong><span>Computation · Verification · Imagination</span></div>
       </div>
       <div class="cm-home-footer-links">
-        <a href="/Sci-Fi">科幻</a>
-        <a href="/Miles%20and%20Memories">在路上</a>
+        <a href="/research/">研究地图</a>
+        <a href="/">首页</a>
       </div>
-      <div class="copyright">© 2026 Open Digital Garden</div>
+      <div class="copyright">© 2026 Computational Mathematics Workspace</div>
     </div>
   </footer>
 
   <script src="/js/search.js"></script>
   <script>searchInitialize("/search.json");</script>
   <script src="/js/quote-library.js"></script>
-  <script src="/js/home-world.js?v=20260812.1"></script>
-  <script src="/js/copy-code.js?v=20260812.3"></script>
+  <script src="/js/home-world.js?v=20260731.1"></script>
+  <script src="/js/copy-code.js"></script>
 </body>
 </html>

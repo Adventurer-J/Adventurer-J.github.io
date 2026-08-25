@@ -3631,6 +3631,150 @@ html.cm-page-research .foot.cm-site-footer {
   border: 0;
 }
 
+/* Final UI pass: preserve the existing information architecture. */
+.cm-hub .cm-breadcrumb,
+.cm-hub .cm-section,
+.cm-hub .cm-grid,
+.cm-hub .cm-quote-grid,
+.cm-hub .cm-analysis-equation,
+.cm-hub .cm-controls {
+  scroll-margin-top: 96px;
+}
+
+.cm-hub .cm-hero {
+  overflow: hidden;
+  position: relative;
+}
+
+.cm-hub .cm-hero::before {
+  background: linear-gradient(90deg, var(--cm-v3-accent), transparent);
+  content: "";
+  height: 3px;
+  left: 0;
+  opacity: .78;
+  position: absolute;
+  right: 18%;
+  top: 0;
+}
+
+.cm-hub .cm-controls {
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.cm-hub .cm-filter {
+  flex: 0 0 auto;
+  min-height: 38px;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.cm-hub .cm-filter:focus-visible,
+.cm-hub .cm-card:focus-visible,
+.cm-hub .cm-resource:focus-visible,
+.cm-hub .cm-stage:focus-visible {
+  outline: 2px solid var(--cm-v3-accent);
+  outline-offset: 4px;
+}
+
+.cm-hub .cm-card {
+  overflow: hidden;
+  position: relative;
+  transition: border-color 220ms ease, box-shadow 280ms ease, transform 280ms ease;
+}
+
+.cm-hub .cm-card::before {
+  background: linear-gradient(90deg, var(--cm-v3-accent), transparent);
+  content: "";
+  height: 2px;
+  left: 24px;
+  opacity: .55;
+  position: absolute;
+  right: 24px;
+  top: 0;
+}
+
+.cm-hub .cm-card:hover {
+  border-color: color-mix(in srgb, var(--cm-v3-accent) 48%, var(--cm-v3-border));
+  box-shadow: 0 24px 62px color-mix(in srgb, var(--cm-v3-accent) 10%, transparent);
+  transform: translateY(-4px);
+}
+
+.cm-hub .cm-card-tags {
+  gap: 7px;
+}
+
+.cm-hub .cm-card-tags .cm-chip {
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+
+.cm-hub .cm-section > h2 {
+  text-wrap: balance;
+}
+
+.cm-site-footer .cm-home-footer-links a,
+.cm-site-footer .cm-home-footer-brand strong {
+  transition: color 180ms ease, opacity 180ms ease;
+}
+
+.cm-site-footer .cm-home-footer-links a:focus-visible,
+.cm-site-footer .cm-home-footer-brand a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.cm-page-article .post-content__main {
+  overflow: clip;
+}
+
+.cm-page-article .post-content__body > :is(h1, h2, h3, h4) {
+  text-wrap: balance;
+}
+
+.cm-page-article .post-content__body a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: .08em;
+}
+
+.cm-page-article .post-content__body :is(table, pre, figure.highlight) {
+  max-width: 100%;
+}
+
+.cm-tag-entry-link {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  max-width: 720px;
+}
+
+@media (max-width: 680px) {
+  .cm-hub .cm-controls {
+    border-left: 0;
+    border-radius: 0;
+    border-right: 0;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .cm-hub .cm-card::before {
+    left: 18px;
+    right: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-hub .cm-filter,
+  .cm-hub .cm-card,
+  .cm-site-footer .cm-home-footer-links a,
+  .cm-site-footer .cm-home-footer-brand strong {
+    transition: none;
+  }
+}
+
 @media (max-width: 980px) {
   html.cm-page-research .cm-card,
   html.cm-page-research .cm-card:nth-child(1),

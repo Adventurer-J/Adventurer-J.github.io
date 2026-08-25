@@ -1,0 +1,17 @@
+{
+  "tags": [
+    {"slug":"finite-element","name":"有限元","type":"method","description":"有限元、变分离散与相关实现。"},
+    {"slug":"spectral-method","name":"谱方法","type":"method","description":"谱方法、高阶逼近与科学计算。"},
+    {"slug":"pde","name":"PDE","type":"problem","description":"偏微分方程模型、背景与数值问题。"},
+    {"slug":"numerical-experiment","name":"数值实验","type":"content","description":"基准算例、误差、收敛率与结果分析。"},
+    {"slug":"matlab","name":"MATLAB","type":"tool","description":"MATLAB 编程、实验和求解器使用笔记。"},
+    {"slug":"python","name":"Python","type":"tool","description":"Python 科学计算与工具链笔记。"},
+    {"slug":"linux","name":"Linux","type":"tool","description":"Linux 环境、命令行与科学计算部署。"},
+    {"slug":"science-fiction","name":"科幻阅读","type":"interest","description":"科幻作品、阅读与相关思考。"}
+  ],
+  "posts": [
+    {"title":"hello","url":"/2025/01/16/hello/","category":"数值方法","tags":["pde","numerical-experiment"]},
+    {"title":"Markdown Preview Enhanced：科研报告样式配置指南","url":"/2026/07/18/markdown-preview-enhanced-computational-math-theme/","category":"操作系统","tags":["python","linux"]},
+    {"title":"天衍","url":"/Sci-Fi/tianyan/","category":"科幻","tags":["science-fiction"]}
+  ]
+}

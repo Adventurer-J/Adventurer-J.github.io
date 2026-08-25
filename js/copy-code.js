@@ -1,8 +1,30 @@
-/* Site runtime: code copy, navigation, theme, and page effects. */
+/* Site runtime: code copy, nested navigation, theme, and research filters. */
 (function () {
   "use strict";
 
-  const navMap = {};
+  const navMap = {
+    "数值方法": [
+      ["分类总览", "离散、逼近与误差控制", "/research/#discretization"],
+      ["逼近与表示", "插值、投影、基函数", "/research/#approximation"],
+      ["自适应计算", "网格、阶次与后验估计", "/research/#adaptivity"]
+    ],
+    "微分方程": [
+      ["方程地图", "从模型结构选择方法", "/research/#equations"],
+      ["演化问题", "时间积分与稳定性", "/research/#time"],
+      ["反问题与随机模型", "正则化、不确定性量化", "/research/#inverse"]
+    ],
+    "算法": [
+      ["求解器", "线性、非线性与特征值", "/research/#solvers"],
+      ["优化算法", "约束、无约束与变分结构", "/research/#optimization"],
+      ["验证与基准", "误差、收敛率与性能", "/research/#verification"]
+    ],
+    "操作系统": [
+      ["科研工作流", "环境、实验与归档", "/research/#workflow"],
+      ["高性能计算", "并行、加速与剖析", "/research/#hpc"],
+      ["可复现检查表", "从配置到结果追溯", "/research/#reproducibility"]
+    ]
+  };
+
 
   function initializeTerminalProgress() {
     if (document.querySelector(".cm-terminal-progress")) return;
@@ -24,7 +46,7 @@
       const filled = Math.round(progress / 100 * cells);
       const gauge = "█".repeat(filled) + "░".repeat(cells - filled);
       const complete = progress >= 100;
-      readout.textContent = `[${gauge}] ${String(progress).padStart(3, " ")}% | ${complete ? "WORLD OPEN" : "EXPLORING..."}`;
+      readout.textContent = `[${gauge}] ${String(progress).padStart(3, " ")}% | ${complete ? "TASK COMPLETED" : "COMPUTING..."}`;
       terminal.setAttribute("aria-valuenow", String(progress));
       terminal.classList.toggle("is-complete", complete);
       if (complete && terminal.dataset.completed !== "true") {
@@ -48,7 +70,7 @@
   }
 
   function initializeSymbolField() {
-    if (document.querySelector(".sf-page") || document.body.classList.contains("cm-subpage-source") || document.documentElement.classList.contains("cm-deep-space-active") || document.querySelector(".cm-symbol-field")) return;
+    if (document.documentElement.classList.contains("cm-deep-space-active") || document.querySelector(".cm-symbol-field")) return;
     const canvas = document.createElement("canvas");
     canvas.className = "cm-symbol-field";
     canvas.setAttribute("aria-hidden", "true");
@@ -137,26 +159,6 @@
 
 
   function initializeSubpageCleanup() {
-    document.title = document.title.replace(/\s*\|\s*Numerical Algorithms and Sci-Fi\s*$/, " | Open Digital Garden");
-    const footer = document.querySelector(".cm-site-footer");
-    if (footer) {
-      const brandTitle = footer.querySelector(".cm-home-footer-brand strong");
-      const brandNote = footer.querySelector(".cm-home-footer-brand span");
-      const links = footer.querySelector(".cm-home-footer-links");
-      const copyright = footer.querySelector(".copyright");
-      if (brandTitle) brandTitle.textContent = "Ideas, Systems and Sci-Fi";
-      if (brandNote) brandNote.textContent = "Methods · Tools · Stories · Imagination";
-      if (links) {
-        links.replaceChildren();
-        [["科幻", "/Sci-Fi/"], ["在路上", "/Miles%20and%20Memories/"]].forEach(([label, href]) => {
-          const link = document.createElement("a");
-          link.textContent = label;
-          link.href = href;
-          links.appendChild(link);
-        });
-      }
-      if (copyright) copyright.textContent = "© 2026 Open Digital Garden";
-    }
     document.querySelectorAll(".realated__body, .related__body").forEach((body) => {
       if (/DEBUG:|请安装插件/.test(body.textContent)) {
         const section = body.closest(".related-post");
@@ -849,25 +851,25 @@
   };
 
   const categoryKickerMap = Object.freeze({
-    "Numerical-method": "METHODS / 数值方法",
-    "Differential equation": "EQUATIONS / 微分方程",
-    "Algorithm": "ALGORITHMS / 思路与实践",
-    "Software-system": "SYSTEMS / 系统与工具",
-    "Sci-Fi": "SCIENCE FICTION / 科幻",
+    "Numerical-method": "NUMERICS / 数值计算",
+    "Differential equation": "EQUATIONS / 方程与模型",
+    "Algorithm": "ALGORITHMS / 计算策略",
+    "Software-system": "WORKFLOW / 科研工作流",
     "Miles and Memories": "FIELD NOTES / 行路札记"
   });
 
   const categoryMap = {
-    "Numerical-method": [["基础概念", "从核心术语与直觉开始", "/Numerical-method/"], ["方法笔记", "整理常见方法与使用场景", "/Numerical-method/"], ["实践记录", "保存例子、经验与问题", "/Numerical-method/"], ["延伸阅读", "继续探索相关内容", "/Numerical-method/"]],
-    "Differential equation": [["概念地图", "认识方程、变化与关系", "/Differential%20equation/"], ["常见类型", "按特征梳理不同主题", "/Differential%20equation/"], ["方法记录", "整理思路、例子与观察", "/Differential%20equation/"], ["延伸阅读", "继续探索相关内容", "/Differential%20equation/"]],
-    "Algorithm": [["解题思路", "从问题到步骤的拆解", "/Algorithm/"], ["常用算法", "整理方法与适用场景", "/Algorithm/"], ["代码实践", "保存实现、测试与经验", "/Algorithm/"], ["延伸阅读", "继续探索相关内容", "/Algorithm/"]],
-    "Software-system": [["系统基础", "认识核心概念与组成", "/Software-system/"], ["工具配置", "整理环境与常用工具", "/Software-system/"], ["使用技巧", "让日常操作更顺手", "/Software-system/"], ["故障排查", "记录问题与解决线索", "/Software-system/"]],
+    "Numerical-method": [["逼近与表示", "插值、投影与基函数", "/research/#approximation"], ["离散化", "有限差分、有限元与谱方法", "/research/#discretization"], ["自适应计算", "网格、阶次与后验估计", "/research/#adaptivity"], ["验证", "误差、收敛率与基准", "/research/#verification"]],
+    "Differential equation": [["方程结构", "椭圆、抛物与双曲问题", "/research/#equations"], ["时间演化", "时间积分与稳定性", "/research/#time"], ["反问题与随机模型", "正则化与不确定性量化", "/research/#inverse"], ["建模工作流", "从问题到可信结果", "/research/#workflow"]],
+    "Algorithm": [["线性与非线性求解", "迭代法、预条件与特征值", "/research/#solvers"], ["优化", "约束、无约束与变分结构", "/research/#optimization"], ["高性能计算", "并行、加速与性能剖析", "/research/#hpc"], ["验证与基准", "精度、鲁棒性与效率", "/research/#verification"]],
+    "Software-system": [["科研工作流", "环境、实验与归档", "/research/#workflow"], ["高性能计算", "并行计算与硬件加速", "/research/#hpc"], ["可复现性", "从配置到结果追溯", "/research/#reproducibility"], ["研究地图", "浏览完整科研路线", "/research/"]],
     "Sci-Fi": [["文明与时间", "在长时间尺度上理解选择", "/Sci-Fi/"], ["科技与未知", "以想象力检验技术边界", "/Sci-Fi/"], ["宇宙尺度", "从更大的坐标系观察人类", "/Sci-Fi/"]],
-    "Miles and Memories": [["行路记录", "城市、山野与途中见闻", "/Miles%20and%20Memories/"], ["观察与摄影", "保存值得回看的瞬间", "/Miles%20and%20Memories/"], ["阅读与随笔", "日常里的思考切片", "/Miles%20and%20Memories/"]]
+    "Miles and Memories": [["行路记录", "城市、山野与途中见闻", "/Miles%20and%20Memories/"], ["观察与摄影", "保存值得回看的瞬间", "/Miles%20and%20Memories/"], ["阅读与随笔", "研究之外的思考切片", "/Miles%20and%20Memories/"]]
   };
 
   function initializeCategoryPage() {
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
+    if (key === "Sci-Fi") return;
     const items = categoryMap[key];
     if (categoryAccent[key]) document.documentElement.style.setProperty("--cm-section-accent", categoryAccent[key]);
     const wall = document.querySelector(".wall-category");
@@ -898,13 +900,68 @@
     document.querySelectorAll(".post-list").forEach((list) => {
       if (!/DEBUG:|没有文章/.test(list.textContent)) return;
       list.classList.add("cm-empty-state");
-      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>暂无内容。</p><a href="/">返回首页 →</a>';
+      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>暂无内容。</p><a href="/research/">打开研究地图 →</a>';
+    });
+  }
+
+  function initializeWorkflowLayout() {
+    const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
+    const isCategory = document.documentElement.classList.contains("cm-page-category") && key === "Software-system";
+    const categoryLink = document.querySelector('.post-nav a[href^="/Software-system"], .post-tags a[href^="/Software-system"]');
+    const isArticle = document.documentElement.classList.contains("cm-page-article") && (document.body.classList.contains("cm-page-workflow-article") || categoryLink);
+    if (!isCategory && !isArticle) return;
+
+    document.body.classList.add(isCategory ? "cm-page-workflow" : "cm-page-workflow-article");
+    if (!document.querySelector('link[href*="/css/workflow.css"]')) {
+      const stylesheet = document.createElement("link");
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = "/css/workflow.css?v=20260718.3";
+      document.head.appendChild(stylesheet);
+    }
+    if (!isCategory) return;
+
+    document.querySelectorAll(".post-list:not(.cm-empty-state)").forEach((list) => {
+      list.classList.add("cm-workflow-archive");
+      Array.from(list.children).forEach((card, index) => {
+        if (!card.classList.contains("post-card") || card.classList.contains("cm-workflow-entry")) return;
+        const titleLink = card.querySelector(".post-title[href]");
+        if (!titleLink) return;
+        const titleParts = titleLink.textContent.trim().split("：");
+        const excerpt = card.querySelector(".post-excerpt")?.textContent.trim() || "打开工作流记录与配置说明。";
+        const date = card.querySelector("time");
+        const tag = card.querySelector(".tag")?.textContent.trim() || "GUIDE";
+
+        const entry = document.createElement("a");
+        entry.className = "post-card cm-workflow-entry";
+        entry.href = titleLink.href;
+
+        const kicker = document.createElement("span");
+        kicker.className = "cm-workflow-entry__kicker";
+        kicker.textContent = `WORKSPACE RECORD / ${String(index + 1).padStart(3, "0")} · GUIDE`;
+        const heading = document.createElement("h2");
+        heading.textContent = titleParts.shift() || titleLink.textContent.trim();
+        const subtitle = document.createElement("strong");
+        subtitle.textContent = titleParts.join("：") || "工作流配置记录";
+        const description = document.createElement("p");
+        description.textContent = excerpt;
+        const meta = document.createElement("span");
+        meta.className = "cm-workflow-entry__meta";
+        const type = document.createElement("b");
+        type.textContent = tag;
+        meta.appendChild(type);
+        if (date) meta.appendChild(date.cloneNode(true));
+        const cta = document.createElement("span");
+        cta.className = "cm-workflow-entry__cta";
+        cta.textContent = "OPEN GUIDE →";
+        entry.append(kicker, heading, subtitle, description, meta, cta);
+        card.replaceWith(entry);
+      });
     });
   }
 
 
   function initializeSubpageParticleFields() {
-    if (document.querySelector(".cm-home") || document.body.classList.contains("cm-subpage-source") || document.documentElement.classList.contains("cm-deep-space-active")) return;
+    if (document.querySelector(".cm-home") || document.documentElement.classList.contains("cm-deep-space-active")) return;
     const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
     const forcedColorsQuery = matchMedia("(forced-colors: active)");
     if (reducedQuery.matches || forcedColorsQuery.matches) return;
@@ -916,7 +973,6 @@
       "Differential equation": "flow",
       "Algorithm": "signal",
       "Software-system": "signal",
-      "Sci-Fi": "signal",
       "Miles and Memories": "waypoint"
     };
     let target = null;
@@ -1698,18 +1754,8 @@
 
   function initializeArticleComments() {
     if (!document.documentElement.classList.contains("cm-page-article")) return;
-    const version = "20260718.5";
-    if (!document.querySelector('link[href*="/css/comments.css"]')) {
-      const stylesheet = document.createElement("link");
-      stylesheet.rel = "stylesheet";
-      stylesheet.href = `/css/comments.css?v=${version}`;
-      document.head.appendChild(stylesheet);
-    }
-    if (window.__cmReaderCommentsInitialized || document.querySelector('script[src*="/js/comments.js"]')) return;
-    const script = document.createElement("script");
-    script.src = `/js/comments.js?v=${version}`;
-    script.defer = true;
-    document.body.appendChild(script);
+    // Comments remain disabled until a stable backend is configured.
+    document.documentElement.classList.add("cm-comments-disabled");
   }
 
   function initialize() {
@@ -1725,6 +1771,9 @@
     initializeNestedNavigation();
     initializeResearchFilters();
     initializeCategoryPage();
+    initializeWorkflowLayout();
+    initializeSciFiDeepSpace();
+    initializeSciFiInteractions();
     initializeGlassSurfaces();
     initializeImageStretch();
     initializeParallax();
