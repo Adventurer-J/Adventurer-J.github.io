@@ -1,0 +1,55 @@
+/* 天衍：科幻 / 思考。与数字生命分类页使用同一黑红系统，但阅读正文保持安静。 */
+.cm-tianyan-reflection { background: #090707 !important; color: #e8e0da; }
+.cm-tianyan-reflection > .head { background: rgba(9, 7, 7, .94) !important; border-bottom: 1px solid rgba(185, 42, 47, .25) !important; box-shadow: none !important; }
+.cm-tianyan-reflection .nav-logo img { filter: grayscale(1) brightness(2.2); opacity: .9; }
+.cm-tianyan-reflection .nav-menu-item,
+.cm-tianyan-reflection #search-btn { color: #ece3dc !important; }
+.cm-tianyan-reflection #search-btn,
+.cm-tianyan-reflection .search-shortcut-key { background: #120d0d !important; border-color: rgba(185, 42, 47, .3) !important; }
+.cm-tianyan-reflection .nav-menu-item:hover,
+.cm-tianyan-reflection .nav-menu-item.active,
+.cm-tianyan-reflection #search-btn:hover { background: rgba(169, 29, 36, .18) !important; color: #ffb7ae !important; }
+.cm-tianyan-reflection .cm-tianyan-page { background: #090707 !important; padding-top: 0 !important; }
+.cm-tianyan-reflection .cm-tianyan-article { max-width: none !important; padding: 0 0 82px !important; }
+.cm-tianyan-reflection .cm-tianyan-hero { background: radial-gradient(ellipse at 73% 48%, rgba(135, 17, 25, .26), transparent 42%), linear-gradient(110deg, #090707 10%, rgba(12, 8, 9, .91) 56%, rgba(57, 9, 13, .72)), url("/images/tianyan/01-unseen-residual.webp") 76% center / cover !important; border: 0 !important; border-bottom: 1px solid rgba(229, 210, 198, .14) !important; border-radius: 0 !important; box-shadow: none !important; min-height: min(720px, calc(100svh - 10px)) !important; padding: clamp(140px, 17vh, 192px) clamp(24px, 8vw, 128px) 88px !important; }
+.cm-tianyan-reflection .cm-tianyan-hero::before { background: linear-gradient(90deg, #090707 0 27%, rgba(9, 7, 7, .9) 43%, rgba(9, 7, 7, .18) 70%, rgba(9, 7, 7, .55)) !important; content: ""; inset: 0; position: absolute; }
+.cm-tianyan-reflection .cm-tianyan-orbits { display: none !important; }
+.cm-tianyan-reflection .cm-tianyan-hero-copy { max-width: 700px; position: relative; z-index: 1; }
+.cm-tianyan-reflection .cm-tianyan-back,
+.cm-tianyan-reflection .cm-tianyan-kicker { color: #df444c !important; font-family: ui-monospace, monospace; letter-spacing: .17em; }
+.cm-tianyan-reflection .cm-tianyan-back { border: 0 !important; padding: 0 !important; }
+.cm-tianyan-reflection .cm-tianyan-hero .post-title { color: #f1e8e1 !important; font-family: sourceHanSerif, "Iowan Old Style", serif !important; font-size: clamp(5rem, 10vw, 8.4rem) !important; letter-spacing: -.09em !important; text-shadow: 0 0 34px rgba(164, 26, 34, .25) !important; }
+.cm-tianyan-reflection .cm-tianyan-deck { color: #d0c2ba !important; max-width: 560px; }
+.cm-tianyan-reflection .cm-tianyan-meta span { background: rgba(26, 13, 14, .68) !important; border-color: rgba(204, 58, 64, .34) !important; color: #c9b8b0 !important; }
+.cm-tianyan-reflection .cm-tianyan-meta b,
+.cm-tianyan-reflection .cm-tianyan-start { color: #ff696f !important; }
+.cm-tianyan-reflection .cm-tianyan-start { border-color: rgba(224, 68, 76, .58) !important; }
+.cm-tianyan-reflection .cm-tianyan-reading-shell { gap: clamp(24px, 4vw, 64px) !important; margin: 0 auto; max-width: 1420px; padding: 62px clamp(18px, 5vw, 76px) 0; }
+.cm-tianyan-reflection .cm-tianyan-toc { background: #100b0c !important; border-color: rgba(229, 210, 198, .14) !important; box-shadow: none !important; }
+.cm-tianyan-reflection .cm-tianyan-toc-head span,
+.cm-tianyan-reflection .cm-tianyan-toc a[aria-current="true"] { color: #e24b52 !important; }
+.cm-tianyan-reflection .cm-tianyan-toc a { color: #bcaea7 !important; }
+.cm-tianyan-reflection .cm-tianyan-toc a:hover { color: #fff1ea !important; }
+.cm-tianyan-reflection .cm-tianyan-prose.post-content__body { background: #151010 !important; border-color: rgba(229, 210, 198, .14) !important; box-shadow: none !important; color: #ded4cd !important; }
+.cm-tianyan-reflection .cm-tianyan-prose > h2 { border-bottom-color: rgba(229, 210, 198, .15) !important; color: #f0e5de !important; }
+.cm-tianyan-reflection .cm-tianyan-prose > h2::before { color: #d9434b !important; }
+.cm-tianyan-reflection .cm-tianyan-prose blockquote { background: rgba(120, 21, 27, .12) !important; border-color: rgba(203, 59, 65, .32) !important; border-left-color: #d9434b !important; }
+.cm-tianyan-reflection .cm-tianyan-illustration { background: #100b0c; border-color: rgba(203, 59, 65, .28) !important; }
+.cm-tianyan-reflection .cm-tianyan-illustration figcaption strong { color: #f0e5de !important; }
+.cm-tianyan-reflection .cm-tianyan-colophon,
+.cm-tianyan-reflection .foot { background: #090707 !important; border-top-color: rgba(229, 210, 198, .14) !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection { background: #f3eeea !important; color: #2d2422; }
+html[data-cm-theme="light"] .cm-tianyan-reflection > .head { background: rgba(248, 243, 239, .94) !important; border-bottom-color: rgba(145, 37, 39, .22) !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .nav-logo img { filter: grayscale(1) brightness(.3); }
+html[data-cm-theme="light"] .cm-tianyan-reflection .nav-menu-item,
+html[data-cm-theme="light"] .cm-tianyan-reflection #search-btn { color: #312725 !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .cm-tianyan-page { background: #f3eeea !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .cm-tianyan-hero { background: linear-gradient(100deg, rgba(247, 241, 236, .95) 18%, rgba(247, 241, 236, .68) 61%, rgba(139, 43, 43, .2)), url("/images/tianyan/01-unseen-residual.webp") 76% center / cover !important; border-bottom-color: rgba(49, 35, 33, .14) !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .cm-tianyan-hero::before { display: none; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .cm-tianyan-hero .post-title { color: #311f1e !important; text-shadow: none !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .cm-tianyan-deck { color: #645653 !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .cm-tianyan-prose.post-content__body { background: #fffaf6 !important; border-color: rgba(49, 35, 33, .14) !important; color: #332827 !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .cm-tianyan-prose > h2 { color: #2d211f !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .cm-tianyan-toc { background: #fffaf6 !important; border-color: rgba(49, 35, 33, .14) !important; }
+html[data-cm-theme="light"] .cm-tianyan-reflection .cm-tianyan-toc a { color: #675754 !important; }
+@media (max-width: 760px) { .cm-tianyan-reflection .cm-tianyan-hero { min-height: 610px !important; padding: 124px 26px 72px !important; } .cm-tianyan-reflection .cm-tianyan-hero .post-title { font-size: clamp(4.8rem, 24vw, 6.7rem) !important; } .cm-tianyan-reflection .cm-tianyan-reading-shell { padding: 28px 12px 0; } }

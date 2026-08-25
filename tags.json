@@ -32,6 +32,6 @@
   "posts": [
     {"title":"hello","url":"/2025/01/16/hello/","category":"数值方法","tags":[]},
     {"title":"Markdown Preview Enhanced：科研报告样式配置指南","url":"/2026/07/18/markdown-preview-enhanced-computational-math-theme/","category":"操作系统","tags":["python","linux"]},
-    {"title":"天衍","url":"/Sci-Fi/tianyan/","category":"科幻","tags":["scifi-books","scifi-reflections"]}
+    {"title":"天衍","url":"/Sci-Fi/tianyan/","category":"科幻 · 思考","tags":["scifi-reflections"]}
   ]
 }
