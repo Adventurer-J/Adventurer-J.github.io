@@ -17,5 +17,11 @@
 .cm-topic-post { background: var(--cm-surface, #fff); border: 1px solid var(--cm-line, #ccd5d0); border-radius: 16px; color: inherit; display: grid; gap: 7px; padding: 18px 20px; text-decoration: none; transition: border-color 180ms ease, transform 180ms ease; }
 .cm-topic-post:hover { border-color: var(--cm-teal, #13877f); transform: translateX(3px); }
 .cm-topic-post small { color: var(--cm-muted, #68716d); }
+.cm-tags-query-results { border-top: 1px solid var(--cm-line, #ccd5d0); margin-top: 42px; padding-top: 24px; }
+.cm-tags-query-results h2 { color: var(--cm-ink, #1e2927); font-size: 1.05rem; margin: 0 0 14px; }
+.cm-tags-query-results p { color: var(--cm-muted, #68716d); }
+.cm-tags-query-results a { align-items: center; border-bottom: 1px solid var(--cm-line, #ccd5d0); color: var(--cm-ink, #1e2927); display: flex; gap: 12px; justify-content: space-between; padding: 14px 0; text-decoration: none; }
+.cm-tags-query-results a:hover strong { color: var(--cm-teal, #13877f); }
+.cm-tags-query-results a span { color: var(--cm-muted, #68716d); font-size: .8rem; }
 @media (max-width: 760px) { .cm-tags-shell { padding: 94px 16px 56px; } .cm-tags-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .cm-tags-grid { grid-template-columns: 1fr; } .cm-tags-shell h1 { font-size: 3.3rem; } }

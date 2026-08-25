@@ -4,24 +4,41 @@
 
   const navMap = {
     "数值方法": [
-      ["分类总览", "离散、逼近与误差控制", "/research/#discretization"],
-      ["逼近与表示", "插值、投影、基函数", "/research/#approximation"],
-      ["自适应计算", "网格、阶次与后验估计", "/research/#adaptivity"]
+      ["差分方法", "网格离散与差分格式", "/tags/?section=Numerical-method&topic=finite-difference"],
+      ["有限元方法", "变分离散与有限元实现", "/tags/?section=Numerical-method&topic=finite-element"],
+      ["谱方法", "全局逼近与高阶计算", "/tags/?section=Numerical-method&topic=spectral-method"],
+      ["谱元方法", "高阶单元与结构网格", "/tags/?section=Numerical-method&topic=spectral-element"],
+      ["数值线性代数", "线性系统、特征值与迭代", "/tags/?section=Numerical-method&topic=numerical-linear-algebra"]
     ],
     "微分方程": [
-      ["方程地图", "从模型结构选择方法", "/research/#equations"],
-      ["演化问题", "时间积分与稳定性", "/research/#time"],
-      ["反问题与随机模型", "正则化、不确定性量化", "/research/#inverse"]
+      ["椭圆型 PDE", "边值问题、椭圆正则性与模型", "/tags/?section=differential-equation&topic=elliptic-pde"],
+      ["抛物型 PDE", "扩散、热传导与时间演化", "/tags/?section=differential-equation&topic=parabolic-pde"],
+      ["双曲型 PDE", "波动、守恒律与传播", "/tags/?section=differential-equation&topic=hyperbolic-pde"],
+      ["非线性 PDE", "非线性结构、解的性质与计算", "/tags/?section=differential-equation&topic=nonlinear-pde"]
     ],
     "算法": [
-      ["求解器", "线性、非线性与特征值", "/research/#solvers"],
-      ["优化算法", "约束、无约束与变分结构", "/research/#optimization"],
-      ["验证与基准", "误差、收敛率与性能", "/research/#verification"]
+      ["优化算法", "连续与离散优化的算法框架", "/tags/?section=Algorithm&topic=optimization"],
+      ["机器学习算法", "模型、训练与泛化的算法视角", "/tags/?section=Algorithm&topic=machine-learning"],
+      ["图算法", "图结构、搜索与网络计算", "/tags/?section=Algorithm&topic=graph-algorithms"],
+      ["随机算法", "随机化、采样与概率保证", "/tags/?section=Algorithm&topic=randomized-algorithms"],
+      ["通用算法思想", "复杂度、分治、贪心与动态规划", "/tags/?section=Algorithm&topic=algorithmic-thinking"]
     ],
     "操作系统": [
-      ["科研工作流", "环境、实验与归档", "/research/#workflow"],
-      ["高性能计算", "并行、加速与剖析", "/research/#hpc"],
-      ["可复现检查表", "从配置到结果追溯", "/research/#reproducibility"]
+      ["Linux", "命令行、文件系统与日常环境", "/tags/?section=Software-system&topic=linux"],
+      ["编译环境", "编译器、依赖与构建工具链", "/tags/?section=Software-system&topic=compiler-toolchain"],
+      ["求解器部署", "安装、配置、运行与排错记录", "/tags/?section=Software-system&topic=solver-deployment"]
+    ],
+    "科幻": [
+      ["书籍", "阅读中的世界、设定与叙事", "/tags/?section=Sci-Fi&topic=scifi-books"],
+      ["影像", "电影、剧集与视觉想象", "/tags/?section=Sci-Fi&topic=scifi-screen"],
+      ["文摘", "值得保存的句子与片段", "/tags/?section=Sci-Fi&topic=scifi-excerpts"],
+      ["思考", "技术、文明与未知的随笔", "/tags/?section=Sci-Fi&topic=scifi-reflections"]
+    ],
+    "在路上": [
+      ["旅行", "目的地、路线与途中见闻", "/tags/?section=miles-and-memories&topic=travel"],
+      ["日志", "日常与行程中的记录", "/tags/?section=miles-and-memories&topic=journal"],
+      ["摄影", "光线、空间与瞬间", "/tags/?section=miles-and-memories&topic=photography"],
+      ["生活记录", "研究之外的生活切片", "/tags/?section=miles-and-memories&topic=life-records"]
     ]
   };
 
@@ -258,6 +275,10 @@
   function initializeSciFiDeepSpace() {
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
     const wall = document.querySelector("[data-sci-fi-viewport]") || document.querySelector(".wall-category");
+    if (key === "Sci-Fi" && wall && wall.dataset.cyberWorm === "true") {
+      document.documentElement.classList.add("cm-deep-space-active");
+      return;
+    }
     if (key !== "Sci-Fi" || !wall || wall.querySelector(".cm-deep-space-canvas")) return;
     document.documentElement.classList.add("cm-deep-space-active");
     const canvas = document.createElement("canvas");
@@ -843,28 +864,27 @@
 
   const categoryAccent = {
     "Numerical-method": "#57bdb6",
-    "Differential equation": "#7299c8",
+    "differential-equation": "#7299c8",
     "Algorithm": "#9181bd",
     "Software-system": "#68a982",
     "Sci-Fi": "#bd7f72",
-    "Miles and Memories": "#af9158"
+    "miles-and-memories": "#af9158"
   };
 
   const categoryKickerMap = Object.freeze({
-    "Numerical-method": "NUMERICS / 数值计算",
-    "Differential equation": "EQUATIONS / 方程与模型",
-    "Algorithm": "ALGORITHMS / 计算策略",
-    "Software-system": "WORKFLOW / 科研工作流",
-    "Miles and Memories": "FIELD NOTES / 行路札记"
+    "Numerical-method": "NUMERICAL METHODS / 数值方法",
+    "differential-equation": "PDE & THEORY / 微分方程",
+    "Algorithm": "ALGORITHMS / 学习兴趣",
+    "Software-system": "SYSTEM NOTES / 系统笔记",
+    "miles-and-memories": "FIELD NOTES / 在路上"
   });
 
   const categoryMap = {
-    "Numerical-method": [["逼近与表示", "插值、投影与基函数", "/research/#approximation"], ["离散化", "有限差分、有限元与谱方法", "/research/#discretization"], ["自适应计算", "网格、阶次与后验估计", "/research/#adaptivity"], ["验证", "误差、收敛率与基准", "/research/#verification"]],
-    "Differential equation": [["方程结构", "椭圆、抛物与双曲问题", "/research/#equations"], ["时间演化", "时间积分与稳定性", "/research/#time"], ["反问题与随机模型", "正则化与不确定性量化", "/research/#inverse"], ["建模工作流", "从问题到可信结果", "/research/#workflow"]],
-    "Algorithm": [["线性与非线性求解", "迭代法、预条件与特征值", "/research/#solvers"], ["优化", "约束、无约束与变分结构", "/research/#optimization"], ["高性能计算", "并行、加速与性能剖析", "/research/#hpc"], ["验证与基准", "精度、鲁棒性与效率", "/research/#verification"]],
-    "Software-system": [["科研工作流", "环境、实验与归档", "/research/#workflow"], ["高性能计算", "并行计算与硬件加速", "/research/#hpc"], ["可复现性", "从配置到结果追溯", "/research/#reproducibility"], ["研究地图", "浏览完整科研路线", "/research/"]],
-    "Sci-Fi": [["文明与时间", "在长时间尺度上理解选择", "/Sci-Fi/"], ["科技与未知", "以想象力检验技术边界", "/Sci-Fi/"], ["宇宙尺度", "从更大的坐标系观察人类", "/Sci-Fi/"]],
-    "Miles and Memories": [["行路记录", "城市、山野与途中见闻", "/Miles%20and%20Memories/"], ["观察与摄影", "保存值得回看的瞬间", "/Miles%20and%20Memories/"], ["阅读与随笔", "研究之外的思考切片", "/Miles%20and%20Memories/"]]
+    "Numerical-method": navMap["数值方法"],
+    "differential-equation": navMap["微分方程"],
+    "Algorithm": navMap["算法"],
+    "Software-system": navMap["操作系统"],
+    "miles-and-memories": navMap["在路上"]
   };
 
   function initializeCategoryPage() {
@@ -900,7 +920,7 @@
     document.querySelectorAll(".post-list").forEach((list) => {
       if (!/DEBUG:|没有文章/.test(list.textContent)) return;
       list.classList.add("cm-empty-state");
-      list.innerHTML = '<span>INDEX STATUS</span><h2>内容索引正在建立</h2><p>暂无内容。</p><a href="/research/">打开研究地图 →</a>';
+      list.innerHTML = '<span>ARCHIVE STATUS</span><h2>文章索引正在建立</h2><p>目录已经固定；新文章会归入对应二级主题，并同时出现在标签检索中。</p><a href="/tags/">浏览全部标签 →</a>';
     });
   }
 

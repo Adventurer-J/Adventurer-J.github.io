@@ -1,17 +1,37 @@
 {
   "tags": [
-    {"slug":"finite-element","name":"有限元","type":"method","description":"有限元、变分离散与相关实现。"},
-    {"slug":"spectral-method","name":"谱方法","type":"method","description":"谱方法、高阶逼近与科学计算。"},
-    {"slug":"pde","name":"PDE","type":"problem","description":"偏微分方程模型、背景与数值问题。"},
+    {"slug":"finite-difference","name":"差分方法","type":"method","section":"Numerical-method","description":"网格离散、差分格式与稳定性。"},
+    {"slug":"finite-element","name":"有限元方法","type":"method","section":"Numerical-method","description":"变分离散、有限元空间与实现。"},
+    {"slug":"spectral-method","name":"谱方法","type":"method","section":"Numerical-method","description":"全局逼近与高阶数值计算。"},
+    {"slug":"spectral-element","name":"谱元方法","type":"method","section":"Numerical-method","description":"高阶单元、结构网格与谱元离散。"},
+    {"slug":"numerical-linear-algebra","name":"数值线性代数","type":"method","section":"Numerical-method","description":"线性系统、特征值与迭代算法。"},
+    {"slug":"elliptic-pde","name":"椭圆型 PDE","type":"problem","section":"differential-equation","description":"边值问题、椭圆结构与理论背景。"},
+    {"slug":"parabolic-pde","name":"抛物型 PDE","type":"problem","section":"differential-equation","description":"扩散、热传导与时间演化。"},
+    {"slug":"hyperbolic-pde","name":"双曲型 PDE","type":"problem","section":"differential-equation","description":"波动、守恒律与传播问题。"},
+    {"slug":"nonlinear-pde","name":"非线性 PDE","type":"problem","section":"differential-equation","description":"非线性结构、解的性质与计算。"},
+    {"slug":"optimization","name":"优化算法","type":"algorithm","section":"Algorithm","description":"连续与离散优化的算法框架。"},
+    {"slug":"machine-learning","name":"机器学习算法","type":"algorithm","section":"Algorithm","description":"模型、训练与泛化的算法视角。"},
+    {"slug":"graph-algorithms","name":"图算法","type":"algorithm","section":"Algorithm","description":"图结构、搜索与网络计算。"},
+    {"slug":"randomized-algorithms","name":"随机算法","type":"algorithm","section":"Algorithm","description":"随机化、采样与概率保证。"},
+    {"slug":"algorithmic-thinking","name":"通用算法思想","type":"algorithm","section":"Algorithm","description":"复杂度、分治、贪心与动态规划。"},
+    {"slug":"linux","name":"Linux","type":"tool","section":"Software-system","description":"命令行、文件系统与科学计算环境。"},
+    {"slug":"compiler-toolchain","name":"编译环境","type":"tool","section":"Software-system","description":"编译器、依赖与构建工具链。"},
+    {"slug":"solver-deployment","name":"求解器部署","type":"tool","section":"Software-system","description":"安装、配置、运行与排错记录。"},
+    {"slug":"scifi-books","name":"书籍","type":"interest","section":"Sci-Fi","description":"科幻阅读中的世界、设定与叙事。"},
+    {"slug":"scifi-screen","name":"影像","type":"interest","section":"Sci-Fi","description":"电影、剧集与视觉想象。"},
+    {"slug":"scifi-excerpts","name":"文摘","type":"interest","section":"Sci-Fi","description":"值得保存的句子与片段。"},
+    {"slug":"scifi-reflections","name":"思考","type":"interest","section":"Sci-Fi","description":"技术、文明与未知的随笔。"},
+    {"slug":"travel","name":"旅行","type":"life","section":"miles-and-memories","description":"目的地、路线与途中见闻。"},
+    {"slug":"journal","name":"日志","type":"life","section":"miles-and-memories","description":"日常与行程中的记录。"},
+    {"slug":"photography","name":"摄影","type":"life","section":"miles-and-memories","description":"光线、空间与瞬间。"},
+    {"slug":"life-records","name":"生活记录","type":"life","section":"miles-and-memories","description":"研究之外的生活切片。"},
     {"slug":"numerical-experiment","name":"数值实验","type":"content","description":"基准算例、误差、收敛率与结果分析。"},
     {"slug":"matlab","name":"MATLAB","type":"tool","description":"MATLAB 编程、实验和求解器使用笔记。"},
-    {"slug":"python","name":"Python","type":"tool","description":"Python 科学计算与工具链笔记。"},
-    {"slug":"linux","name":"Linux","type":"tool","description":"Linux 环境、命令行与科学计算部署。"},
-    {"slug":"science-fiction","name":"科幻阅读","type":"interest","description":"科幻作品、阅读与相关思考。"}
+    {"slug":"python","name":"Python","type":"tool","description":"Python 科学计算与工具链笔记。"}
   ],
   "posts": [
-    {"title":"hello","url":"/2025/01/16/hello/","category":"数值方法","tags":["pde","numerical-experiment"]},
+    {"title":"hello","url":"/2025/01/16/hello/","category":"数值方法","tags":[]},
     {"title":"Markdown Preview Enhanced：科研报告样式配置指南","url":"/2026/07/18/markdown-preview-enhanced-computational-math-theme/","category":"操作系统","tags":["python","linux"]},
-    {"title":"天衍","url":"/Sci-Fi/tianyan/","category":"科幻","tags":["science-fiction"]}
+    {"title":"天衍","url":"/Sci-Fi/tianyan/","category":"科幻","tags":["scifi-books","scifi-reflections"]}
   ]
 }
