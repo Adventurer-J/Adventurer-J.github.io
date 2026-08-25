@@ -879,6 +879,34 @@
     "miles-and-memories": "FIELD NOTES / 在路上"
   });
 
+  const categoryProfileMap = Object.freeze({
+    "Numerical-method": {
+      indexLabel: "METHOD MAP",
+      archiveLabel: "METHOD ARCHIVE",
+      note: "从离散、逼近到线性求解：按方法进入，也可在标签页交叉检索。"
+    },
+    "differential-equation": {
+      indexLabel: "PDE MAP",
+      archiveLabel: "PDE ARCHIVE",
+      note: "以方程类型为入口，连接模型背景、理论问题与相应的计算方法。"
+    },
+    "Algorithm": {
+      indexLabel: "ALGORITHM MAP",
+      archiveLabel: "ALGORITHM ARCHIVE",
+      note: "这里记录计算数学之外持续展开的算法学习兴趣与方法思想。"
+    },
+    "Software-system": {
+      indexLabel: "WORKSPACE MAP",
+      archiveLabel: "SYSTEM ARCHIVE",
+      note: "面向科研计算环境：命令行、编译链和求解器运行记录。"
+    },
+    "miles-and-memories": {
+      indexLabel: "FIELD MAP",
+      archiveLabel: "FIELD ARCHIVE",
+      note: "旅行、日常、摄影和生活片段；与研究并列，但不混入研究分类。"
+    }
+  });
+
   const categoryMap = {
     "Numerical-method": navMap["数值方法"],
     "differential-equation": navMap["微分方程"],
@@ -891,15 +919,29 @@
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
     if (key === "Sci-Fi") return;
     const items = categoryMap[key];
+    const profile = categoryProfileMap[key];
     if (categoryAccent[key]) document.documentElement.style.setProperty("--cm-section-accent", categoryAccent[key]);
     const wall = document.querySelector(".wall-category");
     if (!items || !wall || wall.querySelector(".cm-category-grid")) return;
+    if (!document.querySelector('link[data-cm-category-atlas]')) {
+      const stylesheet = document.createElement("link");
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = "/css/category-atlas.css?v=20260826.1";
+      stylesheet.dataset.cmCategoryAtlas = "true";
+      document.head.appendChild(stylesheet);
+    }
+    document.documentElement.dataset.cmCategory = key;
     wall.classList.add("cm-category-shell");
     const main = wall.querySelector(".wall-main") || wall;
     const kicker = document.createElement("p");
     kicker.className = "cm-category-kicker";
     kicker.textContent = categoryKickerMap[key] ?? "EXPLORE / 内容导航";
     main.prepend(kicker);
+    const mapNote = document.createElement("div");
+    mapNote.className = "cm-category-map-note";
+    mapNote.innerHTML = '<span></span><p></p>';
+    mapNote.querySelector("span").textContent = profile?.indexLabel ?? "TOPIC MAP";
+    mapNote.querySelector("p").textContent = profile?.note ?? "按主题进入内容，并使用标签交叉检索。";
     const grid = document.createElement("div");
     grid.className = "cm-category-grid";
     items.forEach(([title, note, href], index) => {
@@ -909,18 +951,29 @@
       const card = document.createElement(isSelfLink ? "div" : "a");
       card.className = `cm-category-card cm-reveal${isSelfLink ? " cm-category-card--static" : ""}`;
       if (!isSelfLink) card.href = href;
-      card.innerHTML = `<span>${String(index + 1).padStart(2, "0")}</span><strong></strong><small></small><i aria-hidden="true">${isSelfLink ? "·" : "↗"}</i>`;
+      card.innerHTML = `<span>TOPIC ${String(index + 1).padStart(2, "0")}</span><strong></strong><small></small><em>TAG INDEX</em><i aria-hidden="true">${isSelfLink ? "·" : "↗"}</i>`;
       card.querySelector("strong").textContent = title;
       card.querySelector("small").textContent = note;
       grid.appendChild(card);
     });
-    main.appendChild(grid);
+    main.append(mapNote, grid);
     const canvas = document.querySelector("#tagCanvas, .wall-category-tags");
     if (canvas) canvas.hidden = true;
     document.querySelectorAll(".post-list").forEach((list) => {
-      if (!/DEBUG:|没有文章/.test(list.textContent)) return;
-      list.classList.add("cm-empty-state");
-      list.innerHTML = '<span>ARCHIVE STATUS</span><h2>文章索引正在建立</h2><p>目录已经固定；新文章会归入对应二级主题，并同时出现在标签检索中。</p><a href="/tags/">浏览全部标签 →</a>';
+      const hasNoPosts = /DEBUG:|没有文章|暂无内容/.test(list.textContent);
+      list.classList.add("cm-category-archive");
+      if (hasNoPosts) {
+        list.classList.add("cm-empty-state");
+        list.innerHTML = `<span>${profile?.archiveLabel ?? "ARCHIVE STATUS"}</span><h2>尚无归档文章</h2><p>专题结构已固定；新文章会归入对应二级主题，并同时出现在标签检索中。</p><a href="/tags/">浏览全部标签 →</a>`;
+      }
+      const archiveLead = document.createElement("section");
+      archiveLead.className = "cm-category-archive-lead";
+      archiveLead.innerHTML = '<span></span><h2>归档</h2><p></p>';
+      archiveLead.querySelector("span").textContent = profile?.archiveLabel ?? "ARTICLE ARCHIVE";
+      archiveLead.querySelector("p").textContent = hasNoPosts
+        ? "文章会按上方专题与标签系统同步归档。"
+        : "已发布内容按专题收录；标签提供跨栏目入口。";
+      list.before(archiveLead);
     });
   }
 

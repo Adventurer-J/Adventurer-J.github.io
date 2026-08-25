@@ -1,0 +1,91 @@
+/* Category atlas: five distinct topic indexes, built on the fixed site hierarchy. */
+html.cm-page-category {
+  --atlas-accent: #4c9e98;
+  --atlas-accent-rgb: 76, 158, 152;
+  --atlas-mark: "∫";
+}
+
+html.cm-page-category[data-cm-category="Numerical-method"] { --atlas-accent: #3c968f; --atlas-accent-rgb: 60, 150, 143; --atlas-mark: "Δ"; }
+html.cm-page-category[data-cm-category="differential-equation"] { --atlas-accent: #5c80bd; --atlas-accent-rgb: 92, 128, 189; --atlas-mark: "∂"; }
+html.cm-page-category[data-cm-category="Algorithm"] { --atlas-accent: #8068a8; --atlas-accent-rgb: 128, 104, 168; --atlas-mark: "↗"; }
+html.cm-page-category[data-cm-category="Software-system"] { --atlas-accent: #548b6b; --atlas-accent-rgb: 84, 139, 107; --atlas-mark: "_"; }
+html.cm-page-category[data-cm-category="miles-and-memories"] { --atlas-accent: #a67f45; --atlas-accent-rgb: 166, 127, 69; --atlas-mark: "°"; }
+
+html.cm-page-category .wall-category.cm-category-shell {
+  background: linear-gradient(136deg, rgba(var(--atlas-accent-rgb), .13), transparent 38%), var(--sp-paper) !important;
+  border-color: color-mix(in srgb, var(--atlas-accent) 25%, var(--sp-line)) !important;
+  min-height: 0 !important;
+  padding: clamp(104px, 12vw, 166px) clamp(22px, 5vw, 82px) clamp(64px, 7vw, 104px) !important;
+}
+
+html.cm-page-category .wall-category.cm-category-shell::before {
+  background: linear-gradient(90deg, rgba(var(--atlas-accent-rgb), .17) 1px, transparent 1px), linear-gradient(rgba(var(--atlas-accent-rgb), .17) 1px, transparent 1px) !important;
+  background-size: 42px 42px !important;
+  mask-image: linear-gradient(105deg, #000, transparent 66%) !important;
+  opacity: .64 !important;
+}
+
+html.cm-page-category .wall-category.cm-category-shell::after {
+  border-color: rgba(var(--atlas-accent-rgb), .36) !important;
+  box-shadow: 0 0 0 46px rgba(var(--atlas-accent-rgb), .05), 0 0 0 92px rgba(var(--atlas-accent-rgb), .025) !important;
+  height: min(28vw, 390px) !important;
+  right: 6vw !important;
+  top: 17% !important;
+  width: min(28vw, 390px) !important;
+}
+
+html.cm-page-category[data-cm-category="differential-equation"] .wall-category.cm-category-shell::before { background-size: 84px 28px !important; transform: skewY(-9deg) scale(1.18); }
+html.cm-page-category[data-cm-category="Algorithm"] .wall-category.cm-category-shell::before { background-image: radial-gradient(circle, rgba(var(--atlas-accent-rgb), .38) 1px, transparent 1.5px) !important; background-size: 27px 27px !important; }
+html.cm-page-category[data-cm-category="Software-system"] .wall-category.cm-category-shell::before { background-size: 18px 18px !important; opacity: .45 !important; }
+html.cm-page-category[data-cm-category="miles-and-memories"] .wall-category.cm-category-shell::before { background-image: repeating-linear-gradient(119deg, rgba(var(--atlas-accent-rgb), .22) 0 1px, transparent 1px 22px) !important; background-size: auto !important; }
+
+html.cm-page-category .cm-category-shell .wall-main { display: block !important; min-height: 0 !important; max-width: 1440px !important; }
+html.cm-page-category .cm-category-shell .wall-main::after { color: var(--atlas-accent) !important; content: "TOPIC INDEX  ↓" !important; }
+html.cm-page-category .cm-category-kicker { color: var(--atlas-accent) !important; margin-bottom: 30px !important; }
+html.cm-page-category .wall-category-title { font-size: clamp(3.75rem, 9.7vw, 9.8rem) !important; letter-spacing: -.08em !important; max-width: 1000px; }
+html.cm-page-category .wall-category-title .title-icon { background-color: var(--atlas-accent) !important; border-color: color-mix(in srgb, var(--atlas-accent) 68%, var(--sp-ink)) !important; }
+html.cm-page-category .wall-category-description { border-color: color-mix(in srgb, var(--atlas-accent) 24%, var(--sp-line)) !important; max-width: 660px !important; }
+
+html.cm-page-category .cm-category-map-note { align-items: start; border-top: 1px solid color-mix(in srgb, var(--atlas-accent) 33%, var(--sp-line)); display: grid; gap: 18px; grid-template-columns: minmax(118px, .26fr) 1fr; margin-top: clamp(40px, 6vw, 76px); padding-top: 16px; position: relative; z-index: 3; }
+html.cm-page-category .cm-category-map-note span, html.cm-page-category .cm-category-archive-lead > span { color: var(--atlas-accent); font: 750 .61rem/1.35 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .16em; }
+html.cm-page-category .cm-category-map-note p { color: var(--sp-muted); font: 500 clamp(.8rem, 1.25vw, .98rem)/1.72 sourceHanSerif, serif; margin: 0; max-width: 650px; }
+
+html.cm-page-category .cm-category-grid { display: grid !important; gap: 12px !important; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)) !important; margin-top: clamp(30px, 4vw, 52px) !important; }
+html.cm-page-category .cm-category-card { background: linear-gradient(145deg, color-mix(in srgb, var(--sp-paper) 94%, transparent), color-mix(in srgb, var(--atlas-accent) 4%, var(--sp-paper))) !important; border-color: color-mix(in srgb, var(--atlas-accent) 24%, var(--sp-line)) !important; border-radius: 16px !important; box-shadow: none !important; display: flex !important; flex-direction: column; min-height: 218px !important; overflow: hidden; padding: 22px !important; }
+html.cm-page-category .cm-category-card::before { color: rgba(var(--atlas-accent-rgb), .14); content: var(--atlas-mark); font: 500 7rem/1 Georgia, sourceHanSerif, serif; position: absolute; right: 12px; top: 44px; }
+html.cm-page-category .cm-category-card::after { background: linear-gradient(90deg, var(--atlas-accent), transparent 72%) !important; bottom: 0; height: 2px; inset: auto 0 0 !important; opacity: .85; }
+html.cm-page-category .cm-category-card:hover { border-color: var(--atlas-accent) !important; box-shadow: 0 20px 48px rgba(var(--atlas-accent-rgb), .14) !important; transform: translateY(-4px) !important; }
+html.cm-page-category .cm-category-card > span { color: var(--atlas-accent) !important; font: 750 .59rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace !important; letter-spacing: .13em; }
+html.cm-page-category .cm-category-card strong { color: var(--sp-ink) !important; font-family: sourceHanSerif, "Iowan Old Style", serif !important; font-size: clamp(1.22rem, 1.65vw, 1.55rem) !important; letter-spacing: -.025em; line-height: 1.25; margin: auto 0 8px; padding-right: 30px; }
+html.cm-page-category .cm-category-card small { color: var(--sp-muted) !important; font-size: .76rem !important; line-height: 1.65 !important; max-width: 24ch; }
+html.cm-page-category .cm-category-card em { color: color-mix(in srgb, var(--atlas-accent) 76%, var(--sp-muted)); font: 700 .52rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace; font-style: normal; letter-spacing: .13em; margin-top: 20px; }
+html.cm-page-category .cm-category-card i { color: var(--atlas-accent) !important; font-size: 1rem; right: 18px !important; top: 18px !important; }
+
+html.cm-page-category .cm-category-archive-lead { box-sizing: border-box; margin: 0 auto; max-width: 1440px; padding: clamp(64px, 8vw, 110px) clamp(22px, 5vw, 82px) 24px; }
+html.cm-page-category .cm-category-archive-lead h2 { color: var(--sp-ink); font: 500 clamp(2.2rem, 4.6vw, 4.6rem)/1 sourceHanSerif, "Iowan Old Style", serif; letter-spacing: -.065em; margin: 12px 0; }
+html.cm-page-category .cm-category-archive-lead p { color: var(--sp-muted); font-size: .9rem; margin: 0; }
+html.cm-page-category .post-list.cm-category-archive { background: transparent !important; border: 0 !important; box-shadow: none !important; margin: 0 auto clamp(54px, 7vw, 94px) !important; max-width: 1440px !important; padding: 0 clamp(22px, 5vw, 82px) !important; width: 100% !important; }
+html.cm-page-category .post-list.cm-category-archive.cm-empty-state { align-items: start !important; background: linear-gradient(135deg, rgba(var(--atlas-accent-rgb), .12), transparent 54%), var(--sp-night) !important; border: 1px solid color-mix(in srgb, var(--atlas-accent) 48%, transparent) !important; border-radius: 18px !important; display: grid !important; margin-left: auto !important; margin-right: auto !important; min-height: 265px !important; padding: clamp(34px, 5vw, 66px) !important; place-content: center start !important; width: calc(100% - clamp(44px, 10vw, 164px)) !important; }
+html.cm-page-category .cm-empty-state > span, html.cm-page-category .cm-empty-state a { color: color-mix(in srgb, var(--atlas-accent) 86%, white) !important; }
+html.cm-page-category .cm-empty-state h2 { color: #f2f2ed !important; font-size: clamp(2.3rem, 4.5vw, 4.4rem) !important; }
+html.cm-page-category .cm-empty-state p { color: rgba(242, 242, 237, .7) !important; max-width: 590px; }
+
+html[data-cm-theme="dark"].cm-page-category .wall-category.cm-category-shell { background: linear-gradient(136deg, rgba(var(--atlas-accent-rgb), .14), transparent 42%), #10131a !important; }
+html[data-cm-theme="dark"].cm-page-category .cm-category-card { background: linear-gradient(145deg, rgba(28, 33, 43, .96), rgba(var(--atlas-accent-rgb), .08)) !important; border-color: rgba(var(--atlas-accent-rgb), .35) !important; }
+html[data-cm-theme="dark"].cm-page-category .cm-category-card strong, html[data-cm-theme="dark"].cm-page-category .cm-category-archive-lead h2 { color: #e7e8e3 !important; }
+html[data-cm-theme="dark"].cm-page-category .cm-category-map-note p, html[data-cm-theme="dark"].cm-page-category .cm-category-archive-lead p { color: #abb3bd !important; }
+
+@media (max-width: 720px) {
+  html.cm-page-category .wall-category.cm-category-shell { padding: 112px 20px 58px !important; }
+  html.cm-page-category .wall-category.cm-category-shell::after { height: 260px !important; right: -84px !important; top: 8% !important; width: 260px !important; }
+  html.cm-page-category .wall-category-title { font-size: clamp(3.4rem, 18vw, 6.3rem) !important; }
+  html.cm-page-category .cm-category-map-note { grid-template-columns: 1fr; }
+  html.cm-page-category .cm-category-grid { grid-template-columns: 1fr !important; }
+  html.cm-page-category .cm-category-card { min-height: 185px !important; }
+  html.cm-page-category .cm-category-archive-lead { padding-left: 20px; padding-right: 20px; }
+  html.cm-page-category .post-list.cm-category-archive.cm-empty-state { width: calc(100% - 40px) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.cm-page-category .cm-category-card { transition: none !important; }
+}
