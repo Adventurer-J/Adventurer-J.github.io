@@ -47,13 +47,15 @@
     }
 
     context.clearRect(0, 0, width, height);
-    const scale = Math.min(width / 540, height / 650) * (coarsePointer ? 0.86 : 1);
-    const offsetX = width * 0.64;
+    const wideLayout = width >= 760;
+    const scale = Math.min(width / 540, height / 650) * (coarsePointer ? 0.82 : (wideLayout ? 0.9 : 0.84));
+    const offsetX = width * (wideLayout ? 0.89 : 0.64);
     const offsetY = height * 0.53;
     const time = staticFrame ? 1.2 : phase;
 
+    const lightTheme = document.documentElement.dataset.cmTheme === "light";
     context.save();
-    context.globalCompositeOperation = "lighter";
+    context.globalCompositeOperation = lightTheme ? "multiply" : "lighter";
     for (let index = 0; index < samples; index += 1) {
       const i = values[index];
       const y = i / 235;
@@ -72,8 +74,8 @@
       const alpha = (index % 5 === 0 ? .19 : .07) + Math.min(.18, d * .007);
       const radius = index % 17 === 0 ? 1.25 : (index % 5 === 0 ? .8 : .52);
       context.fillStyle = spine > .63
-        ? `rgba(196, 32, 38, ${Math.min(.48, alpha + spine * .18)})`
-        : `rgba(233, 228, 221, ${Math.min(.31, alpha)})`;
+        ? (lightTheme ? `rgba(143, 29, 34, ${Math.min(.56, alpha + spine * .22)})` : `rgba(196, 32, 38, ${Math.min(.48, alpha + spine * .18)})`)
+        : (lightTheme ? `rgba(55, 45, 43, ${Math.min(.27, alpha)})` : `rgba(233, 228, 221, ${Math.min(.31, alpha)})`);
       context.beginPath();
       context.arc(x, py, radius, 0, Math.PI * 2);
       context.fill();
@@ -115,6 +117,7 @@
   });
   reducedMotion.addEventListener?.("change", render);
   forcedColors.addEventListener?.("change", render);
+  document.addEventListener("cm:themechange", render);
   addEventListener("pagehide", () => {
     cancelAnimationFrame(frame);
     resizeObserver?.disconnect();

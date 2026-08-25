@@ -1,18 +1,16 @@
 /* Sci-Fi is a separate dark archive: one generated life-form, one clear archive path. */
-html.cm-deep-space-active,
-html[data-cm-theme="light"].cm-deep-space-active {
+html.cm-deep-space-active {
   background: #070606;
   color-scheme: dark;
 }
 
-.cm-page-sci-fi-life,
-html[data-cm-theme="light"] .cm-page-sci-fi-life {
+.cm-page-sci-fi-life {
   background: #070606 !important;
   color: #e7e1dc;
+  overflow-x: clip;
 }
 
-.cm-page-sci-fi-life > .head,
-html[data-cm-theme="light"] .cm-page-sci-fi-life > .head {
+.cm-page-sci-fi-life > .head {
   background: rgba(7, 6, 6, .92) !important;
   border-bottom: 1px solid rgba(191, 37, 42, .23) !important;
   box-shadow: none !important;
@@ -27,14 +25,12 @@ html[data-cm-theme="light"] .cm-page-sci-fi-life > .head {
 .cm-page-sci-fi-life .nav-menu-item[aria-current="page"],
 .cm-page-sci-fi-life #search-btn:hover { background: rgba(191, 37, 42, .15) !important; color: #ffb7ad !important; }
 
-.cm-page-sci-fi-life .cm-sci-fi-page,
-html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-page {
+.cm-page-sci-fi-life .cm-sci-fi-page {
   background: #070606 !important;
   padding: 0 0 82px !important;
 }
 .cm-page-sci-fi-life .cm-sci-fi-page::before { display: none; }
-.cm-page-sci-fi-life .wall-category.cm-sci-fi-stage,
-html[data-cm-theme="light"] .cm-page-sci-fi-life .wall-category.cm-sci-fi-stage {
+.cm-page-sci-fi-life .wall-category.cm-sci-fi-stage {
   background: radial-gradient(ellipse at 68% 48%, rgba(121, 10, 16, .17), transparent 42%), #070606 !important;
   border: 0 !important;
   border-bottom: 1px solid rgba(221, 201, 189, .14) !important;
@@ -46,13 +42,13 @@ html[data-cm-theme="light"] .cm-page-sci-fi-life .wall-category.cm-sci-fi-stage 
 }
 .cm-page-sci-fi-life .wall-category.cm-sci-fi-stage::before,
 .cm-page-sci-fi-life .wall-category.cm-sci-fi-stage::after { display: none !important; }
-.cm-page-sci-fi-life .cm-sci-fi-stage > .cm-cyber-worm { display: block !important; height: 100% !important; inset: 0 !important; max-width: none !important; min-height: 0 !important; pointer-events: none; position: absolute !important; width: 100% !important; z-index: 1 !important; }
-.cm-page-sci-fi-life .cm-sci-fi-stage > .cm-sci-fi-life-vignette { background: linear-gradient(90deg, #070606 4%, rgba(7, 6, 6, .82) 32%, rgba(7, 6, 6, .08) 65%, rgba(7, 6, 6, .62)), linear-gradient(0deg, #070606 0%, transparent 28%, transparent 72%, rgba(7, 6, 6, .8)); inset: 0 !important; pointer-events: none; position: absolute !important; z-index: 2 !important; }
-.cm-page-sci-fi-life .cm-sci-fi-stage .wall-main { max-width: 1320px; z-index: 3 !important; }
+.cm-page-sci-fi-life .cm-sci-fi-stage > .cm-cyber-worm { display: block !important; height: 100% !important; inset: 0 !important; mask-image: linear-gradient(90deg, transparent 0 37%, rgba(0, 0, 0, .25) 49%, #000 62% 96%, transparent); max-width: none !important; min-height: 0 !important; pointer-events: none; position: absolute !important; width: 100% !important; z-index: 1 !important; }
+.cm-page-sci-fi-life .cm-sci-fi-stage > .cm-sci-fi-life-vignette { background: linear-gradient(90deg, #070606 0 29%, rgba(7, 6, 6, .9) 42%, rgba(7, 6, 6, .14) 67%, rgba(7, 6, 6, .66)), linear-gradient(0deg, #070606 0%, transparent 28%, transparent 72%, rgba(7, 6, 6, .8)); inset: 0 !important; pointer-events: none; position: absolute !important; z-index: 2 !important; }
+.cm-page-sci-fi-life .cm-sci-fi-stage .wall-main { margin: 0 auto !important; max-width: 1320px; padding: 0 !important; z-index: 3 !important; }
 .cm-page-sci-fi-life .cm-sci-fi-kicker { color: #db3339; font-size: .61rem; letter-spacing: .2em; margin-bottom: 24px; }
-.cm-page-sci-fi-life .wall-category-title { color: #f0eae4 !important; font-family: sourceHanSerif, "Iowan Old Style", serif !important; font-size: clamp(4.4rem, 10.4vw, 8.8rem) !important; font-weight: 600 !important; letter-spacing: -.095em !important; text-shadow: 0 0 36px rgba(172, 25, 32, .2) !important; }
+.cm-page-sci-fi-life .wall-category-title { color: #f0eae4 !important; font-family: sourceHanSerif, "Iowan Old Style", serif !important; font-size: clamp(4rem, 7.5vw, 7.2rem) !important; font-weight: 600 !important; letter-spacing: -.095em !important; text-shadow: 0 0 36px rgba(172, 25, 32, .2) !important; }
 .cm-page-sci-fi-life .wall-category-title small { color: #a45a5a !important; font-size: .58rem !important; letter-spacing: .22em !important; margin: 0 0 12px -2px !important; }
-.cm-page-sci-fi-life .wall-category-description { color: #bcb1aa !important; max-width: 440px; }
+.cm-page-sci-fi-life .wall-category-description { color: #c9c0ba !important; margin: 16px 0 0 !important; max-width: 490px; }
 
 .cm-page-sci-fi-life .cm-sci-fi-quote-console { background: rgba(14, 11, 11, .7) !important; border-color: rgba(191, 37, 42, .38) !important; border-radius: 2px !important; box-shadow: none !important; max-width: 570px; }
 .cm-page-sci-fi-life .cm-sci-fi-quote-console::before { background: linear-gradient(90deg, #a51b23, transparent) !important; right: 16% !important; }
@@ -81,12 +77,43 @@ html[data-cm-theme="light"] .cm-page-sci-fi-life .wall-category.cm-sci-fi-stage 
 .cm-page-sci-fi-life .cm-sci-fi-entry-cta { color: #e24b52; }
 .cm-page-sci-fi-life .foot { background: #070606 !important; border-top-color: rgba(221, 201, 189, .14) !important; }
 
+/* Light mode is a real reading surface, not a dark scene with light-theme text inherited over it. */
+html[data-cm-theme="light"].cm-deep-space-active { background: #f2eeea; color-scheme: light; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life { background: #f2eeea !important; color: #241e1d; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life > .head { background: rgba(247, 242, 237, .92) !important; border-bottom-color: rgba(145, 37, 39, .22) !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .nav-logo img { filter: grayscale(1) brightness(.28); }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .nav-menu-item,
+html[data-cm-theme="light"] .cm-page-sci-fi-life #search-btn { color: #2c2422 !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life #search-btn,
+html[data-cm-theme="light"] .cm-page-sci-fi-life .search-shortcut-key { background: #f8f3ef !important; border-color: rgba(145, 37, 39, .22) !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .nav-menu-item:hover,
+html[data-cm-theme="light"] .cm-page-sci-fi-life .nav-menu-item[aria-current="page"],
+html[data-cm-theme="light"] .cm-page-sci-fi-life #search-btn:hover { background: #4a1317 !important; color: #fff4ed !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-page { background: #f2eeea !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .wall-category.cm-sci-fi-stage { background: radial-gradient(ellipse at 79% 49%, rgba(164, 38, 40, .14), transparent 40%), #f2eeea !important; border-bottom-color: rgba(49, 35, 33, .14) !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-stage > .cm-cyber-worm { filter: contrast(1.08); mix-blend-mode: multiply; opacity: .84; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-stage > .cm-sci-fi-life-vignette { background: linear-gradient(90deg, #f2eeea 0 29%, rgba(242, 238, 234, .9) 42%, rgba(242, 238, 234, .2) 67%, rgba(242, 238, 234, .72)), linear-gradient(0deg, #f2eeea 0%, transparent 28%, transparent 72%, rgba(242, 238, 234, .72)); }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-kicker { color: #9b2529; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .wall-category-title { color: #291c1b !important; text-shadow: none !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .wall-category-title small { color: #8b5551 !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .wall-category-description { color: #655754 !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-quote-console { background: rgba(255, 251, 247, .76) !important; border-color: rgba(145, 37, 39, .32) !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-quote-console blockquote { color: #342625 !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-quote-console footer { color: #796762 !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-life-catalog a { background: rgba(255, 250, 246, .72); border-color: rgba(49, 35, 33, .15); color: #302321; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-life-catalog a:hover { background: rgba(116, 22, 27, .08); border-color: rgba(145, 37, 39, .65); }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-life-catalog small,
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-life-status { color: #806d67; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .cm-sci-fi-entry { background: linear-gradient(90deg, rgba(57, 30, 30, .92), rgba(71, 45, 42, .62)), url("/images/tianyan/02-ark-h0317.webp") center / cover !important; }
+html[data-cm-theme="light"] .cm-page-sci-fi-life .foot { background: #f2eeea !important; border-top-color: rgba(49, 35, 33, .14) !important; }
+
 @media (max-width: 760px) {
   .cm-page-sci-fi-life .wall-category.cm-sci-fi-stage { min-height: 720px !important; padding-bottom: 110px !important; }
   .cm-sci-fi-life-catalog { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 440px; }
   .cm-sci-fi-life-catalog a { min-height: 84px; }
   .cm-sci-fi-life-status { bottom: 28px; left: 22px; right: auto; }
   .cm-sci-fi-life-status span { max-width: 230px; }
+  .cm-page-sci-fi-life .cm-sci-fi-stage > .cm-cyber-worm { mask-image: linear-gradient(90deg, transparent, #000 26% 90%, transparent); }
 }
 @media (prefers-reduced-motion: reduce) {
   .cm-sci-fi-life-catalog a { transition: none; }
