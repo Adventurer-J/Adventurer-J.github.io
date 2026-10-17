@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-CN">
   <head>
-    <meta charset="utf8" />
-    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>随笔档案 | Open Digital Garden</title>
     <meta name="description" content="收纳短篇记录、使用心得、故事片段与偶然发现的开放档案。" />
     <meta name="keywords" content="随笔, 数字花园, 工具, 故事, 记录" />
@@ -49,7 +49,13 @@
 
 
     
-    <link rel="stylesheet"
+    <script>
+    try {
+      const savedTheme = localStorage.getItem("cm-theme");
+      if (savedTheme) document.documentElement.dataset.cmTheme = savedTheme;
+    } catch (error) {}
+  </script>
+  <link rel="stylesheet"
           type="text/css"
           href='/css/layout.css' />
     
@@ -57,7 +63,11 @@
   <link rel="stylesheet" type="text/css" href="/css/category.css?v=20260731.4" />
   <link rel="stylesheet" type="text/css" href="/css/subpage-modern.css?v=20260812.2" />
 
-  <meta name="generator" content="Hexo 7.3.0"></head>
+  <meta name="generator" content="Hexo 7.3.0">  <meta property="og:title" content="随笔档案 | Open Digital Garden">
+  <meta property="og:description" content="收纳短篇记录、使用心得、故事片段与偶然发现的开放档案。">
+  <meta property="og:url" content="https://adventurer-j.github.io/blog/index.html">
+  <meta property="og:type" content="website">
+</head>
   <body class="cm-subpage-source cm-subpage-source--archive">
     
       <div id="search-mask" style="display:none">
@@ -129,7 +139,7 @@
               
                 <a class="nav-menu-item" href="/Numerical-method">数值方法</a>
               
-                <a class="nav-menu-item" href="/Differential%20equation">微分方程</a>
+                <a class="nav-menu-item" href="/differential-equation">微分方程</a>
               
                 <a class="nav-menu-item" href="/Algorithm">算法</a>
               
@@ -137,7 +147,7 @@
               
                 <a class="nav-menu-item" href="/Sci-Fi">科幻</a>
               
-                <a class="nav-menu-item" href="/Miles%20and%20Memories">在路上</a>
+                <a class="nav-menu-item" href="/miles-and-memories">在路上</a>
               
             
             
