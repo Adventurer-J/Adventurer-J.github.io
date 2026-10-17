@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>页面不存在 | Computational Mathematics Workspace</title>
+  <meta name="description" content="你要找的页面不存在或已迁移。">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="stylesheet" href="/css/layout.css">
+  <style>
+    .cm-404 {
+      min-height: 72vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 18px;
+      padding: 48px 24px;
+    }
+    .cm-404-code {
+      font-size: clamp(72px, 16vw, 160px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: .04em;
+      color: var(--cm-teal, #2f6f6a);
+      opacity: .9;
+    }
+    .cm-404-title { font-size: 22px; font-weight: 600; }
+    .cm-404-lead { max-width: 46ch; color: var(--cm-muted, #6b6f76); line-height: 1.8; }
+    .cm-404-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+    .cm-404-actions a {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 22px; border-radius: 999px;
+      border: 1px solid var(--cm-line, #d8d2c4);
+      text-decoration: none; color: inherit;
+      transition: transform .16s ease, border-color .16s ease;
+    }
+    .cm-404-actions a:hover { transform: translateY(-2px); border-color: var(--cm-teal, #2f6f6a); }
+    .cm-404-actions a.primary { background: var(--cm-ink, #23262b); color: var(--cm-surface, #f5f1e8); border-color: transparent; }
+  </style>
+  <script>
+    try {
+      const savedTheme = localStorage.getItem("cm-theme");
+      if (savedTheme) document.documentElement.dataset.cmTheme = savedTheme;
+    } catch (error) {}
+  </script>
+  <link rel="canonical" href="https://adventurer-j.github.io/">
+  <meta property="og:image" content="https://adventurer-j.github.io/images/bg1.jpg">
+  <meta property="og:image:width" content="3000">
+  <meta property="og:image:height" content="2000">
+  <meta property="og:site_name" content="Computational Mathematics Workspace">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <header class="head head--sticky">
+    <div class="nav">
+      <a href="/" class="nav-logo" aria-label="返回首页">
+        <img src="/images/logo.svg" alt="站点标志" width="42" height="42">
+      </a>
+      <nav class="nav-menu" aria-label="主导航">
+        <a class="nav-menu-item" href="/Numerical-method">数值方法</a>
+        <a class="nav-menu-item" href="/differential-equation/">微分方程</a>
+        <a class="nav-menu-item" href="/Algorithm">算法</a>
+        <a class="nav-menu-item" href="/Software-system">操作系统</a>
+        <a class="nav-menu-item" href="/Sci-Fi">科幻</a>
+        <a class="nav-menu-item" href="/miles-and-memories/">在路上</a>
+      </nav>
+    </div>
+  </header>
+  <main class="cm-404">
+    <div class="cm-404-code" aria-hidden="true">404</div>
+    <h1 class="cm-404-title">这个坐标不在任何已知的网格上</h1>
+    <p class="cm-404-lead">页面可能已被移动或删除。可以从下面的入口继续探索，或者返回首页重新出发。</p>
+    <div class="cm-404-actions">
+      <a class="primary" href="/">返回首页</a>
+      <a href="/research/">研究地图</a>
+      <a href="/tags/">标签索引</a>
+      <a href="/blog/">随笔档案</a>
+    </div>
+  </main>
+</body>
+</html>
