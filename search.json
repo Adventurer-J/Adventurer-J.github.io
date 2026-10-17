@@ -1,12 +1,12 @@
 [
   {"title":"Open Digital Garden · 首页","content":"方法、工具、故事、科幻与沿途记录，在一个持续生长的数字空间中相遇。","url":"/"},
   {"title":"数值方法","content":"数值方法与相关笔记。","url":"/Numerical-method/"},
-  {"title":"微分方程","content":"微分方程主题内容。","url":"/Differential%20equation/"},
+  {"title":"微分方程","content":"微分方程主题内容。","url":"/differential-equation/"},
   {"title":"算法","content":"算法、解题思路与实践记录。","url":"/Algorithm/"},
   {"title":"操作系统","content":"系统、工具与使用笔记。","url":"/Software-system/"},
   {"title":"科幻","content":"科幻想象、原创故事与长篇阅读。","url":"/Sci-Fi/"},
   {"title":"天衍","content":"原创科幻故事。","url":"/Sci-Fi/tianyan/"},
-  {"title":"在路上","content":"地点、片段与沿途记录。","url":"/Miles%20and%20Memories/"},
+  {"title":"在路上","content":"地点、片段与沿途记录。","url":"/miles-and-memories/"},
   {"title":"随笔档案","content":"短篇记录、使用心得、故事片段与偶然发现。","url":"/blog/"},
   {"title":"从这里出发","content":"认识开放数字花园，并从六个主题入口开始探索。","url":"/2025/01/16/hello/"},
   {"title":"Markdown 阅读样式配置指南","content":"为长文、知识笔记与项目文档配置清晰耐读的 Markdown Preview Enhanced 主题。","url":"/2026/07/18/markdown-preview-enhanced-computational-math-theme/"}
