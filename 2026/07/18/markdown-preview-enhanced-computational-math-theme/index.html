@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown Preview Enhanced：阅读样式配置指南</title>
+    <title>Markdown Preview Enhanced：阅读样式配置指南 | Computational Mathematics Workspace</title>
     <meta name="description" content="在 VS Code 的 Markdown Preview Enhanced 中配置适合长文、知识笔记与项目文档的清晰阅读样式。">
     <meta name="keywords" content="Markdown Preview Enhanced, VS Code, CSS, Less, Markdown, 阅读主题, PDF">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
@@ -14,21 +14,36 @@
       @font-face {
         font-family: sourceHanSerif;
         src: url(/font/normal.ttf);
-        font-weight: normal;
-      }
+        font-weight: normal; font-display: swap; }
       @font-face {
         font-family: sourceHanSerif;
         src: url(/font/bold.ttf);
-        font-weight: bold;
-      }
+        font-weight: bold; font-display: swap; }
     </style>
-    <link rel="stylesheet" href="/css/layout.css">
+    <script>
+    try {
+      const savedTheme = localStorage.getItem("cm-theme");
+      if (savedTheme) document.documentElement.dataset.cmTheme = savedTheme;
+    } catch (error) {}
+  </script>
+  <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/post.css">
     <link rel="stylesheet" href="/css/techdoc-article.css?v=20260718.1">
     <link rel="stylesheet" href="/css/workflow.css?v=20260718.3">
     <link rel="stylesheet" href="/css/comments.css?v=20260718.4">
     <link rel="stylesheet" href="/css/subpage-modern.css?v=20260812.2">
-  </head>
+    <meta property="og:title" content="Markdown Preview Enhanced：阅读样式配置指南">
+  <meta property="og:description" content="在 VS Code 的 Markdown Preview Enhanced 中配置适合长文、知识笔记与项目文档的清晰阅读样式。">
+  <meta property="og:url" content="https://adventurer-j.github.io/2026/07/18/markdown-preview-enhanced-computational-math-theme/index.html">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://adventurer-j.github.io/2026/07/18/markdown-preview-enhanced-computational-math-theme/">
+  <meta property="og:image" content="https://adventurer-j.github.io/images/bg1.jpg">
+  <meta property="og:image:width" content="3000">
+  <meta property="og:image:height" content="2000">
+  <meta property="og:site_name" content="Computational Mathematics Workspace">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
   <body class="cm-page-workflow-article cm-subpage-source cm-subpage-source--guide">
     <div id="search-mask" style="display:none">
       <div class="search-main" id="search-main" role="dialog" aria-modal="true" aria-label="搜索文章">
@@ -63,11 +78,11 @@
           </div>
           <nav class="nav-menu" aria-label="主导航">
             <a class="nav-menu-item" href="/Numerical-method">数值方法</a>
-            <a class="nav-menu-item" href="/Differential%20equation">微分方程</a>
+            <a class="nav-menu-item" href="/differential-equation">微分方程</a>
             <a class="nav-menu-item" href="/Algorithm">算法</a>
             <a class="nav-menu-item" href="/Software-system">操作系统</a>
             <a class="nav-menu-item" href="/Sci-Fi">科幻</a>
-            <a class="nav-menu-item" href="/Miles%20and%20Memories">在路上</a>
+            <a class="nav-menu-item" href="/miles-and-memories">在路上</a>
           </nav>
         </div>
         <label class="nav-btn" for="navBtn" aria-label="切换导航"></label>
@@ -274,7 +289,7 @@ table {
           <a href="/Software-system/">操作系统</a>
           <a href="/blog/">随笔档案</a>
         </nav>
-        <div class="copyright">© 2026 Open Digital Garden</div>
+        <div class="copyright">© 2026 Computational Mathematics Workspace</div>
       </div>
     </footer>
 
