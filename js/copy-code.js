@@ -1043,9 +1043,11 @@
     const key = decodeURIComponent(location.pathname).split("/").filter(Boolean)[0];
     const categoryProfiles = {
       "Numerical-method": "mesh",
+      "differential-equation": "flow",
       "Differential equation": "flow",
       "Algorithm": "signal",
       "Software-system": "signal",
+      "miles-and-memories": "waypoint",
       "Miles and Memories": "waypoint"
     };
     let target = null;
